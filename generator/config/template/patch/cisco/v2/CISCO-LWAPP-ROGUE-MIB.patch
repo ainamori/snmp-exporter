@@ -1,0 +1,3385 @@
+diff --git a/mibs/cisco/wlc/v2/CISCO-LWAPP-ROGUE-MIB.my b/mibs/cisco/wlc/v2/CISCO-LWAPP-ROGUE-MIB.my
+index 76d6007..3bbfa2b 100644
+--- a/mibs/cisco/wlc/v2/CISCO-LWAPP-ROGUE-MIB.my
++++ b/mibs/cisco/wlc/v2/CISCO-LWAPP-ROGUE-MIB.my
+@@ -1,6 +1,6 @@
+ -- *******************************************************************
+--- CISCO-LWAPP-ROGUE-MIB.my 
+--- February 2007, Devesh Pujari, Srinath Candadai 
++-- CISCO-LWAPP-ROGUE-MIB.my
++-- February 2007, Devesh Pujari, Srinath Candadai
+ --
+ -- Copyright (c) 2007, 2010-2012, 2017 by Cisco Systems, Inc.
+ -- All rights reserved.
+@@ -8,14 +8,14 @@
+ --
+ CISCO-LWAPP-ROGUE-MIB DEFINITIONS ::= BEGIN
+ 
+-IMPORTS 
+-        MODULE-IDENTITY, 
++IMPORTS
++        MODULE-IDENTITY,
+         NOTIFICATION-TYPE,
+         OBJECT-TYPE,
+         Integer32,
+         Unsigned32
+                 FROM SNMPv2-SMI
+-        MODULE-COMPLIANCE, 
++        MODULE-COMPLIANCE,
+         NOTIFICATION-GROUP,
+         OBJECT-GROUP
+                 FROM SNMPv2-CONF
+@@ -30,11 +30,9 @@ IMPORTS
+         cLApName,
+         cLApRogueApMacAddress,
+         cLApDot11IfType,
+-        cLApRogueDetectedChannel,
+         cLApDot11RadioChannelNumber,
+         cLApIfSmtDot11Bssid,
+-        cLApDot11RadioMACAddress,
+-        cLApRogueMode
++        cLApDot11RadioMACAddress
+                 FROM CISCO-LWAPP-AP-MIB
+         cldcClientMacAddress
+                 FROM CISCO-LWAPP-DOT11-CLIENT-MIB
+@@ -45,7 +43,7 @@ IMPORTS
+ ciscoLwappRogueMIB   MODULE-IDENTITY
+         LAST-UPDATED    "201703210000Z"
+         ORGANIZATION   "Cisco Systems Inc."
+-        CONTACT-INFO  
++        CONTACT-INFO
+                "        Cisco Systems,
+                         Customer Service
+                 Postal: 170 West Tasman Drive
+@@ -55,12 +53,12 @@ ciscoLwappRogueMIB   MODULE-IDENTITY
+ 
+                  Email: cs-wnbu-snmp@cisco.com"
+ 
+-        DESCRIPTION             
++        DESCRIPTION
+                 "This MIB is intended to be implemented on all those
+                 devices operating as Central Controllers, that
+                 terminate the Light Weight Access Point Protocol
+                 tunnel from Cisco Light-weight LWAPP Access Points.
+-               
++
+                 This MIB provides information about the Rogue APs
+                 and Clients that are detected by the controller.
+ 
+@@ -113,7 +111,7 @@ ciscoLwappRogueMIB   MODULE-IDENTITY
+                 An entity that contains an 802.11 medium access
+                 control ( MAC ) and physical layer ( PHY ) interface
+                 and provides access to the distribution services via
+-                the wireless medium for associated clients.  
++                the wireless medium for associated clients.
+ 
+                 LWAPP APs encapsulate all the 802.11 frames in
+                 LWAPP frames and sends them to the controller to which
+@@ -121,31 +119,31 @@ ciscoLwappRogueMIB   MODULE-IDENTITY
+ 
+                 Light Weight Access Point Protocol ( LWAPP )
+ 
+-                This is a generic protocol that defines the 
++                This is a generic protocol that defines the
+                 communication between the Access Points and the
+-                Central Controller. 
++                Central Controller.
+ 
+                 Mobile Node ( MN )
+ 
+                 A roaming 802.11 wireless device in a wireless
+-                network associated with an access point. Mobile Node 
+-                and client are used interchangeably. 
++                network associated with an access point. Mobile Node
++                and client are used interchangeably.
+ 
+                 Rogue
+-                
+-                Any 802.11 device which is not part of the RF network 
++
++                Any 802.11 device which is not part of the RF network
+                 is a Rogue device.
+ 
+-                Ad-hoc Network 
++                Ad-hoc Network
+ 
+-                A set of mobile devices within direct communication 
+-                range establishing a network among themselves for 
+-                transmitting data, without the use of a Access point 
+-                is called a ad-hoc network. 
++                A set of mobile devices within direct communication
++                range establishing a network among themselves for
++                transmitting data, without the use of a Access point
++                is called a ad-hoc network.
+ 
+                 Rogue Ad-hoc Client
+ 
+-                Any 802.11 client which is part of that ad-hoc network, 
++                Any 802.11 client which is part of that ad-hoc network,
+                 but not in the trusted list.
+ 
+                 Service Set Identifier ( SSID )
+@@ -165,23 +163,23 @@ ciscoLwappRogueMIB   MODULE-IDENTITY
+ 
+                 Rogue Location Detection Protocol (RLDP)
+ 
+-                RLDP is a protocol to detect and automatically 
+-                contain rogue devices. When the controller discovers 
+-                a rogue access point, it uses the Rogue Location 
+-                Discovery Protocol (RLDP) to determine if the 
++                RLDP is a protocol to detect and automatically
++                contain rogue devices. When the controller discovers
++                a rogue access point, it uses the Rogue Location
++                Discovery Protocol (RLDP) to determine if the
+                 rogue is attached to your network.
+                 RLDP can be enabled/disabled per controller level.
+ 
+                 LRAD (LWAPP RADIO)
+ 
+-                Light Weight Access Point Protocol Radio 
+-                basically ones own AP.       
++                Light Weight Access Point Protocol Radio
++                basically ones own AP.
+                 REFERENCE
+ 
+                 [1] Wireless LAN Medium Access Control ( MAC ) and
+                     Physical Layer ( PHY ) Specifications.
+ 
+-                [2] Draft-obara-capwap-lwapp-00.txt, IETF Light 
++                [2] Draft-obara-capwap-lwapp-00.txt, IETF Light
+                     Weight Access Point Protocol."
+             REVISION        "201703210000Z"
+             DESCRIPTION
+@@ -228,13 +226,13 @@ ciscoLwappRogueMIB   MODULE-IDENTITY
+                 cLRldpAutoContainAdhocNetworks
+                 cLRldpAutoContainTrustedClientsOnRogueAps
+ 
+-                Deprecated ciscoLwappRogueMIBCompliance and 
++                Deprecated ciscoLwappRogueMIBCompliance and
+                 added ciscoLwappRogueMIBComplianceRev1."
+             REVISION        "200702060000Z"
+             DESCRIPTION
+                 "Initial version of this MIB module."
+             ::= { ciscoMgmt 610 }
+- 
++
+ ciscoLwappRogueMIBNotifs  OBJECT IDENTIFIER
+     ::= { ciscoLwappRogueMIB 0 }
+ 
+@@ -278,7 +276,7 @@ CLAutoContainActions ::= TEXTUAL-CONVENTION
+         "This textual convention represents the action that should be
+         taken with respect to auto containment feature when any of the
+         following are detected by the switch:
+-        rogue adhoc network 
++        rogue adhoc network
+         rogues APs that are advertising our SSID
+         trusted clients that are associated to rogue APs
+ 
+@@ -290,7 +288,7 @@ CLAutoContainActions ::= TEXTUAL-CONVENTION
+                     }
+ 
+ cLRogueAdhocRogueReportEnable OBJECT-TYPE
+-    SYNTAX          TruthValue 
++    SYNTAX          TruthValue
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+@@ -298,7 +296,7 @@ cLRogueAdhocRogueReportEnable OBJECT-TYPE
+         rogue reporting.
+         A value of 'true' indicates that adhoc rogue
+         reporting is enabled.
+-        A value of 'false' indicates that adhoc rogue 
++        A value of 'false' indicates that adhoc rogue
+         reporting is disabled."
+     DEFVAL          { true }
+     ::= { cLRoguePolicyConfig 1 }
+@@ -310,8 +308,8 @@ cLRogueReportInterval OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the rogue report interval,
+-        which is the interval that monitor mode APs send 
+-        rogue detection details to the controller." 
++        which is the interval that monitor mode APs send
++        rogue detection details to the controller."
+     ::= { cLRoguePolicyConfig 2 }
+ 
+ cLRogueMinimumRssi OBJECT-TYPE
+@@ -321,7 +319,7 @@ cLRogueMinimumRssi OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the minimum value of RSSI
+-        considered for detection of rogues." 
++        considered for detection of rogues."
+     ::= { cLRoguePolicyConfig 3 }
+ 
+ cLRogueTransientInterval OBJECT-TYPE
+@@ -331,16 +329,16 @@ cLRogueTransientInterval OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the rogue transient
+-        interval. 
++        interval.
+ 
+-        A value of '0' specifies that an AP sends 
+-        rogue detection details to the controller 
+-        as soon as it detects a rogue. 
++        A value of '0' specifies that an AP sends
++        rogue detection details to the controller
++        as soon as it detects a rogue.
+ 
+-        A non-zero value specifies that an AP sends 
+-        rogue detection details to the controller if 
+-        it hears the rogue more than once in the specified 
+-        interval." 
++        A non-zero value specifies that an AP sends
++        rogue detection details to the controller if
++        it hears the rogue more than once in the specified
++        interval."
+     ::= { cLRoguePolicyConfig 4 }
+ 
+ cLRogueClientNumThreshold OBJECT-TYPE
+@@ -349,8 +347,8 @@ cLRogueClientNumThreshold OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the number of clients the Rogue AP
+-        can have. A value of zero indicates no limitation on 
+-        the number of clients the Rogue AP can have." 
++        can have. A value of zero indicates no limitation on
++        the number of clients the Rogue AP can have."
+     ::= { cLRoguePolicyConfig 5 }
+ 
+ cLRogueDetectionSecurityLevel OBJECT-TYPE
+@@ -364,16 +362,16 @@ cLRogueDetectionSecurityLevel OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the rogue detection security level.
+-        When the object has value of 'low', 'high' or 'critical', 
+-        controller uses pre-defined rogue detection parameters for 
+-        the specified security level. 
+-        When the object has value of 'custom', controller uses the 
+-        user configured rogue detection parameters. 
+-
+-        low      - security level is low 
+-        high     - security level is high 
+-        critical - security level is critical 
+-        custom   - customized security level" 
++        When the object has value of 'low', 'high' or 'critical',
++        controller uses pre-defined rogue detection parameters for
++        the specified security level.
++        When the object has value of 'custom', controller uses the
++        user configured rogue detection parameters.
++
++        low      - security level is low
++        high     - security level is high
++        critical - security level is critical
++        custom   - customized security level"
+     DEFVAL          { custom }
+     ::= { cLRoguePolicyConfig 6 }
+ 
+@@ -386,13 +384,13 @@ cLRogueValidateRogueClientsAgainstMse OBJECT-TYPE
+     STATUS current
+     DESCRIPTION
+         "The object specifies whether the controller validates
+-        'valid' clients which are associating with rogue AP, 
+-        against Mse. A value of 'enable' indicates that the 
+-        controller does validates 'valid'clients which are 
+-        associating with rogue AP, against Mse. A value of 
+-        'disable' indicates that the controller does not 
+-        validates 'valid' clients which are associating 
+-        with rogue AP, against Mse." 
++        'valid' clients which are associating with rogue AP,
++        against Mse. A value of 'enable' indicates that the
++        controller does validates 'valid'clients which are
++        associating with rogue AP, against Mse. A value of
++        'disable' indicates that the controller does not
++        validates 'valid' clients which are associating
++        with rogue AP, against Mse."
+     DEFVAL { disable }
+     ::= { cLRoguePolicyConfig 7 }
+ 
+@@ -409,21 +407,21 @@ cLRogueValidateRogueApsAgainstAAA OBJECT-TYPE
+     ::= { cLRoguePolicyConfig 8 }
+ 
+ cLRogueApPollingInterval OBJECT-TYPE
+-    SYNTAX          Unsigned32 
++    SYNTAX          Unsigned32
+     UNITS           "seconds"
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object represents the polling interval of rogue Ap 
++        "This object represents the polling interval of rogue Ap
+         in seconds."
+     ::= { cLRoguePolicyConfig 9 }
+ 
+ cLRogueContainAutoRateEnable OBJECT-TYPE
+-    SYNTAX          TruthValue 
++    SYNTAX          TruthValue
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object is used to turn on and off rogue  
++        "This object is used to turn on and off rogue
+         containment automatic rate selection.
+         A value of 'true' indicates that automatic
+         rate selection will be enabled.
+@@ -450,7 +448,7 @@ cLRogueAdhocRogueNotifEnabled OBJECT-TYPE
+ 
+ 
+ --********************************************************************
+--- *  Notification Objects 
++-- *  Notification Objects
+ --********************************************************************
+ cLRogueApContainmentLevel OBJECT-TYPE
+         SYNTAX     INTEGER  {
+@@ -463,8 +461,8 @@ cLRogueApContainmentLevel OBJECT-TYPE
+         MAX-ACCESS accessible-for-notify
+         STATUS     current
+         DESCRIPTION
+-                "This object specifies the state of the rogue contained, 
+-                 Higher the level of containment, more the number of 
++                "This object specifies the state of the rogue contained,
++                 Higher the level of containment, more the number of
+                  detecting APs that are used to contain it.
+                  Value between 1 to 4 is for 'contained' state.
+                  Value of 0 means 'contained' state is stopped."
+@@ -475,7 +473,7 @@ cLRogueClientTotalDetectingAPs OBJECT-TYPE
+         MAX-ACCESS read-only
+         STATUS current
+         DESCRIPTION
+-            "This object represents the total number of 
++            "This object represents the total number of
+             detecting APs that detected this rogue."
+         ::= { ciscoLwappRogueMIBNotifObjects 2 }
+ 
+@@ -484,7 +482,7 @@ cLRogueClientFirstReported OBJECT-TYPE
+         MAX-ACCESS read-only
+         STATUS current
+         DESCRIPTION
+-            "This object represents the time Stamp 
++            "This object represents the time Stamp
+             when this Rogue client was First Detected."
+         ::= { ciscoLwappRogueMIBNotifObjects 3 }
+ 
+@@ -493,7 +491,7 @@ cLRogueClientLastReported OBJECT-TYPE
+         MAX-ACCESS read-only
+         STATUS current
+         DESCRIPTION
+-            "This object represents the time Stamp 
++            "This object represents the time Stamp
+             `when this Rogue client was Last Detected."
+         ::= { ciscoLwappRogueMIBNotifObjects 4}
+ 
+@@ -514,17 +512,17 @@ cLLastDetectingRadioMACAddress OBJECT-TYPE
+     ::= { ciscoLwappRogueMIBNotifObjects 6 }
+ 
+ --********************************************************************
+--- *  Notifications 
++-- *  Notifications
+ --********************************************************************
+ cLRogueAdhocRogueDetected NOTIFICATION-TYPE
+     OBJECTS         { cLApName }
+     STATUS          current
+     DESCRIPTION
+-        "This notification is generated by the controller when a 
+-        a rogue is detected.  The name of the AP that  
+-        detected this rogue is sent in the notification." 
++        "This notification is generated by the controller when a
++        a rogue is detected.  The name of the AP that
++        detected this rogue is sent in the notification."
+     ::= { ciscoLwappRogueMIBNotifs 1 }
+-       
++
+ cLRogueClientExceededThreshold NOTIFICATION-TYPE
+     OBJECTS         {
+                      cLApDot11RadioMACAddress,
+@@ -533,13 +531,12 @@ cLRogueClientExceededThreshold NOTIFICATION-TYPE
+                      cldcClientMacAddress,
+                      cLApDot11IfType,
+                      cLApIfSmtDot11Bssid,
+-                     cLRuleStateType,
+-                     cLApRogueDetectedChannel
++                     cLRuleStateType
+                     }
+     STATUS          current
+     DESCRIPTION
+         "This notification is generated by the controller
+-         when a rogue client exceeds its maximum 
++         when a rogue client exceeds its maximum
+          threshold configured. The details of Rogue AP
+          and Rogue Clients is sent in the notification."
+     ::= { ciscoLwappRogueMIBNotifs 2 }
+@@ -558,17 +555,17 @@ cLRogueExceededClientRemovedThreshold NOTIFICATION-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This notification is generated by the controller
+-         when a rogue client is removed from the rogue AP 
+-         and still the client count of the rogue AP is greater 
+-         than the maximum threshold configured. The details 
+-         of Rogue AP and Rogue Clients is sent in the 
++         when a rogue client is removed from the rogue AP
++         and still the client count of the rogue AP is greater
++         than the maximum threshold configured. The details
++         of Rogue AP and Rogue Clients is sent in the
+          notification."
+     ::= { ciscoLwappRogueMIBNotifs 3 }
+ 
+ cLRogueApRuleContained NOTIFICATION-TYPE
+     OBJECTS         {
+                      cLApRogueApMacAddress,
+-                     cLRogueApContainmentLevel 
++                     cLRogueApContainmentLevel
+                     }
+     STATUS          current
+     DESCRIPTION
+@@ -581,12 +578,11 @@ cLRogueClientDetected NOTIFICATION-TYPE
+         cldcClientMacAddress,
+         cLLastDetectingRadioMACAddress,
+         cLApRogueApMacAddress,
+-        cLApRogueMode,
+         cLRogueClientTotalDetectingAPs,
+         cLRogueClientFirstReported,
+         cLRogueClientLastReported,
+         cLRogueClientGatewayMac
+-}   
++}
+     STATUS          current
+     DESCRIPTION
+     "This notification is generated by the controller
+@@ -601,27 +597,27 @@ cLRogueClientDetected NOTIFICATION-TYPE
+ cLRuleConfigTable OBJECT-TYPE
+     SYNTAX          SEQUENCE OF CLRuleConfigEntry
+     MAX-ACCESS      not-accessible
+-    STATUS          current 
++    STATUS          current
+     DESCRIPTION
+         "This table provides the configuration needed
+-        by the controller for classifying rogue APs. 
+-        The user defines the custom rules which are 
+-        used to classify the APs under different 
+-        classification types. When a new rule is created 
+-        priority will be assigned automatically by controller, 
+-        highest priority given to rule which are created first. 
+-        Also if user is changing the priority of a rule manually, 
++        by the controller for classifying rogue APs.
++        The user defines the custom rules which are
++        used to classify the APs under different
++        classification types. When a new rule is created
++        priority will be assigned automatically by controller,
++        highest priority given to rule which are created first.
++        Also if user is changing the priority of a rule manually,
+         the new priority should not be used by any other existing rule."
+     ::= { cLRogueRuleConfig 1 }
+ 
+ cLRuleConfigEntry OBJECT-TYPE
+     SYNTAX          CLRuleConfigEntry
+     MAX-ACCESS      not-accessible
+-    STATUS          current 
++    STATUS          current
+     DESCRIPTION
+         "Each entry represents a conceptual row
+         (as identified by a rule name)in cLRuleConfigTable."
+-    INDEX           { cLRuleName } 
++    INDEX           { cLRuleName }
+     ::= { cLRuleConfigTable 1 }
+ 
+ CLRuleConfigEntry ::= SEQUENCE {
+@@ -636,14 +632,14 @@ CLRuleConfigEntry ::= SEQUENCE {
+         cLRuleClassificationName    SnmpAdminString,
+         cLRuleNotifyType            INTEGER,
+         cLRuleStateType             INTEGER
+-}       
++}
+ 
+ cLRuleName OBJECT-TYPE
+     SYNTAX          SnmpAdminString (SIZE(1..32))
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This object represents the rule name to identify 
++        "This object represents the rule name to identify
+         this entry."
+     ::= { cLRuleConfigEntry 1 }
+ 
+@@ -657,15 +653,15 @@ cLRuleRogueType OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the classification applied 
++        "This object specifies the classification applied
+         to the rogue AP that matches this rule.
+         friendly  - known and acknowledged rogue AP
+-        malicious - unknown AP that matches user defined 
++        malicious - unknown AP that matches user defined
+                     malicious rules
+-        unclassified - an unknown AP that did not match malicious 
++        unclassified - an unknown AP that did not match malicious
+                        or friendly rules.
+         custom       - user can configure rogue detection parameters."
+-    DEFVAL          { custom } 
++    DEFVAL          { custom }
+     ::= { cLRuleConfigEntry 2 }
+ 
+ cLRuleConditionsMatch OBJECT-TYPE
+@@ -677,10 +673,10 @@ cLRuleConditionsMatch OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies how the conditions
+-        defined by corresponding instances of 
++        defined by corresponding instances of
+         cLConditionType, are matched under each rule.
+         all - all the conditions defined per rule should be matched
+-        any - any conditions defined per rule can be matched." 
++        any - any conditions defined per rule can be matched."
+     ::= { cLRuleConfigEntry 3 }
+ 
+ cLRulePriority OBJECT-TYPE
+@@ -689,9 +685,9 @@ cLRulePriority OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies  the order in which the
+-        rules will be applied. The rules will be applied from 
+-        lowest to highest and gaps are allowed.  
+-        Each rule must have and unique value for this object." 
++        rules will be applied. The rules will be applied from
++        lowest to highest and gaps are allowed.
++        Each rule must have and unique value for this object."
+     ::= { cLRuleConfigEntry 4 }
+ 
+ cLRuleEnable OBJECT-TYPE
+@@ -701,7 +697,7 @@ cLRuleEnable OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies whether this rule is enabled or not.
+         A value of 'true' specifies this rule is enabled.
+-        A value of 'false' specifies this rule is disabled." 
++        A value of 'false' specifies this rule is disabled."
+     ::= { cLRuleConfigEntry 5 }
+ 
+ cLRuleStorageType OBJECT-TYPE
+@@ -711,7 +707,7 @@ cLRuleStorageType OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the storage type for this conceptual
+         row."
+-    DEFVAL          { nonVolatile } 
++    DEFVAL          { nonVolatile }
+     ::= { cLRuleConfigEntry 6 }
+ 
+ cLRuleRowStatus OBJECT-TYPE
+@@ -720,8 +716,8 @@ cLRuleRowStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the status column for a
+-        conceptual row in this table. All writable objects 
+-        in this row may be modified when the row is active." 
++        conceptual row in this table. All writable objects
++        in this row may be modified when the row is active."
+     ::= { cLRuleConfigEntry 7 }
+ 
+ cLRuleSeverityScore OBJECT-TYPE
+@@ -729,10 +725,10 @@ cLRuleSeverityScore OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the custom classification 
++        "This object specifies the custom classification
+          severity score of the rules.
+          This object is applicable when cLRuleRogueType is configured
+-         as 'custom'." 
++         as 'custom'."
+     ::= { cLRuleConfigEntry 8 }
+ 
+ cLRuleClassificationName OBJECT-TYPE
+@@ -774,7 +770,7 @@ cLRuleStateType OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the rule to configure state of the 
++        "This object specifies the rule to configure state of the
+         rogue.
+         alert - Configure alert state on rogue ap.
+         contain - Configure contain state on rogue ap.
+@@ -803,13 +799,13 @@ cLConditionConfigEntry OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Each entry represents a conceptual row in
+-        cLConditionConfigTable, as identified by a 
+-        specific condition name to be applied on a 
++        cLConditionConfigTable, as identified by a
++        specific condition name to be applied on a
+         specific rule name."
+     INDEX           {
+                         cLRuleName,
+                         cLConditionName
+-                    } 
++                    }
+     ::= { cLConditionConfigTable 1 }
+ 
+ CLConditionConfigEntry ::= SEQUENCE {
+@@ -831,7 +827,7 @@ cLConditionName OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This object represents the condition name." 
++        "This object represents the condition name."
+     ::= { cLConditionConfigEntry 1 }
+ 
+ cLConditionType OBJECT-TYPE
+@@ -850,11 +846,11 @@ cLConditionType OBJECT-TYPE
+         "This object specifies the condition type
+         for this condition associated with a rule.
+              managedSsid - matches managed SSID
+-             rssi - required minimum RSSI 
++             rssi - required minimum RSSI
+              duration - limited to this time duration
+              clientCount - number of associated clients
+              noEncryption - no encryption rule
+-             userConfigSsid - matches user configured SSID" 
++             userConfigSsid - matches user configured SSID"
+     ::= { cLConditionConfigEntry 2 }
+ 
+ cLConditionValue OBJECT-TYPE
+@@ -863,11 +859,11 @@ cLConditionValue OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the value associated
+-        with the condition type as specified by 
++        with the condition type as specified by
+         the corresponding cLConditionType instance.
+-        If cLConditionType is 'userConfigSsid', 
+-        then corresponding 'cLConditionValue' can 
+-        only take on the value of zero." 
++        If cLConditionType is 'userConfigSsid',
++        then corresponding 'cLConditionValue' can
++        only take on the value of zero."
+     ::= { cLConditionConfigEntry 3 }
+ 
+ cLConditionEnable OBJECT-TYPE
+@@ -876,11 +872,11 @@ cLConditionEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies whether matching against
+-        this condition is enabled or not. 
+-        A value of 'true' indicates matching against 
++        this condition is enabled or not.
++        A value of 'true' indicates matching against
+         this condition is enabled.
+-        A value of 'false' indicates matching against 
+-        this condition is disabled." 
++        A value of 'false' indicates matching against
++        this condition is disabled."
+     ::= { cLConditionConfigEntry 4 }
+ 
+ cLConditionStorageType OBJECT-TYPE
+@@ -890,7 +886,7 @@ cLConditionStorageType OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the storage type for this conceptual
+         row."
+-    DEFVAL          { nonVolatile } 
++    DEFVAL          { nonVolatile }
+     ::= { cLConditionConfigEntry 5 }
+ 
+ cLConditionRowStatus OBJECT-TYPE
+@@ -899,9 +895,9 @@ cLConditionRowStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the status column for a
+-        conceptual row in this table. All writable objects 
+-        except cLConditionType in this row may be 
+-        modified when the row is active." 
++        conceptual row in this table. All writable objects
++        except cLConditionType in this row may be
++        modified when the row is active."
+     ::= { cLConditionConfigEntry 6 }
+ 
+ cLConditionRssi OBJECT-TYPE
+@@ -912,7 +908,7 @@ cLConditionRssi OBJECT-TYPE
+         "This object specifies the minimum value of RSSI that
+         a rogue AP must have in order to match cLConditionType
+         of 'rssi'."
+-    DEFVAL          { 0 } 
++    DEFVAL          { 0 }
+     ::= { cLConditionConfigEntry 7 }
+ 
+ cLConditionClientCount OBJECT-TYPE
+@@ -923,7 +919,7 @@ cLConditionClientCount OBJECT-TYPE
+         "This object specifies the minimum value of client count
+         that a rogue AP must have in order to match cLConditionType
+         of 'clientCount'."
+-    DEFVAL          { 0 } 
++    DEFVAL          { 0 }
+     ::= { cLConditionConfigEntry 8 }
+ 
+ cLConditionNoEncryptionEnabled OBJECT-TYPE
+@@ -935,7 +931,7 @@ cLConditionNoEncryptionEnabled OBJECT-TYPE
+         A value of 'true' indicates that encryption is not enabled.
+         A value of 'false' indicates that encryption is enabled
+         for this condition."
+-    DEFVAL          { true } 
++    DEFVAL          { true }
+     ::= { cLConditionConfigEntry 9 }
+ 
+ cLConditionManagedSsidEnabled OBJECT-TYPE
+@@ -947,7 +943,7 @@ cLConditionManagedSsidEnabled OBJECT-TYPE
+         A value of 'true' indicates managed SSID is enabled.
+         A value of 'false' indicates managed SSID is not enabled
+         for this condition."
+-    DEFVAL          { true } 
++    DEFVAL          { true }
+     ::= { cLConditionConfigEntry 10 }
+ 
+ cLConditionDuration OBJECT-TYPE
+@@ -957,11 +953,11 @@ cLConditionDuration OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the minimum value of duration,
+-        in seconds, a rogue AP must be present in order to match 
++        in seconds, a rogue AP must be present in order to match
+         cLConditionType of 'duration'."
+-    DEFVAL          { 0 } 
++    DEFVAL          { 0 }
+     ::= { cLConditionConfigEntry 11 }
+- 
++
+ 
+ -- ********************************************************************
+ -- Rule/Condition SSID configuration
+@@ -973,9 +969,9 @@ cLConditionSsidConfigTable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This table represents the configuration of
+-        SSID for a rule. This is applicable to 
+-        conditions within a rule which has the 
+-        corresponding cLConditionType taking on the value 
++        SSID for a rule. This is applicable to
++        conditions within a rule which has the
++        corresponding cLConditionType taking on the value
+         of 'userConfigSsid'."
+     ::= { cLRogueRuleConfig 3 }
+ 
+@@ -990,7 +986,7 @@ cLConditionSsidConfigEntry OBJECT-TYPE
+                         cLRuleName,
+                         cLConditionName,
+                         cLConditionSsidValue
+-                    } 
++                    }
+     ::= { cLConditionSsidConfigTable 1 }
+ 
+ CLConditionSsidConfigEntry ::= SEQUENCE {
+@@ -1005,7 +1001,7 @@ cLConditionSsidValue OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This object represents the SSID value for this 
++        "This object represents the SSID value for this
+         condition associated with a rule."
+     ::= { cLConditionSsidConfigEntry 1 }
+ 
+@@ -1016,7 +1012,7 @@ cLConditionSsidStorageType OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the storage
+         type for this conceptual row."
+-    DEFVAL          { nonVolatile } 
++    DEFVAL          { nonVolatile }
+     ::= { cLConditionSsidConfigEntry 2 }
+ 
+ cLConditionSsidRowStatus OBJECT-TYPE
+@@ -1025,10 +1021,10 @@ cLConditionSsidRowStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the status column for a
+-        conceptual row in this table. All writable objects 
+-        in this row may not be modified when the row is active." 
++        conceptual row in this table. All writable objects
++        in this row may not be modified when the row is active."
+     ::= { cLConditionSsidConfigEntry 3 }
+- 
++
+ cLConditionSsidType OBJECT-TYPE
+     SYNTAX          INTEGER{
+                        normal(1),
+@@ -1037,7 +1033,7 @@ cLConditionSsidType OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the ssid type 
++        "This object specifies the ssid type
+         that is present in the rule condition."
+     ::= { cLConditionSsidConfigEntry 4 }
+ -- ********************************************************************
+@@ -1045,13 +1041,13 @@ cLConditionSsidType OBJECT-TYPE
+ -- ********************************************************************
+ 
+ cLRogueIgnoreListTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLRogueIgnoreListEntry 
++    SYNTAX          SEQUENCE OF CLRogueIgnoreListEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "The table lists the APs, as identified by the AP's mac address,
+         which should not be treated as rogue by the controller.
+-        These APs are the autonomous access points that have been 
++        These APs are the autonomous access points that have been
+         manually added to WCS."
+     ::= { cLRogueIgnoreListConfig 1 }
+ 
+@@ -1061,11 +1057,11 @@ cLRogueIgnoreListEntry OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Each entry represents a conceptual row in this table.
+-        There will be a row for each entry of the autonomous 
++        There will be a row for each entry of the autonomous
+         APs which are manually added to WCS. When the autonomous
+-        AP is no longer managed by WCS, the corresponding row 
++        AP is no longer managed by WCS, the corresponding row
+         entry will be removed."
+-    INDEX           { cLRogueIgnoreListMACAddress } 
++    INDEX           { cLRogueIgnoreListMACAddress }
+     ::= { cLRogueIgnoreListTable 1 }
+ 
+ CLRogueIgnoreListEntry ::= SEQUENCE {
+@@ -1080,7 +1076,7 @@ cLRogueIgnoreListMACAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This is the MAC Address of the AP to be put in the
+-        rogue ignore list." 
++        rogue ignore list."
+     ::= { cLRogueIgnoreListEntry 1 }
+ 
+ cLRogueIgnoreListStorageType OBJECT-TYPE
+@@ -1090,7 +1086,7 @@ cLRogueIgnoreListStorageType OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the storage type for this
+         conceptual row."
+-    DEFVAL          { nonVolatile } 
++    DEFVAL          { nonVolatile }
+     ::= { cLRogueIgnoreListEntry 2 }
+ 
+ cLRogueIgnoreListRowStatus OBJECT-TYPE
+@@ -1099,18 +1095,18 @@ cLRogueIgnoreListRowStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the status of the conceptual row.
+-        All writable objects in this row may not be 
+-        modified when the row is active." 
++        All writable objects in this row may not be
++        modified when the row is active."
+     ::= { cLRogueIgnoreListEntry 3 }
+- 
++
+ 
+ 
+ -- ********************************************************************
+ -- Auto Containment configuration
+ -- ********************************************************************
+ cLRldpAutoContainFeatureOnWiredNetwork OBJECT-TYPE
+-    SYNTAX          INTEGER { 
+-                        disable (1), 
++    SYNTAX          INTEGER {
++                        disable (1),
+                         enable (2)
+                     }
+     MAX-ACCESS read-write
+@@ -1130,7 +1126,7 @@ cLRldpAutoContainRoguesAdvertisingSsid OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This is the action with respect to auto containment feature,
+-        that should be taken when switch detects rogues that are 
++        that should be taken when switch detects rogues that are
+         advertising our SSID.
+ 
+         NOTE: Using this feature may have legal consequences!!!"
+@@ -1144,8 +1140,8 @@ cLRldpAutoContainAdhocNetworks OBJECT-TYPE
+     DESCRIPTION
+         "This is the action with respect to auto containment feature,
+         that should be taken when adhoc networks are
+-        detected by the switch. 
+- 
++        detected by the switch.
++
+         NOTE: Using this feature may have legal consequences!!!"
+     DEFVAL          { alarmOnly }
+     ::= { cLRldpAutoContainConfig 3 }
+@@ -1157,21 +1153,21 @@ cLRldpAutoContainTrustedClientsOnRogueAps OBJECT-TYPE
+     DESCRIPTION
+         "This is the action with respect to auto containment feature,
+         that should be taken when trusted clients that
+-        are associated to rogue APs are detected by the switch. 
++        are associated to rogue APs are detected by the switch.
+ 
+         NOTE: Using this feature may have legal consequences!!!"
+     DEFVAL          { alarmOnly }
+     ::= { cLRldpAutoContainConfig 4 }
+ 
+ cLRldpAutoContainLevel OBJECT-TYPE
+-    SYNTAX          Integer32 (0..4) 
++    SYNTAX          Integer32 (0..4)
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+         "This object is used to specify the level of auto containment.
+-         The level actually denotes the number of APs that should be 
++         The level actually denotes the number of APs that should be
+          used by the controller for auto containment.
+-         A value of '0' means level of auto containment is 
++         A value of '0' means level of auto containment is
+          selected automatically."
+     DEFVAL          { 1 }
+     ::= { cLRldpAutoContainConfig 5 }
+@@ -1184,7 +1180,7 @@ cLRldpAutoContainOnlyforMonitorModeAps OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object is used to specify if auto containment should be 
++        "This object is used to specify if auto containment should be
+         done only using monitor mode APs or not.
+         disable - auto containment will be done using all APs irrespective of the mode
+         enable  - auto containment will be done only using monitor mode APs."
+@@ -1217,7 +1213,7 @@ cLRogueAPDetectingAPTable OBJECT-TYPE
+     MAX-ACCESS not-accessible
+     STATUS current
+     DESCRIPTION
+-    "Rogue Station Table. This table lists all the Detecting AP 
++    "Rogue Station Table. This table lists all the Detecting AP
+     Interfaces that detected a particular Rogue."
+     ::= { cLRogueApDetectingApDetails 1 }
+ 
+@@ -1227,11 +1223,11 @@ cLRogueAPDetectingAPEntry OBJECT-TYPE
+     STATUS current
+     DESCRIPTION
+     "An entry in cLRogueAPDetectingAPEntry."
+-    INDEX { 
++    INDEX {
+         cLRogueApMacAddr,
+         cLRogueAPDetectingAPMacAddress,
+         cLRogueAPDetectingAPSlotId
+-    } 
++    }
+ 
+     ::= { cLRogueAPDetectingAPTable 1 }
+ 
+@@ -1262,8 +1258,8 @@ cLRogueAPDetectingAPMacAddress OBJECT-TYPE
+     MAX-ACCESS read-only
+     STATUS current
+     DESCRIPTION
+-        "This object represents the MAC Address 
+-        of Detecting AP Interface that Detected 
++        "This object represents the MAC Address
++        of Detecting AP Interface that Detected
+         the Rogue."
+     ::= { cLRogueAPDetectingAPEntry 1 }
+ 
+@@ -1272,8 +1268,8 @@ cLRogueAPDetectingAPSlotId OBJECT-TYPE
+     MAX-ACCESS read-only
+     STATUS current
+     DESCRIPTION
+-        "This object represent the slot ID 
+-        of the Detecting AP Interface that detected the 
++        "This object represent the slot ID
++        of the Detecting AP Interface that detected the
+         Rogue."
+     ::= { cLRogueAPDetectingAPEntry 2 }
+ 
+@@ -1312,8 +1308,8 @@ cLRogueAPChannelNumber OBJECT-TYPE
+     MAX-ACCESS read-only
+     STATUS current
+     DESCRIPTION
+-        " This object represents the advertised 
+-        Channel Number of the Detecting AP 
++        " This object represents the advertised
++        Channel Number of the Detecting AP
+         Interface picked up from the Rogue."
+     ::= { cLRogueAPDetectingAPEntry 5 }
+ 
+@@ -1322,7 +1318,7 @@ cLRogueAPSsid OBJECT-TYPE
+     MAX-ACCESS read-only
+     STATUS current
+     DESCRIPTION
+-        "This object represents the SSID 
++        "This object represents the SSID
+         Advertised by Rogue Station."
+     ::= { cLRogueAPDetectingAPEntry 6 }
+ 
+@@ -1334,7 +1330,7 @@ cLRogueAPHiddenSsid OBJECT-TYPE
+     MAX-ACCESS read-only
+     STATUS current
+     DESCRIPTION
+-        "This object represents the hidden 
++        "This object represents the hidden
+         ssid indication on this detecting AP."
+     ::= { cLRogueAPDetectingAPEntry 7 }
+ 
+@@ -1344,7 +1340,7 @@ cLRogueAPDetectingAPRSSI OBJECT-TYPE
+     MAX-ACCESS read-only
+     STATUS current
+     DESCRIPTION
+-        "This object represents the Rogue 
++        "This object represents the Rogue
+         RSSI as seen by Detecting AP Interface."
+     ::= { cLRogueAPDetectingAPEntry 8 }
+ 
+@@ -1361,7 +1357,7 @@ cLRogueAPContainmentMode OBJECT-TYPE
+     MAX-ACCESS read-only
+     STATUS current
+     DESCRIPTION
+-        "This object represents the containment mode used by the AP 
++        "This object represents the containment mode used by the AP
+         if the rogue is in 'contained' state.
+         A value of '0' indicates invalid containment mode.
+         A value of '1' indicates deauth broadcast used for contianment.
+@@ -1385,7 +1381,7 @@ cLRogueAPContainmentChannels OBJECT-TYPE
+     MAX-ACCESS read-only
+     STATUS current
+     DESCRIPTION
+-        "This object represents the comma separated 
++        "This object represents the comma separated
+         string of channels used for rogue containment."
+     ::= { cLRogueAPDetectingAPEntry 11 }
+ 
+@@ -1394,8 +1390,8 @@ cLRogueAPDetectingAPLastHeard OBJECT-TYPE
+     MAX-ACCESS read-only
+     STATUS current
+     DESCRIPTION
+-        "This object represents the no. of seconds 
+-        ago when this Rogue was last heard by 
++        "This object represents the no. of seconds
++        ago when this Rogue was last heard by
+         this AP. "
+     ::= { cLRogueAPDetectingAPEntry 12 }
+ 
+@@ -1490,7 +1486,7 @@ cLRogueAPChannelWidth OBJECT-TYPE
+     MAX-ACCESS read-only
+     STATUS current
+     DESCRIPTION
+-        "This object represents the represents the channel 
++        "This object represents the represents the channel
+         width of the detecting AP.
+         Each enumeration represents which part of the band
+         the detecting AP is configured."
+@@ -1527,7 +1523,7 @@ CLRogueClientEntry ::= SEQUENCE {
+ 
+ cLRogueClientMacAddress OBJECT-TYPE
+         SYNTAX MacAddress
+-        MAX-ACCESS not-accessible 
++        MAX-ACCESS not-accessible
+         STATUS current
+         DESCRIPTION
+             "MAC Address of the rogue AP Client Interface."
+@@ -1535,10 +1531,10 @@ cLRogueClientMacAddress OBJECT-TYPE
+ 
+ cLRogueClientGatewayMacAddress OBJECT-TYPE
+         SYNTAX MacAddress
+-        MAX-ACCESS read-only 
++        MAX-ACCESS read-only
+         STATUS current
+         DESCRIPTION
+-            "This object represents the MAC Address 
++            "This object represents the MAC Address
+             of the rogue AP Client gateway."
+     ::= { cLRogueClientEntry 2 }
+ 
+@@ -1549,7 +1545,7 @@ cLRogueClientGatewayMacAddress OBJECT-TYPE
+ --********************************************************************
+ 
+ cLRogueApTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLRogueApEntry 
++    SYNTAX          SEQUENCE OF CLRogueApEntry
+     MAX-ACCESS      not-accessible
+     STATUS          deprecated
+     DESCRIPTION
+@@ -1562,11 +1558,11 @@ cLRogueApEntry OBJECT-TYPE
+     STATUS          deprecated
+     DESCRIPTION
+         "An entry containing contains management information
+-        of a particular rogue AP. 
++        of a particular rogue AP.
+ 
+         An entry can be created, or deleted by using
+         cLRogueApRowStatus."
+-    INDEX           { cLRogueApMACAddress } 
++    INDEX           { cLRogueApMACAddress }
+     ::= { cLRogueApTable 1 }
+ 
+ CLRogueApEntry ::= SEQUENCE {
+@@ -1582,7 +1578,7 @@ cLRogueApMACAddress OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          deprecated
+     DESCRIPTION
+-        "MAC Address of a rogue AP." 
++        "MAC Address of a rogue AP."
+     ::= { cLRogueApEntry 1 }
+ 
+ cLRogueApClassType OBJECT-TYPE
+@@ -1604,7 +1600,7 @@ cLRogueApClassType OBJECT-TYPE
+                        but it does not belong to Friendly or
+                        Malicious rogue types.
+         custom       - AP that matches user defined custom rules."
+-    DEFVAL          { custom } 
++    DEFVAL          { custom }
+     ::= { cLRogueApEntry 2 }
+ 
+ cLRogueApState OBJECT-TYPE
+@@ -1659,7 +1655,7 @@ cLRogueApState OBJECT-TYPE
+ 
+         Known rogues can be pre-provisioned and known rogues
+         state can be changed to 'alert'."
+-    DEFVAL          { alert } 
++    DEFVAL          { alert }
+     ::= { cLRogueApEntry 3 }
+ 
+ cLRogueApStorageType OBJECT-TYPE
+@@ -1669,7 +1665,7 @@ cLRogueApStorageType OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the storage type for this
+         conceptual row."
+-    DEFVAL          { nonVolatile } 
++    DEFVAL          { nonVolatile }
+     ::= { cLRogueApEntry 4 }
+ 
+ cLRogueApRowStatus OBJECT-TYPE
+@@ -1679,9 +1675,9 @@ cLRogueApRowStatus OBJECT-TYPE
+     DESCRIPTION
+         "The status of the conceptual row.
+         All writable objects in this row may be modified when
+-        the row is active." 
++        the row is active."
+     ::= { cLRogueApEntry 5 }
+- 
++
+ cLRogueApListTable OBJECT-TYPE
+     SYNTAX SEQUENCE OF CLRogueAPListEntry
+     MAX-ACCESS not-accessible
+@@ -1704,14 +1700,14 @@ cLRogueApListEntry OBJECT-TYPE
+ CLRogueAPListEntry ::= SEQUENCE {
+           cLRogueApMacAddr          MacAddress,
+           cLRogueApSeverityScore       Unsigned32,
+-          cLRogueApRuleName            SnmpAdminString, 
++          cLRogueApRuleName            SnmpAdminString,
+           cLRogueApClassName           SnmpAdminString
+ }
+ 
+ 
+ cLRogueApMacAddr OBJECT-TYPE
+         SYNTAX MacAddress
+-        MAX-ACCESS not-accessible 
++        MAX-ACCESS not-accessible
+         STATUS current
+         DESCRIPTION
+             "MAC Address of the rogue AP Interface."
+@@ -1727,10 +1723,10 @@ cLRogueApSeverityScore OBJECT-TYPE
+ 
+ cLRogueApRuleName OBJECT-TYPE
+     SYNTAX          SnmpAdminString
+-    MAX-ACCESS      read-only 
++    MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+-        "This object represents the rule name that is applied." 
++        "This object represents the rule name that is applied."
+     ::= { cLRogueApListEntry 3 }
+ 
+ cLRogueApClassName OBJECT-TYPE
+@@ -2160,7 +2156,7 @@ ciscoLwappRogueMIBComplianceRev4 MODULE-COMPLIANCE
+         Support for createAndWait and notInService
+         is not required."
+     ::= { ciscoLwappRogueMIBCompliances 5 }
+-	
++
+ ciscoLwappRogueMIBComplianceRev5 MODULE-COMPLIANCE
+ STATUS          current
+ DESCRIPTION
+diff --git a/mibs/patch/cisco/CISCO-LWAPP-DOT11-CLIENT-MIB.patch b/mibs/patch/cisco/CISCO-LWAPP-DOT11-CLIENT-MIB.patch
+deleted file mode 100644
+index a8cbbe0..0000000
+--- a/mibs/patch/cisco/CISCO-LWAPP-DOT11-CLIENT-MIB.patch
++++ /dev/null
+@@ -1,2190 +0,0 @@
+-diff --git a/mibs/cisco/wlc/v2/CISCO-LWAPP-DOT11-CLIENT-MIB.my b/mibs/cisco/wlc/v2/CISCO-LWAPP-DOT11-CLIENT-MIB.my
+-index 3137a6f..e160517 100644
+---- a/mibs/cisco/wlc/v2/CISCO-LWAPP-DOT11-CLIENT-MIB.my
+-+++ b/mibs/cisco/wlc/v2/CISCO-LWAPP-DOT11-CLIENT-MIB.my
+-@@ -1,9 +1,9 @@
+- -- *******************************************************************
+- -- CISCO-LWAPP-DOT11-CLIENT-MIB.my: Dot11 Wireless Clients MIB
+----   
+-+--
+- -- June 2006, Devesh Pujari, Srinath Candadai
+- -- March 2011 Suja Thangaveluchamy
+----   
+-+--
+- -- Copyright (c) 2006, 2010-2012, 2016-2017 by Cisco Systems, Inc.
+- -- All rights reserved.
+- -- *******************************************************************
+-@@ -29,7 +29,8 @@ IMPORTS
+-     MacAddress,
+-     TimeInterval,
+-     TimeStamp,
+--    RowStatus
+-+    RowStatus,
+-+    DisplayString
+-         FROM SNMPv2-TC
+-     SnmpAdminString
+-         FROM SNMP-FRAMEWORK-MIB
+-@@ -140,50 +141,50 @@ ciscoLwappDot11ClientMIB MODULE-IDENTITY
+-         An entity that contains an 802.11 medium access
+-         control ( MAC ) and physical layer ( PHY ) interface
+-         and provides access to the distribution services via
+--        the wireless medium for associated clients.  
+-+        the wireless medium for associated clients.
+- 
+-         LWAPP APs encapsulate all the 802.11 frames in
+-         LWAPP frames and sends them to the controller to which
+-         it is logically connected.
+- 
+--        Basic Service Set ( BSS ) 
+-+        Basic Service Set ( BSS )
+- 
+--        Coverage area of one access point is called a BSS. An 
+--        access point (AP) acts as a master to control the 
+--        clients within that BSS. 
+-+        Coverage area of one access point is called a BSS. An
+-+        access point (AP) acts as a master to control the
+-+        clients within that BSS.
+- 
+-         Clear To Send (CTS)
+- 
+--        Refer to the description of RTS.                
+-+        Refer to the description of RTS.
+- 
+--        Light Weight Access Point Protocol ( LWAPP ) 
+-+        Light Weight Access Point Protocol ( LWAPP )
+- 
+--        This is a generic protocol that defines the 
+-+        This is a generic protocol that defines the
+-         communication between the Access Points and the
+-         Central Controller.
+- 
+- 
+-         MAC Service Data Units ( MSDU )
+- 
+--        The MSDU is that unit of data received from 
+-+        The MSDU is that unit of data received from
+-         the logical link control ( LLC ) sub-layer which lies
+-         above the medium access control ( MAC ) sub-layer in a
+--        protocol stack. 
+-+        protocol stack.
+- 
+-         Message Integrity Code ( MIC )
+- 
+--        A value generated by a symmetric key cryptographic 
+--        function. If the input data are changed, a new value 
+-+        A value generated by a symmetric key cryptographic
+-+        function. If the input data are changed, a new value
+-         cannot be correctly computed without knowledge of the
+--        symmetric key. Thus, the secret key protects the input 
+-+        symmetric key. Thus, the secret key protects the input
+-         data from undetectable alteration.
+- 
+-         Mobile Node ( MN )
+- 
+-         A roaming 802.11 wireless device in a wireless
+-         network associated with an access point. Mobile Node,
+--        Mobile Station(Ms) and client are used 
+--        interchangeably. 
+-+        Mobile Station(Ms) and client are used
+-+        interchangeably.
+- 
+-         Request To Send ( RTS )
+- 
+-@@ -192,48 +193,48 @@ ciscoLwappDot11ClientMIB MODULE-IDENTITY
+-         client replies with a Clear To Send (CTS) frame.
+- 
+-         Wireless local-area network ( WLAN )
+--        A local-area network that uses high-frequency radio 
+-+        A local-area network that uses high-frequency radio
+-         waves rather than wires to communicate between nodes.
+- 
+-         Service Set Identifier (SSID)
+--        A service set identifier is a name that identifies a 
+--        particular 802.11 wireless LAN. A client device 
+--        receives broadcast messages from all access points 
+--        within range advertising their SSIDs. The client 
+--        device can then either manually or automatically 
+-+        A service set identifier is a name that identifies a
+-+        particular 802.11 wireless LAN. A client device
+-+        receives broadcast messages from all access points
+-+        within range advertising their SSIDs. The client
+-+        device can then either manually or automatically
+-         based on configuration select the network with which
+-         to associate. The SSID can be up to 32 characters long.
+- 
+-         Hybrid Remote Edge Access Point (HREAP)
+--        HREAP is a wireless solution for branch office and 
+-+        HREAP is a wireless solution for branch office and
+-         remote office deployments. It enables customers to
+-         configure and control access points in a branch or
+--        remote office from the corporate office through a 
+--        wide area network (WAN) link without deploying a 
+--        controller in each office. HREAP is also known as 
+-+        remote office from the corporate office through a
+-+        wide area network (WAN) link without deploying a
+-+        controller in each office. HREAP is also known as
+-         flexconnect.
+- 
+-         Workgroup Bridge ( WGB )
+-         A WGB can provide a wireless infrastructure connection
+--        for a Ethernet-enabled devices. Devices that do not 
+-+        for a Ethernet-enabled devices. Devices that do not
+-         have a wireless client adapter in order to connect to
+--        the wireless network can be connected to a WGB through            
+-+        the wireless network can be connected to a WGB through
+-         Ethernet port.
+- 
+-         KTS (Key Telephone System)
+- 
+--        Key Telephone System is an alternative to a private 
+-+        Key Telephone System is an alternative to a private
+-         branch exchange (PBX) phone system. A KTS is equipped
+--        with several buttons that allow a caller to directly 
+--        select outgoing lines or incoming calls, and use 
+--        intercom and conference facilities. 
+-+        with several buttons that allow a caller to directly
+-+        select outgoing lines or incoming calls, and use
+-+        intercom and conference facilities.
+- 
+-         REFERENCE
+- 
+-         [1] Wireless LAN Medium Access Control ( MAC ) and
+--        Physical Layer ( PHY ) Specifications 
+-+        Physical Layer ( PHY ) Specifications
+- 
+--        [2] Draft-obara-capwap-lwapp-00.txt, IETF Light 
+-+        [2] Draft-obara-capwap-lwapp-00.txt, IETF Light
+-         Weight Access Point Protocol"
+-     REVISION        "201712200000Z"
+-     DESCRIPTION
+-@@ -241,16 +242,16 @@ ciscoLwappDot11ClientMIB MODULE-IDENTITY
+-     REVISION        "201704190000Z"
+-     DESCRIPTION
+-         "Added the following objects cldcClientDataSwitching,
+--        cldcClientAuthentication, cldcClientAuthMode, 
+--        cldcClientSessionID, cldcClientMdnsProfile, 
+--        cldcClientPolicyName, cldcUserAuthType, 
+-+        cldcClientAuthentication, cldcClientAuthMode,
+-+        cldcClientSessionID, cldcClientMdnsProfile,
+-+        cldcClientPolicyName, cldcUserAuthType,
+-         cldcClientMaxDataRate, and cldcClientVhtCapable."
+-     REVISION        "201104290000Z"
+-     DESCRIPTION
+-         "Added ciscoLwappDot11ClientMIBStatusGroupRev2,
+--        ciscoLwappDot11ClientMIBNotifsGroupRev2, 
+-+        ciscoLwappDot11ClientMIBNotifsGroupRev2,
+-         and ciscoLwappDot11ClientMIBNotifControlGroup.
+--        Deprecated ciscoLwappDot11ClientMIBCompliance and 
+-+        Deprecated ciscoLwappDot11ClientMIBCompliance and
+-         added ciscoLwappDot11ClientMIBComplianceRev2"
+-     REVISION        "200611210000Z"
+-     DESCRIPTION
+-@@ -290,14 +291,14 @@ cldcCcxObjects  OBJECT IDENTIFIER
+- -- ********************************************************************
+- 
+- cldcClientTable OBJECT-TYPE
+--    SYNTAX          SEQUENCE OF CldcClientEntry 
+-+    SYNTAX          SEQUENCE OF CldcClientEntry
+-     MAX-ACCESS      not-accessible
+-     STATUS          current
+-     DESCRIPTION
+-         "This table represents the 802.11 wireless clients
+--        that are associated with the APs that have joined 
+-+        that are associated with the APs that have joined
+-         this controller.
+--        An entry is created automatically by the controller 
+-+        An entry is created automatically by the controller
+-         when the client gets associated to the AP. An existing
+-         entry gets deleted when the association gets dropped.
+-         Each client added to this table is uniquely identified
+-@@ -311,10 +312,10 @@ cldcClientEntry OBJECT-TYPE
+-     DESCRIPTION
+-         "Each entry represents a conceptual row in this
+-         table and provides the information about the
+--        clients associated to the APs that have joined 
+-+        clients associated to the APs that have joined
+-         the controller. An entry is identified the client's
+-         MAC address."
+--    INDEX           { cldcClientMacAddress } 
+-+    INDEX           { cldcClientMacAddress }
+-     ::= { cldcClientTable 1 }
+- 
+- CldcClientEntry ::= SEQUENCE {
+-@@ -334,8 +335,8 @@ CldcClientEntry ::= SEQUENCE {
+-         cldcClientLoginTime             TimeStamp,
+-         cldcClientUpTime                TimeInterval,
+-         cldcClientPowerSaveMode         CLClientPowerSaveMode,
+--        cldcClientCurrentTxRateSet      OCTET STRING,
+--        cldcClientDataRateSet           OCTET STRING,
+-+        cldcClientCurrentTxRateSet      DisplayString,
+-+        cldcClientDataRateSet           DisplayString,
+-         cldcClientHreapApAuth           INTEGER,
+-         cldcClient80211uCapable         TruthValue,
+-         cldcClientPostureState          TruthValue,
+-@@ -376,8 +377,8 @@ cldcClientMacAddress OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the MAC address of the
+--        client for this entry  and uniquely identifies 
+--        this entry." 
+-+        client for this entry  and uniquely identifies
+-+        this entry."
+-     ::= { cldcClientEntry 1 }
+- 
+- cldcClientStatus OBJECT-TYPE
+-@@ -386,7 +387,7 @@ cldcClientStatus OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the current status of
+--        the client." 
+-+        the client."
+-     ::= { cldcClientEntry 2 }
+- 
+- cldcClientWlanProfileName OBJECT-TYPE
+-@@ -395,7 +396,7 @@ cldcClientWlanProfileName OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the WLAN profile name
+--        this 802.11 wireless client is connected to." 
+-+        this 802.11 wireless client is connected to."
+-     ::= { cldcClientEntry 3 }
+- 
+- cldcClientWgbStatus OBJECT-TYPE
+-@@ -409,12 +410,12 @@ cldcClientWgbStatus OBJECT-TYPE
+-     DESCRIPTION
+-         "This object represents the work group bridging
+-         status of a DOT11 client.
+--        A value of 'regClient' represents that the client is 
+-+        A value of 'regClient' represents that the client is
+-         a wireless client
+--        A value of 'wgbClient' represents that the client is 
+-+        A value of 'wgbClient' represents that the client is
+-         connected via a WGB
+--        A value of 'wgb' represents that the client is the 
+--        WGB itself." 
+-+        A value of 'wgb' represents that the client is the
+-+        WGB itself."
+-     ::= { cldcClientEntry 4 }
+- 
+- cldcClientWgbMacAddress OBJECT-TYPE
+-@@ -423,9 +424,9 @@ cldcClientWgbMacAddress OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the MAC address of the
+--        WGB this 802.11 wireless client to which it is 
+--        connected.  This returns a non-zero value when 
+--        the cldcClientWgbStatus is wgbClient." 
+-+        WGB this 802.11 wireless client to which it is
+-+        connected.  This returns a non-zero value when
+-+        the cldcClientWgbStatus is wgbClient."
+-     ::= { cldcClientEntry 5 }
+- 
+- cldcClientProtocol OBJECT-TYPE
+-@@ -448,27 +449,27 @@ cldcClientProtocol OBJECT-TYPE
+-         client it used to join to wireless network.
+-         A value of 'dot11a' represents that the client is using
+-         802.11a standard  to connect to the access point (AP)
+--        A value of 'dot11b' represents that the client is using 
+-+        A value of 'dot11b' represents that the client is using
+-         802.11b standard to connect to the access point (AP)
+--        A value of 'dot11g' represents that the client is using 
+-+        A value of 'dot11g' represents that the client is using
+-         802.11g standard to connect to the access point (AP)
+-         A value of 'unknown' represents that the client protocol
+-         is unknown
+-         A value of 'mobile' represents that the client using mobile
+-         wireless to connect to the access point (AP).
+--        A value of 'dot11n24' represents that the client is using 
+--        802.11n standard with 2.4 GHz frequency to connect to 
+-+        A value of 'dot11n24' represents that the client is using
+-+        802.11n standard with 2.4 GHz frequency to connect to
+-         the access point (AP)
+--        A value of 'dot11n5' represents that the client is using 
+--        802.11n standard with 5 GHz frequency to connect to 
+-+        A value of 'dot11n5' represents that the client is using
+-+        802.11n standard with 5 GHz frequency to connect to
+-         the access point (AP).
+--        A value of 'ethernet' represents that the client is using 
+-+        A value of 'ethernet' represents that the client is using
+-         ethernet standard to connect to the access point (AP).
+--        A value of 'dot3' represents that the client is using 
+-+        A value of 'dot3' represents that the client is using
+-         dot3 standard to connect to the access point (AP).
+--        A value of 'dot11ac5' represents that the client is using 
+-+        A value of 'dot11ac5' represents that the client is using
+-         802.11ac standard with 5 GHz frequency to connect to
+--        the access point (AP)." 
+-+        the access point (AP)."
+-     ::= { cldcClientEntry 6 }
+- 
+- cldcAssociationMode OBJECT-TYPE
+-@@ -484,14 +485,14 @@ cldcAssociationMode OBJECT-TYPE
+-         "This object represents the association mode used
+-         by client for protected wireless traffic.
+- 
+--        A value of 'unknown' represents that association mode used 
+-+        A value of 'unknown' represents that association mode used
+-         by client for wilress traffic encryption is not known.
+--        A value of 'wep' represents that association mode used 
+-+        A value of 'wep' represents that association mode used
+-         by client for wilress traffic encryption is WEP.
+--        A value of 'wpa' represents that association mode used 
+-+        A value of 'wpa' represents that association mode used
+-         by client for wilress traffic encryption is WPA.
+--        A value of 'wpa2' represents that association mode used 
+--        by client for wilress traffic encryption is WPA2." 
+-+        A value of 'wpa2' represents that association mode used
+-+        by client for wilress traffic encryption is WPA2."
+-     ::= { cldcClientEntry 7 }
+- 
+- cldcApMacAddress OBJECT-TYPE
+-@@ -500,7 +501,7 @@ cldcApMacAddress OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the radio MAC address
+--        of a LWAPP AP." 
+-+        of a LWAPP AP."
+-     ::= { cldcClientEntry 8 }
+- 
+- cldcIfType OBJECT-TYPE
+-@@ -508,7 +509,7 @@ cldcIfType OBJECT-TYPE
+-     MAX-ACCESS      read-only
+-     STATUS          current
+-     DESCRIPTION
+--        "This object represents the wireless interface type." 
+-+        "This object represents the wireless interface type."
+-     ::= { cldcClientEntry 9 }
+- 
+- cldcClientIPAddress OBJECT-TYPE
+-@@ -517,8 +518,8 @@ cldcClientIPAddress OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents client's IP address.
+--        This is learnt from the client details when the client 
+--        associates with the access point." 
+-+        This is learnt from the client details when the client
+-+        associates with the access point."
+-     ::= { cldcClientEntry 10 }
+- 
+- cldcClientNacState OBJECT-TYPE
+-@@ -533,16 +534,16 @@ cldcClientNacState OBJECT-TYPE
+-         control state.
+- 
+-         A value of 'quarantine' specifies that client goes through
+--        posture analysis and the client traffic is sent by 
+-+        posture analysis and the client traffic is sent by
+-         controller in quarantine vlan.
+- 
+-         A value of 'access' specifies that client traffic is sent
+--        by controller in access vlan. The client should have 
+--        completed posture analysis. 
+-+        by controller in access vlan. The client should have
+-+        completed posture analysis.
+- 
+--           Posture Analysis is a state change where the client 
+--        applies the configured policies to validate access 
+--        to the network." 
+-+           Posture Analysis is a state change where the client
+-+        applies the configured policies to validate access
+-+        to the network."
+-     ::= { cldcClientEntry 11 }
+- 
+- cldcClientQuarantineVLAN OBJECT-TYPE
+-@@ -551,7 +552,7 @@ cldcClientQuarantineVLAN OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the quarantine VLAN for client. The
+--        quarantine VLAN only allows limited access to the network." 
+-+        quarantine VLAN only allows limited access to the network."
+-     ::= { cldcClientEntry 12 }
+- 
+- cldcClientAccessVLAN OBJECT-TYPE
+-@@ -560,7 +561,7 @@ cldcClientAccessVLAN OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the access VLAN for client.
+--        The access VLAN allows unlimited access to the network." 
+-+        The access VLAN allows unlimited access to the network."
+-     ::= { cldcClientEntry 13 }
+- 
+- cldcClientLoginTime OBJECT-TYPE
+-@@ -569,7 +570,7 @@ cldcClientLoginTime OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the value of sysUpTime when the
+--        client logged in." 
+-+        client logged in."
+-     ::= { cldcClientEntry 14 }
+- 
+- cldcClientUpTime OBJECT-TYPE
+-@@ -579,7 +580,7 @@ cldcClientUpTime OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the duration for which the client
+--        has been associated with this device." 
+-+        has been associated with this device."
+-     ::= { cldcClientEntry 15 }
+- 
+- cldcClientPowerSaveMode OBJECT-TYPE
+-@@ -588,34 +589,34 @@ cldcClientPowerSaveMode OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the power management mode of
+--        the client." 
+-+        the client."
+-     ::= { cldcClientEntry 16 }
+- 
+- cldcClientCurrentTxRateSet OBJECT-TYPE
+--    SYNTAX          OCTET STRING (SIZE  (2))
+-+    SYNTAX          DisplayString (SIZE  (2))
+-     UNITS           "Mbit/s"
+-     MAX-ACCESS      read-only
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the current data rate at which the
+-         client transmits and receives data. The data rate field is
+--        a 16-bit unsigned value expressing the data rate of the 
+-+        a 16-bit unsigned value expressing the data rate of the
+-         packets received by the client."
+--    REFERENCE       "RFC 5416" 
+-+    REFERENCE       "RFC 5416"
+-     ::= { cldcClientEntry 17 }
+- 
+- cldcClientDataRateSet OBJECT-TYPE
+--    SYNTAX          OCTET STRING (SIZE  (1..126))
+-+    SYNTAX          DisplayString (SIZE  (1..126))
+-     MAX-ACCESS      read-only
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the set of data rates at which the
+--        client may transmit data. Each client can support up to 
+--        126 rates. Each octet contains an integer value 
+--        representing one of these 126 rates ranging from 1 Mb/s 
+--        to 63.5 Mb/s. One of the supported rates will be chosen 
+-+        client may transmit data. Each client can support up to
+-+        126 rates. Each octet contains an integer value
+-+        representing one of these 126 rates ranging from 1 Mb/s
+-+        to 63.5 Mb/s. One of the supported rates will be chosen
+-         by the access point for transmission with the client."
+--    REFERENCE       "RFC 5416" 
+-+    REFERENCE       "RFC 5416"
+-     ::= { cldcClientEntry 18 }
+- 
+- cldcClientHreapApAuth OBJECT-TYPE
+-@@ -633,10 +634,10 @@ cldcClientHreapApAuth OBJECT-TYPE
+-         connected to the client is of flexconnect mode.
+-         A value of 'true' indicates that the client is
+-         authenticated by the AP..
+--        A value of 'false' indicates that the client is 
+-+        A value of 'false' indicates that the client is
+-         authenticated by the controller.
+-         A value of 'notApplicable' indicates that client is not
+--        connected to a flexconect AP." 
+-+        connected to a flexconect AP."
+-     ::= { cldcClientEntry 19 }
+- 
+- cldcClient80211uCapable OBJECT-TYPE
+-@@ -646,15 +647,15 @@ cldcClient80211uCapable OBJECT-TYPE
+-     DESCRIPTION
+-         "This object indicates whether the client supports
+-         802.11u feature.
+--        The 802.11u standard allows devices such as laptop 
+--        computers or cellular phones to join a wireless LAN 
+--        widely used in the home, office and some commercial 
+-+        The 802.11u standard allows devices such as laptop
+-+        computers or cellular phones to join a wireless LAN
+-+        widely used in the home, office and some commercial
+-         establishments.
+--        A value of 'true' indicates that the client supports the 
+-+        A value of 'true' indicates that the client supports the
+-         802.11u feature.
+--        A value of 'false' indicates that the client does not 
+-+        A value of 'false' indicates that the client does not
+-         support the 802.11u feature."
+--    REFERENCE       "IEEE 802.11u" 
+-+    REFERENCE       "IEEE 802.11u"
+-     ::= { cldcClientEntry 20 }
+- 
+- cldcClientPostureState OBJECT-TYPE
+-@@ -663,12 +664,12 @@ cldcClientPostureState OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the posture state of the client.
+--        Posture Analysis is a state change where the client applies  
+-+        Posture Analysis is a state change where the client applies
+-         the configured policies to validate access to the network.
+--        A value of 'true' indicates that the client supports the 
+-+        A value of 'true' indicates that the client supports the
+-         posture feature.
+--        A value of 'false' indicates that the client does not support 
+--        the posture feature." 
+-+        A value of 'false' indicates that the client does not support
+-+        the posture feature."
+-     ::= { cldcClientEntry 21 }
+- 
+- cldcClientAclName OBJECT-TYPE
+-@@ -678,7 +679,7 @@ cldcClientAclName OBJECT-TYPE
+-     DESCRIPTION
+-         "This object indicates the ACL Name for the client.
+-         This ACL will be used to allow or block client traffic
+--        based on the list of rules attached to the ACL." 
+-+        based on the list of rules attached to the ACL."
+-     ::= { cldcClientEntry 22 }
+- 
+- cldcClientAclApplied OBJECT-TYPE
+-@@ -691,11 +692,11 @@ cldcClientAclApplied OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the ACL applied status for the
+--        client. 
+--         A value of 'true' indicates that the ACL is applied. 
+--         A value of 'false' indicates that the ACL is not applied. 
+-+        client.
+-+         A value of 'true' indicates that the ACL is applied.
+-+         A value of 'false' indicates that the ACL is not applied.
+-          A value of 'notAvailable' indicates that applied status
+--         is not available" 
+-+         is not available"
+-     ::= { cldcClientEntry 23 }
+- 
+- cldcClientRedirectUrl OBJECT-TYPE
+-@@ -705,11 +706,11 @@ cldcClientRedirectUrl OBJECT-TYPE
+-     DESCRIPTION
+-         "This object indicates the AAA override redirect URL for a
+-         client with cldcClientPostureState enabled.
+--        The object has a valid value when the WLAN, with which the 
+--        client has associated requires conditional or splash-page 
+--            or webauth web redirection. 
+--        This object is otherwise not applicable, 
+--            and contains a zero-length string." 
+-+        The object has a valid value when the WLAN, with which the
+-+        client has associated requires conditional or splash-page
+-+            or webauth web redirection.
+-+        This object is otherwise not applicable,
+-+            and contains a zero-length string."
+-     ::= { cldcClientEntry 24 }
+- 
+- cldcClientAaaOverrideAclName OBJECT-TYPE
+-@@ -718,7 +719,7 @@ cldcClientAaaOverrideAclName OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the AAA Override ACL Name for the
+--        client if cldcClientPostureState is enabled on the wlan." 
+-+        client if cldcClientPostureState is enabled on the wlan."
+-     ::= { cldcClientEntry 25 }
+- 
+- cldcClientAaaOverrideAclApplied OBJECT-TYPE
+-@@ -735,7 +736,7 @@ cldcClientAaaOverrideAclApplied OBJECT-TYPE
+-         A value of 'true' indicates that the ACL is applied.
+-         A value of 'false' indicates that the ACL is not applied.
+-         A value of 'notAvailable' indicates that applied status is
+--        not available" 
+-+        not available"
+-     ::= { cldcClientEntry 26 }
+- 
+- cldcClientUsername OBJECT-TYPE
+-@@ -743,7 +744,7 @@ cldcClientUsername OBJECT-TYPE
+-     MAX-ACCESS      read-only
+-     STATUS          current
+-     DESCRIPTION
+--        "This object represents the username used by the client." 
+-+        "This object represents the username used by the client."
+-     ::= { cldcClientEntry 27 }
+- 
+- cldcClientSSID OBJECT-TYPE
+-@@ -752,7 +753,7 @@ cldcClientSSID OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the SSID of the WLAN to which the
+--        client is associated." 
+-+        client is associated."
+-     ::= { cldcClientEntry 28 }
+- 
+- cldcClientSecurityTagId OBJECT-TYPE
+-@@ -760,7 +761,7 @@ cldcClientSecurityTagId OBJECT-TYPE
+-     MAX-ACCESS      read-only
+-     STATUS          current
+-     DESCRIPTION
+--        "This object represents the security group tag of the client." 
+-+        "This object represents the security group tag of the client."
+-     ::= { cldcClientEntry 29 }
+- 
+- cldcClientTypeKTS OBJECT-TYPE
+-@@ -770,10 +771,10 @@ cldcClientTypeKTS OBJECT-TYPE
+-     DESCRIPTION
+-         "This object indicates whether the client is NEC KTS (National
+-         Electrical Code Key Telephone servie) client or not.
+--        A value of 'true' indicates that the client follows NEC 
+-+        A value of 'true' indicates that the client follows NEC
+-         KTS SIP protocol.
+--        A value of 'false' indicates that the client does not follow 
+--        NEC KTS SIP protocol." 
+-+        A value of 'false' indicates that the client does not follow
+-+        NEC KTS SIP protocol."
+-     ::= { cldcClientEntry 30 }
+- 
+- cldcClientIpv6AclName OBJECT-TYPE
+-@@ -782,7 +783,7 @@ cldcClientIpv6AclName OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the ACL name for the IPv6 client.
+--        An empty string denotes no ACL has been applied." 
+-+        An empty string denotes no ACL has been applied."
+-     ::= { cldcClientEntry 31 }
+- 
+- cldcClientIpv6AclApplied OBJECT-TYPE
+-@@ -799,7 +800,7 @@ cldcClientIpv6AclApplied OBJECT-TYPE
+-         A value of 'true' indicates that the ACL is applied.
+-         A value of 'false' indicates that the ACL is not applied.
+-         A value of 'notAvailable' indicates that applied status is
+--        not avaliable" 
+-+        not avaliable"
+-     ::= { cldcClientEntry 32 }
+- 
+- cldcClientDataSwitching OBJECT-TYPE
+-@@ -812,14 +813,14 @@ cldcClientDataSwitching OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates whether client is switching data
+--        locally or centrally. This object is valid for flexconnect 
+-+        locally or centrally. This object is valid for flexconnect
+-         APs.
+--        A value of 'unknown' indicates that client data switching is 
+-+        A value of 'unknown' indicates that client data switching is
+-         not known.
+--        A value of 'central' indicates that client data is tunneled 
+-+        A value of 'central' indicates that client data is tunneled
+-         to WLC using CAPWAP.
+--        A value of 'local' indicates that client data is bridged 
+--        locally by AP." 
+-+        A value of 'local' indicates that client data is bridged
+-+        locally by AP."
+-     ::= { cldcClientEntry 33 }
+- 
+- cldcClientAuthentication OBJECT-TYPE
+-@@ -834,13 +835,13 @@ cldcClientAuthentication OBJECT-TYPE
+-         "This object indicates whether client is authentiated
+-         locally or centrally. This object is valid for flexconnect
+-         APs.
+--        A value of 'unknown' indicates that client authentication is 
+-+        A value of 'unknown' indicates that client authentication is
+-         not known.
+--        A value of 'central' indicates that client authenticatation is 
+-+        A value of 'central' indicates that client authenticatation is
+-         at WLC and AP tunnels client management traffic to WLC
+-         via CAPWAP.
+--        A value of 'local' indicates that client is authenticated 
+--        locally by AP." 
+-+        A value of 'local' indicates that client is authenticated
+-+        locally by AP."
+-     ::= { cldcClientEntry 34 }
+- 
+- cldcClientChannel OBJECT-TYPE
+-@@ -849,7 +850,7 @@ cldcClientChannel OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the access point's channel
+--        to which the client is associated." 
+-+        to which the client is associated."
+-     ::= { cldcClientEntry 35 }
+- 
+- cldcClientAuthMode OBJECT-TYPE
+-@@ -869,26 +870,26 @@ cldcClientAuthMode OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the authentication mode of client.
+--        A value of 'none' represents that client used 
+-+        A value of 'none' represents that client used
+-         open authentication to join to network.
+--        A value of 'psk' represents that client used 
+-+        A value of 'psk' represents that client used
+-         PSK based authentication to join to network.
+--        A value of 'radius' represents that client gets 
+-+        A value of 'radius' represents that client gets
+-         authenticated with the help of radius.
+--        A value of 'cckm' represents that client used 
+-+        A value of 'cckm' represents that client used
+-         CCKM based authentication to join to network.
+--        A value of 'wapipsk' represents that client used 
+-+        A value of 'wapipsk' represents that client used
+-         WAPI PSK authentication to join to network.
+--        A value of 'wapicert' represents that client used 
+-+        A value of 'wapicert' represents that client used
+-         WPA/WPA2 DOT1X authentication to join to network.
+--        A value of 'ftDot1x' represents that client used 
+-+        A value of 'ftDot1x' represents that client used
+-         802.11r DOT1X authentication to join to network.
+--        A value of 'ftpsk' represents that client used 
+-+        A value of 'ftpsk' represents that client used
+-         802.11r PSK authentication to join to network.
+--        A value of 'pmfDot1x' represents that client used 
+-+        A value of 'pmfDot1x' represents that client used
+-         PMF DOT1X authentication to join to network.
+--        A value of 'pmfpsk' represents that client used 
+--        PMF PSK authentication to join to network." 
+-+        A value of 'pmfpsk' represents that client used
+-+        PMF PSK authentication to join to network."
+-     ::= { cldcClientEntry 36 }
+- 
+- cldcClientReasonCode OBJECT-TYPE
+-@@ -925,66 +926,66 @@ cldcClientReasonCode OBJECT-TYPE
+-         of client.
+-         A value of 'unspecified' represents that client disassociated
+-         with reaon unspecified.
+--        A value of 'previousAuthNotValid' represents that client 
+--        disassociated with reason previous authentication 
+-+        A value of 'previousAuthNotValid' represents that client
+-+        disassociated with reason previous authentication
+-         was not valid.
+--        A value of 'deauthenticationLeaving' represents that client 
+--        disassociated with reason client leaving due to 
+-+        A value of 'deauthenticationLeaving' represents that client
+-+        disassociated with reason client leaving due to
+-         deauthentication.
+--        A value of 'disassociationDueToInactivity' represents that client 
+-+        A value of 'disassociationDueToInactivity' represents that client
+-         disassociated with reason client disassociation due to
+-         inactivity.
+--        A value of 'disassociationAPBusy' represents that client 
+--        disassociated with reason client disassociation since AP 
+-+        A value of 'disassociationAPBusy' represents that client
+-+        disassociated with reason client disassociation since AP
+-         was busy.
+--        A value of 'class2FrameFromNonAuthStation' represents that client 
+--        disassociated with reason class 2 frame 
+-+        A value of 'class2FrameFromNonAuthStation' represents that client
+-+        disassociated with reason class 2 frame
+-         from non authenticated station.
+--        A value of 'class2FrameFromNonAssStation' represents that client 
+--        disassociated with reason class 2 frame from non 
+-+        A value of 'class2FrameFromNonAssStation' represents that client
+-+        disassociated with reason class 2 frame from non
+-         associated station.
+--        A value of 'disassociationStaHasLeft' represents that client 
+--        disassociated with reason station has left BSS due 
+-+        A value of 'disassociationStaHasLeft' represents that client
+-+        disassociated with reason station has left BSS due
+-         to disassociation.
+--        A value of 'staReqAssociationWithoutAuth' represents that client 
+-+        A value of 'staReqAssociationWithoutAuth' represents that client
+-         disassociated with reason station send association request
+-         without authentication.
+--        A value of 'invalidInformationElement' represents that client 
+--        disassociated with reason stations send invalid information 
+-+        A value of 'invalidInformationElement' represents that client
+-+        disassociated with reason stations send invalid information
+-         element in the management frame.
+--        A value of 'groupCipherInvalid' represents that client 
+-+        A value of 'groupCipherInvalid' represents that client
+-         disassociated with reason invalid group cipher.
+--        A value of 'unicastCipherInvalid' represents that client 
+-+        A value of 'unicastCipherInvalid' represents that client
+-         disassociated with reason invalid unicast cipher.
+--        A value of 'akmpInvalid' represents that client 
+-+        A value of 'akmpInvalid' represents that client
+-         disassociated with reason invalid key management protocol.
+--        A value of 'unsupportedRsnVersion' represents that client 
+-+        A value of 'unsupportedRsnVersion' represents that client
+-         disassociated with reason unsupported RSN version.
+--        A value of 'invalidRsnIeCapabilities' represents that client 
+-+        A value of 'invalidRsnIeCapabilities' represents that client
+-         disassociated with reason invalid RSN IE capabilities
+-         in the (re-)association request.
+--        A value of 'cipherSuiteRejected' represents that client 
+-+        A value of 'cipherSuiteRejected' represents that client
+-         disassociated with reason cipher suite rejected.
+--        A value of 'missingReasonCode' represents that client 
+-+        A value of 'missingReasonCode' represents that client
+-         disassociated with reason reason code is missing.
+--        A value of 'maxAssociatedClientsReached' represents that  
+--        client disassociated with reason maximum allowed 
+-+        A value of 'maxAssociatedClientsReached' represents that
+-+        client disassociated with reason maximum allowed
+-         associated client number has reached.
+--        A value of 'maxAssociatedClientsReachedOnRadio' represents that 
+--        client disassociated with reason maximum allowed 
+-+        A value of 'maxAssociatedClientsReachedOnRadio' represents that
+-+        client disassociated with reason maximum allowed
+-         associated client number has reached on radio.
+-         A value of 'maxAssociatedClientsReachedOnWlan' represents that
+--        client disassociated with reason maximum allowed 
+-+        client disassociated with reason maximum allowed
+-         associated client number has reached on wlan.
+--        A value of 'unSpecifiedQosFailure' represents that client 
+-+        A value of 'unSpecifiedQosFailure' represents that client
+-         disassociated with reason unsupported QOS failure.
+--        A value of 'qosPolicyMismatch' represents that client 
+-+        A value of 'qosPolicyMismatch' represents that client
+-         disassociated with reason mismatch on QOS policy.
+--        A value of 'inSufficientBandwidth' represents that client 
+-+        A value of 'inSufficientBandwidth' represents that client
+-         disassociated with reason insufficient bandwidth to
+-         accommodate this station.
+--        A value of 'inValidQosParams' represents that client 
+--        disassociated with reason invalid QOS parameters." 
+-+        A value of 'inValidQosParams' represents that client
+-+        disassociated with reason invalid QOS parameters."
+-     ::= { cldcClientEntry 37 }
+- 
+- cldcClientSessionID OBJECT-TYPE
+-@@ -993,7 +994,7 @@ cldcClientSessionID OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the session
+--        to which the client is associated." 
+-+        to which the client is associated."
+-     ::= { cldcClientEntry 38 }
+- 
+- cldcClientApRoamMacAddress OBJECT-TYPE
+-@@ -1002,7 +1003,7 @@ cldcClientApRoamMacAddress OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the MAC address of the
+--        AP to which the client has roamed." 
+-+        AP to which the client has roamed."
+-     ::= { cldcClientEntry 39 }
+- 
+- cldcClientMdnsProfile OBJECT-TYPE
+-@@ -1012,9 +1013,9 @@ cldcClientMdnsProfile OBJECT-TYPE
+-     DESCRIPTION
+-         "This object indicates the mDNS profile name
+-         mapped to 802.11 wireless client. It could
+--        be mapped to the WLAN to which the client is 
+-+        be mapped to the WLAN to which the client is
+-         connected to, or the interface/interface groups
+--        mapped to the WLAN." 
+-+        mapped to the WLAN."
+-     ::= { cldcClientEntry 40 }
+- 
+- cldcClientMdnsAdvCount OBJECT-TYPE
+-@@ -1023,7 +1024,7 @@ cldcClientMdnsAdvCount OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of mDNS
+--        advertisements received on the client." 
+-+        advertisements received on the client."
+-     ::= { cldcClientEntry 41 }
+- 
+- cldcClientPolicyName OBJECT-TYPE
+-@@ -1032,7 +1033,7 @@ cldcClientPolicyName OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the local classification
+--        policy applied on the client." 
+-+        policy applied on the client."
+-     ::= { cldcClientEntry 42 }
+- 
+- cldcClientAAARole OBJECT-TYPE
+-@@ -1041,9 +1042,9 @@ cldcClientAAARole OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the role string of the client
+--        that is used as match criterion for local policy 
+--            profiling. This value is provided by radius during 
+--            authentication." 
+-+        that is used as match criterion for local policy
+-+            profiling. This value is provided by radius during
+-+            authentication."
+-     ::= { cldcClientEntry 43 }
+- 
+- cldcClientDeviceType OBJECT-TYPE
+-@@ -1052,8 +1053,8 @@ cldcClientDeviceType OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the device type of the client.
+--        This is identified once the profiling operation is 
+--        completed." 
+-+        This is identified once the profiling operation is
+-+        completed."
+-     ::= { cldcClientEntry 44 }
+- 
+- cldcUserAuthType OBJECT-TYPE
+-@@ -1077,7 +1078,7 @@ cldcUserAuthType OBJECT-TYPE
+-         A value of 'simPeap' indicates that the user authenticated using
+-         EAP SIM and PEAP security.
+-         A value of 'other' indicates that the user authenticated using
+--        security method not listed above." 
+-+        security method not listed above."
+-     ::= { cldcClientEntry 45 }
+- 
+- cldcClientTunnelType OBJECT-TYPE
+-@@ -1094,12 +1095,12 @@ cldcClientTunnelType OBJECT-TYPE
+-         client traffic.
+-         A value of 'simple' indicates no tunnel is used to send
+-         client traffic towards DS.
+--        A value of 'pmipv6' indicates that PMIPv6 tunnel is used 
+-+        A value of 'pmipv6' indicates that PMIPv6 tunnel is used
+-         to send client traffic towards DS.
+--        A value of 'gtpv2' indicates that GTPv2 tunnel is used 
+-+        A value of 'gtpv2' indicates that GTPv2 tunnel is used
+-         to send client traffic towards DS.
+--        A value of 'eogre' indicates that EOGRE tunnel is used 
+--        to send client traffic towards DS." 
+-+        A value of 'eogre' indicates that EOGRE tunnel is used
+-+        to send client traffic towards DS."
+-     ::= { cldcClientEntry 46 }
+- 
+- cldcClientMaxDataRate OBJECT-TYPE
+-@@ -1108,7 +1109,7 @@ cldcClientMaxDataRate OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the max data rate (Mbps)
+--        with which the client can operate." 
+-+        with which the client can operate."
+-     ::= { cldcClientEntry 47 }
+- 
+- cldcClientHtCapable OBJECT-TYPE
+-@@ -1119,7 +1120,7 @@ cldcClientHtCapable OBJECT-TYPE
+-         "This object indicates whether the client is HT
+-         (high throughput) capable or not.
+-          A value of 'true' indicates that client is HT capable.
+--         A value of 'false' indicates that client is not HT capable." 
+-+         A value of 'false' indicates that client is not HT capable."
+-     ::= { cldcClientEntry 48 }
+- 
+- cldcClientVhtCapable OBJECT-TYPE
+-@@ -1130,7 +1131,7 @@ cldcClientVhtCapable OBJECT-TYPE
+-         "This object indicates whether the client is VHT
+-         (very high throughput) capable or not.
+-          A value of 'true' indicates that client is VHT capable.
+--         A value of 'false' indicates that client is not VHT capable." 
+-+         A value of 'false' indicates that client is not VHT capable."
+-     ::= { cldcClientEntry 49 }
+- 
+- cldcClientCurrentTxRate OBJECT-TYPE
+-@@ -1143,19 +1144,19 @@ cldcClientCurrentTxRate OBJECT-TYPE
+-         client transmits and receives data. This provides the data
+-         rate value equivalent to the MCS value displayed in
+-         cldcClientCurrentTxRateSet."
+--    REFERENCE       "RFC 5416" 
+-+    REFERENCE       "RFC 5416"
+-     ::= { cldcClientEntry 50 }
+-- 
+-+
+- 
+- 
+- cldcClientByIpTable OBJECT-TYPE
+--    SYNTAX          SEQUENCE OF CldcClientByIpEntry 
+-+    SYNTAX          SEQUENCE OF CldcClientByIpEntry
+-     MAX-ACCESS      not-accessible
+-     STATUS          current
+-     DESCRIPTION
+-         "This table represents the 802.11 wireless clients
+-         that are associated with the APs that have joined
+--        this controller and are indexed by 
+-+        this controller and are indexed by
+-         cldcClientByIpAddressType and cldcClientByIpAddress.
+-         An entry is created automatically by the controller
+-         when the client gets associated to the AP. An existing
+-@@ -1176,7 +1177,7 @@ cldcClientByIpEntry OBJECT-TYPE
+-                         cldcClientMacAddress,
+-                         cldcClientByIpAddressType,
+-                         cldcClientByIpAddress
+--                    } 
+-+                    }
+-     ::= { cldcClientByIpTable 1 }
+- 
+- CldcClientByIpEntry ::= SEQUENCE {
+-@@ -1193,7 +1194,7 @@ cldcClientByIpAddressType OBJECT-TYPE
+-     DESCRIPTION
+-         "This object represents the type of the Client's
+-         address made available through
+--        cldcClientByIpAddress." 
+-+        cldcClientByIpAddress."
+-     ::= { cldcClientByIpEntry 2 }
+- 
+- cldcClientByIpAddress OBJECT-TYPE
+-@@ -1201,7 +1202,7 @@ cldcClientByIpAddress OBJECT-TYPE
+-     MAX-ACCESS      not-accessible
+-     STATUS          current
+-     DESCRIPTION
+--        "This object indicates the client IP address." 
+-+        "This object indicates the client IP address."
+-     ::= { cldcClientByIpEntry 3 }
+- 
+- cldcClientByIpAddressDiscoverType OBJECT-TYPE
+-@@ -1218,18 +1219,18 @@ cldcClientByIpAddressDiscoverType OBJECT-TYPE
+-     DESCRIPTION
+-         "This object represents the discovery type of the
+-         client's address
+--        A value of 'invalid' indicates that the IP address 
+-+        A value of 'invalid' indicates that the IP address
+-         discover type is unknown.
+--        A value of 'ndp' indicates that the client learnt 
+-+        A value of 'ndp' indicates that the client learnt
+-         IP address by neighbor discovery protocol
+--        A value of 'dhcp' indicates that the client learnt 
+-+        A value of 'dhcp' indicates that the client learnt
+-         IP address via DHCP.
+--        A value of 'packet' indicates that the client learnt 
+-+        A value of 'packet' indicates that the client learnt
+-         IP address via data packet addressing learning.
+--        A value of 'local' indicates that the client learnt 
+-+        A value of 'local' indicates that the client learnt
+-         IP address via address applied to local interface.
+--        A value of 'static' indicates that the client learnt 
+--        IP address via address assigned statically." 
+-+        A value of 'static' indicates that the client learnt
+-+        IP address via address assigned statically."
+-     ::= { cldcClientByIpEntry 4 }
+- 
+- cldcClientByIpAddressLastSeen OBJECT-TYPE
+-@@ -1238,16 +1239,16 @@ cldcClientByIpAddressLastSeen OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the time when an address was
+--        last seen in reachable state." 
+-+        last seen in reachable state."
+-     ::= { cldcClientByIpEntry 5 }
+-- 
+-+
+- 
+- -- ********************************************************************
+- -- *  Sleeping Client Details
+- -- ********************************************************************
+- 
+- cldcSleepingClientTable OBJECT-TYPE
+--    SYNTAX          SEQUENCE OF CldcSleepingClientEntry 
+-+    SYNTAX          SEQUENCE OF CldcSleepingClientEntry
+-     MAX-ACCESS      not-accessible
+-     STATUS          current
+-     DESCRIPTION
+-@@ -1262,12 +1263,12 @@ cldcSleepingClientEntry OBJECT-TYPE
+-     DESCRIPTION
+-         "An entry containing the information about sleeping
+-         clients."
+--    INDEX           { cldcSleepingClientMacAddress } 
+-+    INDEX           { cldcSleepingClientMacAddress }
+-     ::= { cldcSleepingClientTable 1 }
+- 
+- CldcSleepingClientEntry ::= SEQUENCE {
+-         cldcSleepingClientMacAddress    MacAddress,
+--        cldcSleepingClientSsid          OCTET STRING,
+-+        cldcSleepingClientSsid          DisplayString,
+-         cldcSleepingClientUserName      SnmpAdminString,
+-         cldcSleepingClientRemainingTime TimeInterval,
+-         cldcSleepingClientRowStatus     RowStatus
+-@@ -1279,16 +1280,16 @@ cldcSleepingClientMacAddress OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the MAC address of the
+--        sleeping client and uniquely identifies the entry." 
+-+        sleeping client and uniquely identifies the entry."
+-     ::= { cldcSleepingClientEntry 1 }
+- 
+- cldcSleepingClientSsid OBJECT-TYPE
+--    SYNTAX          OCTET STRING
+-+    SYNTAX          DisplayString
+-     MAX-ACCESS      read-only
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the SSID of the WLAN to which the
+--        sleeping client is associated." 
+-+        sleeping client is associated."
+-     ::= { cldcSleepingClientEntry 2 }
+- 
+- cldcSleepingClientUserName OBJECT-TYPE
+-@@ -1297,7 +1298,7 @@ cldcSleepingClientUserName OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the username used by the sleeping
+--        client." 
+-+        client."
+-     ::= { cldcSleepingClientEntry 3 }
+- 
+- cldcSleepingClientRemainingTime OBJECT-TYPE
+-@@ -1307,7 +1308,7 @@ cldcSleepingClientRemainingTime OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the remaining session time
+--        for the sleeping client to be in associated state." 
+-+        for the sleeping client to be in associated state."
+-     ::= { cldcSleepingClientEntry 4 }
+- 
+- cldcSleepingClientRowStatus OBJECT-TYPE
+-@@ -1316,16 +1317,16 @@ cldcSleepingClientRowStatus OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object specifies the status column for this row
+--        and used to delete specific instances of row in the table." 
+-+        and used to delete specific instances of row in the table."
+-     ::= { cldcSleepingClientEntry 5 }
+-- 
+-+
+- 
+- -- ********************************************************************
+- -- *  Wireless client statistics
+- -- ********************************************************************
+- 
+- cldcClientStatisticTable OBJECT-TYPE
+--    SYNTAX          SEQUENCE OF CldcClientStatisticEntry 
+-+    SYNTAX          SEQUENCE OF CldcClientStatisticEntry
+-     MAX-ACCESS      not-accessible
+-     STATUS          current
+-     DESCRIPTION
+-@@ -1340,7 +1341,7 @@ cldcClientStatisticEntry OBJECT-TYPE
+-     DESCRIPTION
+-         "An entry in this table represents traffic statistics of the
+-         associated client."
+--    INDEX           { cldcClientMacAddress } 
+-+    INDEX           { cldcClientMacAddress }
+-     ::= { cldcClientStatisticTable 1 }
+- 
+- CldcClientStatisticEntry ::= SEQUENCE {
+-@@ -1381,7 +1382,7 @@ cldcClientDataRetries OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of attempts made by the
+--        client before transmitting the MSDU successfully." 
+-+        client before transmitting the MSDU successfully."
+-     ::= { cldcClientStatisticEntry 1 }
+- 
+- cldcClientRtsRetries OBJECT-TYPE
+-@@ -1391,7 +1392,7 @@ cldcClientRtsRetries OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of times the client has
+--        attempted to send RTS packets before receiving CTS packets." 
+-+        attempted to send RTS packets before receiving CTS packets."
+-     ::= { cldcClientStatisticEntry 2 }
+- 
+- cldcClientDuplicatePackets OBJECT-TYPE
+-@@ -1401,7 +1402,7 @@ cldcClientDuplicatePackets OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of times a duplicate
+--        packet is received for the client." 
+-+        packet is received for the client."
+-     ::= { cldcClientStatisticEntry 3 }
+- 
+- cldcClientDecryptFailures OBJECT-TYPE
+-@@ -1411,7 +1412,7 @@ cldcClientDecryptFailures OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of packets received from
+--        the client that failed to decrypt properly." 
+-+        the client that failed to decrypt properly."
+-     ::= { cldcClientStatisticEntry 4 }
+- 
+- cldcClientMicErrors OBJECT-TYPE
+-@@ -1421,7 +1422,7 @@ cldcClientMicErrors OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of MIC errors
+--        experienced by the client." 
+-+        experienced by the client."
+-     ::= { cldcClientStatisticEntry 5 }
+- 
+- cldcClientMicMissingFrames OBJECT-TYPE
+-@@ -1431,7 +1432,7 @@ cldcClientMicMissingFrames OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of missing MIC packets
+--        for the client." 
+-+        for the client."
+-     ::= { cldcClientStatisticEntry 6 }
+- 
+- cldcClientRaPacketsDropped OBJECT-TYPE
+-@@ -1440,8 +1441,8 @@ cldcClientRaPacketsDropped OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of RA (router
+--        advertisements) packets dropped for this client. 
+--        It's applicable for IPv6 clients only." 
+-+        advertisements) packets dropped for this client.
+-+        It's applicable for IPv6 clients only."
+-     ::= { cldcClientStatisticEntry 7 }
+- 
+- cldcClientInterimUpdatesCount OBJECT-TYPE
+-@@ -1450,7 +1451,7 @@ cldcClientInterimUpdatesCount OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of interim updates
+--        sent for this client." 
+-+        sent for this client."
+-     ::= { cldcClientStatisticEntry 8 }
+- 
+- cldcClientDataBytesReceived OBJECT-TYPE
+-@@ -1459,7 +1460,7 @@ cldcClientDataBytesReceived OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of data bytes received
+--        for this client" 
+-+        for this client"
+-     ::= { cldcClientStatisticEntry 9 }
+- 
+- cldcClientRealtimeBytesReceived OBJECT-TYPE
+-@@ -1468,7 +1469,7 @@ cldcClientRealtimeBytesReceived OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of realtime bytes
+--        received for this mobile station" 
+-+        received for this mobile station"
+-     ::= { cldcClientStatisticEntry 10 }
+- 
+- cldcClientRxDataBytesDropped OBJECT-TYPE
+-@@ -1477,7 +1478,7 @@ cldcClientRxDataBytesDropped OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of received data bytes
+--        dropped for this mobile station" 
+-+        dropped for this mobile station"
+-     ::= { cldcClientStatisticEntry 11 }
+- 
+- cldcClientRxRealtimeBytesDropped OBJECT-TYPE
+-@@ -1486,7 +1487,7 @@ cldcClientRxRealtimeBytesDropped OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of received realtime bytes
+--        dropped for this mobile station" 
+-+        dropped for this mobile station"
+-     ::= { cldcClientStatisticEntry 12 }
+- 
+- cldcClientDataBytesSent OBJECT-TYPE
+-@@ -1495,7 +1496,7 @@ cldcClientDataBytesSent OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of data bytes sent for
+--        this mobile station" 
+-+        this mobile station"
+-     ::= { cldcClientStatisticEntry 13 }
+- 
+- cldcClientRealtimeBytesSent OBJECT-TYPE
+-@@ -1504,7 +1505,7 @@ cldcClientRealtimeBytesSent OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of realtime bytes sent
+--        for this mobile station" 
+-+        for this mobile station"
+-     ::= { cldcClientStatisticEntry 14 }
+- 
+- cldcClientTxDataBytesDropped OBJECT-TYPE
+-@@ -1513,7 +1514,7 @@ cldcClientTxDataBytesDropped OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of transmitted data
+--        bytes dropped for this mobile station" 
+-+        bytes dropped for this mobile station"
+-     ::= { cldcClientStatisticEntry 15 }
+- 
+- cldcClientTxRealtimeBytesDropped OBJECT-TYPE
+-@@ -1522,7 +1523,7 @@ cldcClientTxRealtimeBytesDropped OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of transmitted realtime
+--        bytes dropped for this mobile station" 
+-+        bytes dropped for this mobile station"
+-     ::= { cldcClientStatisticEntry 16 }
+- 
+- cldcClientDataPacketsReceived OBJECT-TYPE
+-@@ -1531,7 +1532,7 @@ cldcClientDataPacketsReceived OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of data packets
+--        received for this mobile station" 
+-+        received for this mobile station"
+-     ::= { cldcClientStatisticEntry 17 }
+- 
+- cldcClientRealtimePacketsReceived OBJECT-TYPE
+-@@ -1540,7 +1541,7 @@ cldcClientRealtimePacketsReceived OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number realtime packets
+--        received for this mobile station" 
+-+        received for this mobile station"
+-     ::= { cldcClientStatisticEntry 18 }
+- 
+- cldcClientRxDataPacketsDropped OBJECT-TYPE
+-@@ -1549,7 +1550,7 @@ cldcClientRxDataPacketsDropped OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of received data packets
+--        dropped for this mobile station" 
+-+        dropped for this mobile station"
+-     ::= { cldcClientStatisticEntry 19 }
+- 
+- cldcClientRxRealtimePacketsDropped OBJECT-TYPE
+-@@ -1558,7 +1559,7 @@ cldcClientRxRealtimePacketsDropped OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of received realtime
+--        packets dropped for this mobile station" 
+-+        packets dropped for this mobile station"
+-     ::= { cldcClientStatisticEntry 20 }
+- 
+- cldcClientDataPacketsSent OBJECT-TYPE
+-@@ -1567,7 +1568,7 @@ cldcClientDataPacketsSent OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of data packets sent
+--        for this mobile station" 
+-+        for this mobile station"
+-     ::= { cldcClientStatisticEntry 21 }
+- 
+- cldcClientRealtimePacketsSent OBJECT-TYPE
+-@@ -1576,7 +1577,7 @@ cldcClientRealtimePacketsSent OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of realtime packets
+--        sent for this mobile station" 
+-+        sent for this mobile station"
+-     ::= { cldcClientStatisticEntry 22 }
+- 
+- cldcClientTxDataPacketsDropped OBJECT-TYPE
+-@@ -1585,7 +1586,7 @@ cldcClientTxDataPacketsDropped OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of transmitted data
+--        packets dropped for this mobile station" 
+-+        packets dropped for this mobile station"
+-     ::= { cldcClientStatisticEntry 23 }
+- 
+- cldcClientTxRealtimePacketsDropped OBJECT-TYPE
+-@@ -1594,7 +1595,7 @@ cldcClientTxRealtimePacketsDropped OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of transmitted realtime
+--        packets dropped for this mobile station" 
+-+        packets dropped for this mobile station"
+-     ::= { cldcClientStatisticEntry 24 }
+- 
+- cldcClientTxDataPackets OBJECT-TYPE
+-@@ -1603,7 +1604,7 @@ cldcClientTxDataPackets OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of data packets sent
+--        by this mobile station" 
+-+        by this mobile station"
+-     ::= { cldcClientStatisticEntry 25 }
+- 
+- cldcClientTxDataBytes OBJECT-TYPE
+-@@ -1612,7 +1613,7 @@ cldcClientTxDataBytes OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of data bytes sent
+--        by this mobile station" 
+-+        by this mobile station"
+-     ::= { cldcClientStatisticEntry 26 }
+- 
+- cldcClientRxDataPackets OBJECT-TYPE
+-@@ -1621,7 +1622,7 @@ cldcClientRxDataPackets OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of data packets sent
+--        for this mobile station" 
+-+        for this mobile station"
+-     ::= { cldcClientStatisticEntry 27 }
+- 
+- cldcClientRxDataBytes OBJECT-TYPE
+-@@ -1630,21 +1631,21 @@ cldcClientRxDataBytes OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the number of data bytes sent
+--        for this mobile station" 
+-+        for this mobile station"
+-     ::= { cldcClientStatisticEntry 28 }
+-- 
+-+
+- 
+- -- ********************************************************************
+- -- *  Client Ccx Services Version Table
+- -- ********************************************************************
+- 
+- cldccCcxVersionInfoTable OBJECT-TYPE
+--    SYNTAX          SEQUENCE OF CldccCcxVersionInfoEntry 
+-+    SYNTAX          SEQUENCE OF CldccCcxVersionInfoEntry
+-     MAX-ACCESS      not-accessible
+-     STATUS          current
+-     DESCRIPTION
+-         "This table represents the detail of the CCX version
+--        supported by the clients. This is used to identify 
+-+        supported by the clients. This is used to identify
+-         the services supported by a CCX v6 client."
+-     ::= { cldcCcxObjects 1 }
+- 
+-@@ -1655,10 +1656,10 @@ cldccCcxVersionInfoEntry OBJECT-TYPE
+-     DESCRIPTION
+-         "There is an entry in the table for each entry identified
+-         by the client mac address.
+--        An entry is added when a CCX v6 client associates to the 
+--        controller and existing entry gets deleted when the client 
+-+        An entry is added when a CCX v6 client associates to the
+-+        controller and existing entry gets deleted when the client
+-         disassociates from the controller."
+--    INDEX           { cldcClientMacAddress } 
+-+    INDEX           { cldcClientMacAddress }
+-     ::= { cldccCcxVersionInfoTable 1 }
+- 
+- CldccCcxVersionInfoEntry ::= SEQUENCE {
+-@@ -1674,7 +1675,7 @@ cldccCcxFoundationServiceVersion OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the CCX version supported by
+--        the client for the foundation service." 
+-+        the client for the foundation service."
+-     ::= { cldccCcxVersionInfoEntry 1 }
+- 
+- cldccCcxLocationServiceVersion OBJECT-TYPE
+-@@ -1683,7 +1684,7 @@ cldccCcxLocationServiceVersion OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the CCX version supported by
+--        the client for the location service." 
+-+        the client for the location service."
+-     ::= { cldccCcxVersionInfoEntry 2 }
+- 
+- cldccCcxVoiceServiceVersion OBJECT-TYPE
+-@@ -1692,7 +1693,7 @@ cldccCcxVoiceServiceVersion OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the CCX version supported by
+--        the client for the voice service." 
+-+        the client for the voice service."
+-     ::= { cldccCcxVersionInfoEntry 3 }
+- 
+- cldccCcxManagementServiceVersion OBJECT-TYPE
+-@@ -1701,9 +1702,9 @@ cldccCcxManagementServiceVersion OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the CCX version supported by
+--        the client for the management service." 
+-+        the client for the management service."
+-     ::= { cldccCcxVersionInfoEntry 4 }
+-- 
+-+
+- 
+- 
+- -- ********************************************************************
+-@@ -1723,7 +1724,7 @@ cldcKeyDecryptErrorEnabled OBJECT-TYPE
+- 
+-         A value of 'false' specifies that the agent doesn't
+-         generate ciscoLwappDot11ClientKeyDecryptError notification."
+--    DEFVAL          { true } 
+-+    DEFVAL          { true }
+-     ::= { cldcConfigObjects 1 }
+- 
+- cldcAssocNacAlertEnabled OBJECT-TYPE
+-@@ -1738,7 +1739,7 @@ cldcAssocNacAlertEnabled OBJECT-TYPE
+-         ciscoLwappDot11ClientAssocNacAlert notification.
+- 
+-         A value of 'false' specifies that the agent doesn't
+--        generate ciscoLwappDot11ClientAssocNacAlert notification." 
+-+        generate ciscoLwappDot11ClientAssocNacAlert notification."
+-     ::= { cldcConfigObjects 2 }
+- 
+- cldcDisassocNacAlertEnabled OBJECT-TYPE
+-@@ -1753,8 +1754,8 @@ cldcDisassocNacAlertEnabled OBJECT-TYPE
+-         ciscoLwappDot11ClientDisassocNacAlert notification.
+- 
+-         A value of 'false' specifies that the agent doesn't
+--        generate ciscoLwappDot11ClientDisassocNacAlert 
+--        notification." 
+-+        generate ciscoLwappDot11ClientDisassocNacAlert
+-+        notification."
+-     ::= { cldcConfigObjects 3 }
+- 
+- cldcMovedToRunStateEnabled OBJECT-TYPE
+-@@ -1769,8 +1770,8 @@ cldcMovedToRunStateEnabled OBJECT-TYPE
+-         ciscoLwappDot11ClientMovedToRunState notification.
+- 
+-         A value of 'false' specifies that the agent doesn't
+--        generate ciscoLwappDot11ClientMovedToRunState 
+--        notification." 
+-+        generate ciscoLwappDot11ClientMovedToRunState
+-+        notification."
+-     ::= { cldcConfigObjects 4 }
+- 
+- ciscoLwappDot11ClientStaticIpFailTrapEnabled OBJECT-TYPE
+-@@ -1785,9 +1786,9 @@ ciscoLwappDot11ClientStaticIpFailTrapEnabled OBJECT-TYPE
+-         ciscoLwappDot11ClientStaticIpFailTrap notification.
+- 
+-         A value of 'false' specifies that the agent doesn't
+--        generate ciscoLwappDot11ClientStaticIpFailTrap 
+-+        generate ciscoLwappDot11ClientStaticIpFailTrap
+-         notification."
+--    DEFVAL          { true } 
+-+    DEFVAL          { true }
+-     ::= { cldcConfigObjects 5 }
+- 
+- -- ********************************************************************
+-@@ -1800,7 +1801,7 @@ cldcClientRSSI OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the average RSSI for the mobile
+--        station." 
+-+        station."
+-     ::= { cldcNotifObjects 1 }
+- 
+- cldcClientSNR OBJECT-TYPE
+-@@ -1809,7 +1810,7 @@ cldcClientSNR OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the average SNR for the
+--        mobile station." 
+-+        mobile station."
+-     ::= { cldcNotifObjects 2 }
+- 
+- cldcDOT11ClientReasonCode OBJECT-TYPE
+-@@ -1843,60 +1844,60 @@ cldcDOT11ClientReasonCode OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the reason code for failure of
+--        client association. 
+--        A value of 'unspecified' represents that the reason for failure is 
+-+        client association.
+-+        A value of 'unspecified' represents that the reason for failure is
+-         not specified.
+--        A value 'previousAuthNotValid' represents that the reason for 
+-+        A value 'previousAuthNotValid' represents that the reason for
+-         failure is previous authentication was not valid.
+-         A value of 'deauthenticationLeaving' represents that the reason for
+-         failure is leaving due to deauthentication.
+-         A value of 'disassociationDueToInactivity' represents that the
+-         reason for failure is disassociation due to inactivity.
+--        A value of 'disassociationAPBusy' represents that the reason for 
+-+        A value of 'disassociationAPBusy' represents that the reason for
+-         failure is disassociation since AP was busy.
+--        A value of 'class2FrameFromNonAuthStation' represents that the 
+--        reason for failure is class 2 frame from non authenticated 
+-+        A value of 'class2FrameFromNonAuthStation' represents that the
+-+        reason for failure is class 2 frame from non authenticated
+-         station.
+-         A value of 'class2FrameFromNonAssStation' represents that the reason
+-         for failure is class 2 frame from non associated station.
+-         A value of 'disassociationStaHasLeft' represents that the reason for
+-         failure is station has left due to disassociation.
+--        A value of 'staReqAssociationWithoutAuth' represents that the reason 
+--        for failure is station send association request without 
+-+        A value of 'staReqAssociationWithoutAuth' represents that the reason
+-+        for failure is station send association request without
+-         authentication.
+--        A value of 'invalidInformationElement' represents that the reason 
+-+        A value of 'invalidInformationElement' represents that the reason
+-         for failure is invalid information element.
+-         A value of 'groupCipherInvalid' represents that the reason for
+-         failure is invalid group Cipher.
+--        A value of 'unicastCipherInvalid' represents that the reason for 
+-+        A value of 'unicastCipherInvalid' represents that the reason for
+-         failure is invalid unicast cipher.
+--        A value of 'akmpInvalid' represents that the reason for failure is 
+-+        A value of 'akmpInvalid' represents that the reason for failure is
+-         invalid key management protocol.
+--        A value of 'unsupportedRsnVersion' represents that the reason for 
+-+        A value of 'unsupportedRsnVersion' represents that the reason for
+-         failure is unsupported RSN version.
+--        A value of invalidRsnIeCapabilities' represents that the reason for 
+-+        A value of invalidRsnIeCapabilities' represents that the reason for
+-         failure is invalid RSN IE capabilities.
+--        A value of 'cipherSuiteRejected' represents that the reason for 
+-+        A value of 'cipherSuiteRejected' represents that the reason for
+-         failure is cipher suite not valid.
+--        A value of 'missingReasonCode' represents that the reason for 
+-+        A value of 'missingReasonCode' represents that the reason for
+-         failure is reason code is missing.
+--        A value of 'maxAssociatedClientsReached' represents that the reason 
+-+        A value of 'maxAssociatedClientsReached' represents that the reason
+-         for failure is maximum allowed associated client number has
+-         reached.
+-         A value of 'maxAssociatedClientsReachedOnRadio' represents that the
+-         reason for failure is maximum allowed associated client number
+-         has reached on radio.
+-         A value of 'maxAssociatedClientsReachedOnWlan' represents that the
+--        reason for failure is maximum allowed associated client 
+-+        reason for failure is maximum allowed associated client
+-         number has reached on wlan.
+--        A value of 'unSpecifiedQosFailure' represents that the reason for 
+-+        A value of 'unSpecifiedQosFailure' represents that the reason for
+-         failure is QoS not supported.
+--        A value of 'qosPolicyMismatch' represents that the reason for 
+-+        A value of 'qosPolicyMismatch' represents that the reason for
+-         failure is mismatch on QOS policy.
+--        A value of 'inSufficientBandwidth' represents that the reason for 
+-+        A value of 'inSufficientBandwidth' represents that the reason for
+-         failure is insufficient bandwidth.
+-         A value of 'inValidQosParams' represents that the reason for failure
+--        is invalid QOS parameters." 
+-+        is invalid QOS parameters."
+-     ::= { cldcNotifObjects 3 }
+- 
+- cldcDOT11ClientTxDataPackets OBJECT-TYPE
+-@@ -1905,7 +1906,7 @@ cldcDOT11ClientTxDataPackets OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the number of data packets sent
+--        by this mobile station" 
+-+        by this mobile station"
+-     ::= { cldcNotifObjects 4 }
+- 
+- cldcDOT11ClientTxDataBytes OBJECT-TYPE
+-@@ -1914,7 +1915,7 @@ cldcDOT11ClientTxDataBytes OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the number of data bytes sent
+--        by this mobile station" 
+-+        by this mobile station"
+-     ::= { cldcNotifObjects 5 }
+- 
+- cldcDOT11ClientRxDataPackets OBJECT-TYPE
+-@@ -1923,7 +1924,7 @@ cldcDOT11ClientRxDataPackets OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the number of data packets sent
+--        for this mobile station" 
+-+        for this mobile station"
+-     ::= { cldcNotifObjects 6 }
+- 
+- cldcDOT11ClientRxDataBytes OBJECT-TYPE
+-@@ -1932,7 +1933,7 @@ cldcDOT11ClientRxDataBytes OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the number of data bytes sent
+--        for this mobile station" 
+-+        for this mobile station"
+-     ::= { cldcNotifObjects 7 }
+- 
+- cldcClientVlanId OBJECT-TYPE
+-@@ -1941,7 +1942,7 @@ cldcClientVlanId OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents VLAN ID of the interface to which
+--        the client is associated." 
+-+        the client is associated."
+-     ::= { cldcNotifObjects 8 }
+- 
+- cldcClientPolicyType OBJECT-TYPE
+-@@ -1966,7 +1967,7 @@ cldcClientPolicyType OBJECT-TYPE
+-         A value of 'notavailable' represents the policy type is not
+-         available.
+-         A value of 'unknown' represents the policy type is not known.
+--        A value of 'wapi' represents the policy type as WAPI." 
+-+        A value of 'wapi' represents the policy type as WAPI."
+-     ::= { cldcNotifObjects 9 }
+- 
+- cldcClientEapType OBJECT-TYPE
+-@@ -1990,12 +1991,12 @@ cldcClientEapType OBJECT-TYPE
+-         A value of 'peap' represents the EAP policy type as PEAP.
+-         A value of 'leap' represents the EAP policy type as LEAP.
+-         A value of 'speke' represents the EAP policy type as EAP-SPEKE.
+--        A value of 'eapFast' represents the EAP policy type as 
+-+        A value of 'eapFast' represents the EAP policy type as
+-         EAP-FAST.
+-         A value of 'notavailable' represents the EAP policy type
+-         is not available
+--        A value of 'unknown' represents the EAP policy type is 
+--        not known." 
+-+        A value of 'unknown' represents the EAP policy type is
+-+        not known."
+-     ::= { cldcNotifObjects 10 }
+- 
+- cldcClientAID OBJECT-TYPE
+-@@ -2004,7 +2005,7 @@ cldcClientAID OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the AID allocated for the mobile
+--        station" 
+-+        station"
+-     ::= { cldcNotifObjects 11 }
+- 
+- cldcClientAuthenticationAlgorithm OBJECT-TYPE
+-@@ -2026,7 +2027,7 @@ cldcClientAuthenticationAlgorithm OBJECT-TYPE
+-         A value of 'unknown' represents that the algorithm used for
+-         authentication is not known.
+-         A value of 'openAndEap' represents that the client used
+--        open system and EAP algorithm to get authenticated." 
+-+        open system and EAP algorithm to get authenticated."
+-     ::= { cldcNotifObjects 12 }
+- 
+- cldcClientWepState OBJECT-TYPE
+-@@ -2039,7 +2040,7 @@ cldcClientWepState OBJECT-TYPE
+-     DESCRIPTION
+-         "This object represents the WEP state of the mobile station.
+-         A value of 'enable' represents WEP state is enabled.
+--        A value of 'disable' represents WEP state is disbaled." 
+-+        A value of 'disable' represents WEP state is disbaled."
+-     ::= { cldcNotifObjects 13 }
+- 
+- cldcClientEncryptionCipher OBJECT-TYPE
+-@@ -2075,7 +2076,7 @@ cldcClientEncryptionCipher OBJECT-TYPE
+-         A value of 'unknown' represents the encryption is used is
+-         not known.
+-         A value of 'wapiSMS4' represents the encryption is used is
+--        WAPI-SMS4." 
+-+        WAPI-SMS4."
+-     ::= { cldcNotifObjects 14 }
+- 
+- cldcClientPortNumber OBJECT-TYPE
+-@@ -2084,8 +2085,8 @@ cldcClientPortNumber OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the port number of this
+--        airespace switch on which the traffic of the 
+--        mobile station is coming through." 
+-+        airespace switch on which the traffic of the
+-+        mobile station is coming through."
+-     ::= { cldcNotifObjects 15 }
+- 
+- cldcClientAnchorAddressType OBJECT-TYPE
+-@@ -2093,7 +2094,7 @@ cldcClientAnchorAddressType OBJECT-TYPE
+-     MAX-ACCESS      accessible-for-notify
+-     STATUS          current
+-     DESCRIPTION
+--        "This object represents mobility anchor address type." 
+-+        "This object represents mobility anchor address type."
+-     ::= { cldcNotifObjects 16 }
+- 
+- cldcClientAnchorAddress OBJECT-TYPE
+-@@ -2104,7 +2105,7 @@ cldcClientAnchorAddress OBJECT-TYPE
+-         "This object represent anchor IP address.
+-         If the mobility status of the mobile station is
+-         anchor then it will have peer Ip address and will
+--        have anchor IP if the role is foreign" 
+-+        have anchor IP if the role is foreign"
+-     ::= { cldcNotifObjects 17 }
+- 
+- cldcClientEssIndex OBJECT-TYPE
+-@@ -2113,7 +2114,7 @@ cldcClientEssIndex OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the ESS index of the WLAN(SSID)
+--        that is being used by mobile station to connect to AP" 
+-+        that is being used by mobile station to connect to AP"
+-     ::= { cldcNotifObjects 18 }
+- 
+- cldcClientCcxVersion OBJECT-TYPE
+-@@ -2131,7 +2132,7 @@ cldcClientCcxVersion OBJECT-TYPE
+-     DESCRIPTION
+-         "This object represents the Cisco Compatible Extensions (CCX)
+-         version the client is using for communication with the AP.
+--        A value of 'notSupported' represents CCX version is not 
+-+        A value of 'notSupported' represents CCX version is not
+-         supported.
+-         A value of 'ccxv1' represents that client used CCX version 1
+-         for communication.
+-@@ -2145,7 +2146,7 @@ cldcClientCcxVersion OBJECT-TYPE
+-         for communication.
+-         A value of 'ccxv6' represents that client used CCX version 6
+-         for communication."
+--    DEFVAL          { notSupported } 
+-+    DEFVAL          { notSupported }
+-     ::= { cldcNotifObjects 19 }
+- 
+- cldcClientE2eVersion OBJECT-TYPE
+-@@ -2159,12 +2160,12 @@ cldcClientE2eVersion OBJECT-TYPE
+-     DESCRIPTION
+-         "This object represents the End-2-End Version the client is
+-         using for communication with the AP.
+--        A value of 'notSupported' represents end-2-end version 
+-+        A value of 'notSupported' represents end-2-end version
+-         is not supported.
+--        A value of 'e2ev1' represents end-2-end version used by 
+-+        A value of 'e2ev1' represents end-2-end version used by
+-         mobile station is 1.
+--        A value of 'e2ev2' represents end-2-end version used by 
+--        mobile station is 2." 
+-+        A value of 'e2ev2' represents end-2-end version used by
+-+        mobile station is 2."
+-     ::= { cldcNotifObjects 20 }
+- 
+- cldcClientInterface OBJECT-TYPE
+-@@ -2173,7 +2174,7 @@ cldcClientInterface OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the name of the interface of
+--        the mobile client on which traffic sent to the switch." 
+-+        the mobile client on which traffic sent to the switch."
+-     ::= { cldcNotifObjects 21 }
+- 
+- cldcClientMobilityStatus OBJECT-TYPE
+-@@ -2192,22 +2193,22 @@ cldcClientMobilityStatus OBJECT-TYPE
+-     DESCRIPTION
+-         "This object represents the mobility role of the
+-         mobile station.
+--        A value of 'unassociated' represents mobility role 
+-+        A value of 'unassociated' represents mobility role
+-         is not associated.
+--        A value of 'local' represents mobility role 
+-+        A value of 'local' represents mobility role
+-         is local.
+--        A value of 'anchor' represents mobility role 
+-+        A value of 'anchor' represents mobility role
+-         is anchor.
+--        A value of 'foreign' represents mobility role 
+-+        A value of 'foreign' represents mobility role
+-         is foreign.
+--        A value of 'handoff' represents mobility role 
+-+        A value of 'handoff' represents mobility role
+-         is handoff.
+--        A value of 'unknown' represents mobility role 
+-+        A value of 'unknown' represents mobility role
+-         is not known.
+--        A value of 'exportanchor' represents mobility role 
+-+        A value of 'exportanchor' represents mobility role
+-         is exportanchor.
+--        A value of 'exportforeign' represents mobility role 
+--        is exportforeign." 
+-+        A value of 'exportforeign' represents mobility role
+-+        is exportforeign."
+-     ::= { cldcNotifObjects 22 }
+- 
+- cldcClientStatusCode OBJECT-TYPE
+-@@ -2215,7 +2216,7 @@ cldcClientStatusCode OBJECT-TYPE
+-     MAX-ACCESS      accessible-for-notify
+-     STATUS          current
+-     DESCRIPTION
+--        "This object represents status code of the mobile station" 
+-+        "This object represents status code of the mobile station"
+-     ::= { cldcNotifObjects 23 }
+- 
+- cldcClientDeleteAction OBJECT-TYPE
+-@@ -2227,9 +2228,9 @@ cldcClientDeleteAction OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the action to deauthenticate
+--        the mobile station. 
+--        A value of 'default' represents the state as default. 
+--        A value of 'delete' represents the state as delete." 
+-+        the mobile station.
+-+        A value of 'default' represents the state as default.
+-+        A value of 'delete' represents the state as delete."
+-     ::= { cldcNotifObjects 24 }
+- 
+- cldcClientSecurityPolicyStatus OBJECT-TYPE
+-@@ -2242,10 +2243,10 @@ cldcClientSecurityPolicyStatus OBJECT-TYPE
+-     DESCRIPTION
+-         "This object represents the security policy state of
+-         the mobile station.
+--        A value of 'completed' represents the mobile station 
+--        has completed the security policy checks. 
+-+        A value of 'completed' represents the mobile station
+-+        has completed the security policy checks.
+-         A value of 'notcompleted' represents policy checks are yet
+--        to be completed for the mobile station." 
+-+        to be completed for the mobile station."
+-     ::= { cldcNotifObjects 25 }
+- 
+- cldcClientTrapEventTime OBJECT-TYPE
+-@@ -2254,7 +2255,7 @@ cldcClientTrapEventTime OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the trap event time of
+--        the client." 
+-+        the client."
+-     ::= { cldcNotifObjects 26 }
+- 
+- cldcClientPolicyManagerState OBJECT-TYPE
+-@@ -2263,7 +2264,7 @@ cldcClientPolicyManagerState OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the current policy enforcement
+--        manager state of the client in controller." 
+-+        manager state of the client in controller."
+-     ::= { cldcNotifObjects 27 }
+- 
+- cldcClientAssocTime OBJECT-TYPE
+-@@ -2271,7 +2272,7 @@ cldcClientAssocTime OBJECT-TYPE
+-     MAX-ACCESS      accessible-for-notify
+-     STATUS          current
+-     DESCRIPTION
+--        "This object represents the time at which client associated" 
+-+        "This object represents the time at which client associated"
+-     ::= { cldcNotifObjects 28 }
+- 
+- cldcClientPmipDataValid OBJECT-TYPE
+-@@ -2279,7 +2280,7 @@ cldcClientPmipDataValid OBJECT-TYPE
+-     MAX-ACCESS      accessible-for-notify
+-     STATUS          current
+-     DESCRIPTION
+--        "This object represents whether client has valid PMIP data." 
+-+        "This object represents whether client has valid PMIP data."
+-     ::= { cldcNotifObjects 29 }
+- 
+- cldcClientMobilityExtDataValid OBJECT-TYPE
+-@@ -2287,7 +2288,7 @@ cldcClientMobilityExtDataValid OBJECT-TYPE
+-     MAX-ACCESS      accessible-for-notify
+-     STATUS          current
+-     DESCRIPTION
+--        "This object represents new mobility status." 
+-+        "This object represents new mobility status."
+-     ::= { cldcNotifObjects 30 }
+- 
+- cldcClientPolicyErrors OBJECT-TYPE
+-@@ -2296,7 +2297,7 @@ cldcClientPolicyErrors OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the number of policy
+--        errors for mobile station" 
+-+        errors for mobile station"
+-     ::= { cldcNotifObjects 31 }
+- 
+- cldcClientSessionId OBJECT-TYPE
+-@@ -2305,7 +2306,7 @@ cldcClientSessionId OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the session
+--        to which the client is associated." 
+-+        to which the client is associated."
+-     ::= { cldcNotifObjects 32 }
+- 
+- cldcClientPmipNai OBJECT-TYPE
+-@@ -2314,7 +2315,7 @@ cldcClientPmipNai OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object represents the name of the
+--        profile, the client is associated to." 
+-+        profile, the client is associated to."
+-     ::= { cldcNotifObjects 33 }
+- 
+- cldcClientPmipState OBJECT-TYPE
+-@@ -2324,15 +2325,15 @@ cldcClientPmipState OBJECT-TYPE
+-     DESCRIPTION
+-         "This object indicates the state of the PMIP client:
+-         null: binding doesn't exist
+--        init: binding created, Retx timer running for PBU, binding not 
+-+        init: binding created, Retx timer running for PBU, binding not
+-                    yet accepted from LMA, Tunnel/route is not yet setup
+--        active:  binding accepted by LMA, refresh timer running, 
+--                          Tunnel/route setup complete. 
+--        refreshPending: Refresh timer expired and Retx timer running. 
+--                                 PBU refresh sent, PBA not yet received from LMA, 
+-+        active:  binding accepted by LMA, refresh timer running,
+-+                          Tunnel/route setup complete.
+-+        refreshPending: Refresh timer expired and Retx timer running.
+-+                                 PBU refresh sent, PBA not yet received from LMA,
+-                                  (Tunnel/route is already setup).
+--        disconnectingSt: Dereg reply is expected.  Retx  timer is   
+--                     running, tunnel/route is still setup." 
+-+        disconnectingSt: Dereg reply is expected.  Retx  timer is
+-+                     running, tunnel/route is still setup."
+-     ::= { cldcNotifObjects 34 }
+- 
+- cldcClientPmipInterface OBJECT-TYPE
+-@@ -2341,7 +2342,7 @@ cldcClientPmipInterface OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the interface to which the
+--        client is associated." 
+-+        client is associated."
+-     ::= { cldcNotifObjects 35 }
+- 
+- cldcClientPmipHomeAddrType OBJECT-TYPE
+-@@ -2350,7 +2351,7 @@ cldcClientPmipHomeAddrType OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the type of the Client's Home
+--        address made available through cldcClientPmipHomeAddress." 
+-+        address made available through cldcClientPmipHomeAddress."
+-     ::= { cldcNotifObjects 36 }
+- 
+- cldcClientPmipHomeAddr OBJECT-TYPE
+-@@ -2358,7 +2359,7 @@ cldcClientPmipHomeAddr OBJECT-TYPE
+-     MAX-ACCESS      accessible-for-notify
+-     STATUS          current
+-     DESCRIPTION
+--        "This object indicates the Home Address of the client." 
+-+        "This object indicates the Home Address of the client."
+-     ::= { cldcNotifObjects 37 }
+- 
+- cldcClientPmipAtt OBJECT-TYPE
+-@@ -2384,30 +2385,30 @@ cldcClientPmipAtt OBJECT-TYPE
+-         the client is currently attached.
+-         A value of 'reserved' indicates this value is reserved for
+-         future use.
+--        A value of 'logicalNetworkInterface' indicates that the 
+-+        A value of 'logicalNetworkInterface' indicates that the
+-         client used logical network interface to connect to network.
+--        A value of 'pointToPointInterface' indicates that the 
+-+        A value of 'pointToPointInterface' indicates that the
+-         client used point to point interface to connect to network.
+--        A value of 'ethernet' indicates that the client used 
+-+        A value of 'ethernet' indicates that the client used
+-         ethernet to connect to network.
+--        A value of 'wirelessLan' indicates that the 
+-+        A value of 'wirelessLan' indicates that the
+-         client used wireless LAN to connect to network.
+--        A value of 'wimax' indicates that the 
+-+        A value of 'wimax' indicates that the
+-         client used WiMAX technology to connect to network.
+--        A value of 'threeGPPGERAN' indicates that the 
+-+        A value of 'threeGPPGERAN' indicates that the
+-         client used threeGPPGERAN technology to connect to network.
+--        A value of 'threeGPPUTRAN' indicates that the 
+-+        A value of 'threeGPPUTRAN' indicates that the
+-         client used threeGPPUTRAN technology to connect to network.
+--        A value of 'threeGPPETRAN' indicates that the 
+-+        A value of 'threeGPPETRAN' indicates that the
+-         client used threeGPPETRAN technology to connect to network.
+--        A value of 'threeGPP2eHRPD' indicates that the 
+-+        A value of 'threeGPP2eHRPD' indicates that the
+-         client used threeGPP2eHRPD technology to connect to network.
+--        A value of 'threeGPP2HRPD' indicates that the 
+-+        A value of 'threeGPP2HRPD' indicates that the
+-         client used threeGPP2HRPD technology to connect to network.
+--        A value of 'threeGPP21xRTT' indicates that the 
+-+        A value of 'threeGPP21xRTT' indicates that the
+-         client used threeGPP21xRTT technology to connect to network.
+--        A value of 'threeGPP2UMB' indicates that the 
+--        client used threeGPP2UMB technology to connect to network." 
+-+        A value of 'threeGPP2UMB' indicates that the
+-+        client used threeGPP2UMB technology to connect to network."
+-     ::= { cldcNotifObjects 38 }
+- 
+- cldcClientPmipLocalLinkId OBJECT-TYPE
+-@@ -2416,7 +2417,7 @@ cldcClientPmipLocalLinkId OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the local link identifier of
+--        the client." 
+-+        the client."
+-     ::= { cldcNotifObjects 39 }
+- 
+- cldcClientPmipLmaName OBJECT-TYPE
+-@@ -2425,7 +2426,7 @@ cldcClientPmipLmaName OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the LMA to which the client is
+--        connected." 
+-+        connected."
+-     ::= { cldcNotifObjects 40 }
+- 
+- cldcClientPmipLifeTime OBJECT-TYPE
+-@@ -2434,7 +2435,7 @@ cldcClientPmipLifeTime OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the duration of the PMIP client
+--        association." 
+-+        association."
+-     ::= { cldcNotifObjects 41 }
+- 
+- cldcClientPmipDomainName OBJECT-TYPE
+-@@ -2443,7 +2444,7 @@ cldcClientPmipDomainName OBJECT-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This object indicates the domain to which the PMIP
+--        client is associated." 
+-+        client is associated."
+-     ::= { cldcNotifObjects 42 }
+- 
+- cldcClientPmipUpKey OBJECT-TYPE
+-@@ -2451,7 +2452,7 @@ cldcClientPmipUpKey OBJECT-TYPE
+-     MAX-ACCESS      accessible-for-notify
+-     STATUS          current
+-     DESCRIPTION
+--        "This object indicates the upstream key of the PMIP client." 
+-+        "This object indicates the upstream key of the PMIP client."
+-     ::= { cldcNotifObjects 43 }
+- 
+- cldcClientPmipDownKey OBJECT-TYPE
+-@@ -2459,7 +2460,7 @@ cldcClientPmipDownKey OBJECT-TYPE
+-     MAX-ACCESS      accessible-for-notify
+-     STATUS          current
+-     DESCRIPTION
+--        "This object indicates the downstream key of the PMIP client." 
+-+        "This object indicates the downstream key of the PMIP client."
+-     ::= { cldcNotifObjects 44 }
+- 
+- -- ********************************************************************
+-@@ -2478,11 +2479,11 @@ ciscoLwappDot11ClientKeyDecryptError NOTIFICATION-TYPE
+-     STATUS          current
+-     DESCRIPTION
+-         "This notification is generated when a decrypt error occurs.
+--        The WEP WPA or WPA2 Key configured at the station may be 
+-+        The WEP WPA or WPA2 Key configured at the station may be
+-         wrong.
+--        cldcAssociationMode represents the association mode for 
+-+        cldcAssociationMode represents the association mode for
+-         which the key decrypt error occurred.
+--        cldcApMacAddress represents the MacAddress of the AP to 
+-+        cldcApMacAddress represents the MacAddress of the AP to
+-         which the client is associated.
+-         cldcIfType represents the wireless interface type of the
+-         client.
+-@@ -2505,15 +2506,15 @@ ciscoLwappDot11ClientAssocNacAlert NOTIFICATION-TYPE
+-         "This notification is generated when the client on NAC
+-         enabled SSIDs complete layer2 authentication . This is
+-         to inform about client's presence to the NAC appliance.
+--        cldcClientWlanProfileName represents the profile name of the 
+-+        cldcClientWlanProfileName represents the profile name of the
+-         WLAN, this 802.11 wireless client is connected to.
+--        cldcClientIPAddress represents the unique ipaddress of the 
+-+        cldcClientIPAddress represents the unique ipaddress of the
+-         client.
+--        cldcApMacAddress represents the MacAddress of the AP to 
+-+        cldcApMacAddress represents the MacAddress of the AP to
+-         which the client is associated.
+--        cldcClientQuarantineVLAN represents the quarantine VLAN for 
+-+        cldcClientQuarantineVLAN represents the quarantine VLAN for
+-         the client.
+--        cldcClientAccessVLAN represents the access VLAN for the 
+-+        cldcClientAccessVLAN represents the access VLAN for the
+-         client."
+-    ::= { ciscoLwappDot11ClientMIBNotifs 2 }
+- 
+-@@ -2532,13 +2533,13 @@ ciscoLwappDot11ClientDisassocNacAlert NOTIFICATION-TYPE
+-         the client entry on NAC enabled SSIDs.
+-         cldcClientWlanProfileName represents the profile name of the
+-         WLAN, this 802.11 wireless client is connected to.
+--        cldcClientIPAddress represents the unique ipaddress of the 
+-+        cldcClientIPAddress represents the unique ipaddress of the
+-         client.
+-         cldcApMacAddress represents the MacAddress of the AP to which
+-         the client is associated.
+--        cldcClientQuarantineVLAN represents the quarantine VLAN for 
+-+        cldcClientQuarantineVLAN represents the quarantine VLAN for
+-         the client.
+--        cldcClientAccessVLAN represents the access VLAN for the 
+-+        cldcClientAccessVLAN represents the access VLAN for the
+-         client.
+-         This is issued on NAC enabled ssids, whenever WLC removes
+-         client's entry."
+-@@ -2558,17 +2559,17 @@ ciscoLwappDot11ClientMovedToRunState NOTIFICATION-TYPE
+-     DESCRIPTION
+-         "This notification is generated when the client completes
+-         the PEM state and moves to the RUN state.
+--        cldcClientUsername represents the username used by the 
+-+        cldcClientUsername represents the username used by the
+-         client.
+--        cldcClientIPAddress represents the unique ipaddress of the 
+-+        cldcClientIPAddress represents the unique ipaddress of the
+-         client.
+--        cldcClientSSID represents the SSID of the WLAN to which the 
+-+        cldcClientSSID represents the SSID of the WLAN to which the
+-         client is associated.
+--        cldcApMacAddress represents the MacAddress of the AP to 
+-+        cldcApMacAddress represents the MacAddress of the AP to
+-         which the client is associated.
+-         cLApDot11IfSlotId represents the slotId of the AP to which
+-         the client is associated.
+--        cLApName represents the name of the AP to which the client 
+-+        cLApName represents the name of the AP to which the client
+-         is associated."
+-    ::= { ciscoLwappDot11ClientMIBNotifs 4 }
+- 
+-@@ -2603,8 +2604,8 @@ ciscoLwappDot11ClientDisassocDataStatsTrap NOTIFICATION-TYPE
+-     DESCRIPTION
+-         "The disassociate notification shall be sent when the Station
+-         sends a Disassociation frame. The value of the notification
+--        shall include the MAC address of the MAC to which the 
+--        Disassociation frame was sent and the reason for the 
+-+        shall include the MAC address of the MAC to which the
+-+        Disassociation frame was sent and the reason for the
+-         disassociation"
+-    ::= { ciscoLwappDot11ClientMIBNotifs 6 }
+- 
+-@@ -3048,7 +3049,7 @@ ciscoLwappDot11ClientMIBConfigGroup OBJECT-GROUP
+-     STATUS          current
+-     DESCRIPTION
+-         "This collection of objects specifies the required
+--        configuration parameters for the 802.11 wireless 
+-+        configuration parameters for the 802.11 wireless
+-         clients."
+-     ::= { ciscoLwappDot11ClientMIBGroups 1 }
+- 
+-@@ -3188,7 +3189,7 @@ ciscoLwappDot11ClientMIBNotifControlGroup OBJECT-GROUP
+-     STATUS          current
+-     DESCRIPTION
+-         "This collection of objects represents the objects that
+--        control the notifications for the 802.11 wireless 
+-+        control the notifications for the 802.11 wireless
+-         clients."
+-     ::= { ciscoLwappDot11ClientMIBGroups 6 }
+- 

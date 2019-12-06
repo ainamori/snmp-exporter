@@ -1,0 +1,40 @@
+diff --git a/mibs/cisco/cat3750/v2/SNMP-VACM-MIB.my b/mibs/cisco/cat3750/v2/SNMP-VACM-MIB.my
+index 25cbd8b..9dd24cd 100644
+--- a/mibs/cisco/cat3750/v2/SNMP-VACM-MIB.my
++++ b/mibs/cisco/cat3750/v2/SNMP-VACM-MIB.my
+@@ -5,7 +5,7 @@ IMPORTS
+     MODULE-IDENTITY, OBJECT-TYPE,
+     snmpModules                           FROM SNMPv2-SMI
+     TestAndIncr,
+-    RowStatus, StorageType                FROM SNMPv2-TC
++    RowStatus, StorageType, DisplayString FROM SNMPv2-TC
+     SnmpAdminString,
+     SnmpSecurityLevel,
+     SnmpSecurityModel                     FROM SNMP-FRAMEWORK-MIB;
+@@ -650,7 +650,7 @@ VacmViewTreeFamilyEntry ::= SEQUENCE
+     {
+         vacmViewTreeFamilyViewName     SnmpAdminString,
+         vacmViewTreeFamilySubtree      OBJECT IDENTIFIER,
+-        vacmViewTreeFamilyMask         OCTET STRING,
++        vacmViewTreeFamilyMask         DisplayString,
+         vacmViewTreeFamilyType         INTEGER,
+ 
+ 
+@@ -680,7 +680,7 @@ vacmViewTreeFamilySubtree OBJECT-TYPE
+     ::= { vacmViewTreeFamilyEntry 2 }
+ 
+ vacmViewTreeFamilyMask OBJECT-TYPE
+-    SYNTAX       OCTET STRING (SIZE (0..16))
++    SYNTAX       DisplayString (SIZE (0..16))
+     MAX-ACCESS   read-create
+     STATUS       current
+     DESCRIPTION "The bit mask which, in combination with the
+@@ -831,7 +831,7 @@ vacmMIBCompliance MODULE-COMPLIANCE
+                      "
+ 
+         OBJECT        vacmViewTreeFamilyMask
+-        WRITE-SYNTAX  OCTET STRING (SIZE (0))
++        WRITE-SYNTAX  DisplayString (SIZE (0))
+         MIN-ACCESS    read-only
+         DESCRIPTION  "Support for configuration via SNMP of subtree
+                       families using wild-cards is not required.

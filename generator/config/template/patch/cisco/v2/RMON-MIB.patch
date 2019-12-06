@@ -1,0 +1,207 @@
+diff --git a/mibs/cisco/cat3750/v2/RMON-MIB.my b/mibs/cisco/cat3750/v2/RMON-MIB.my
+index 10730b6..9616b06 100644
+--- a/mibs/cisco/cat3750/v2/RMON-MIB.my
++++ b/mibs/cisco/cat3750/v2/RMON-MIB.my
+@@ -1,4 +1,4 @@
+- 
++
+ RMON-MIB DEFINITIONS ::= BEGIN
+ 
+      IMPORTS
+@@ -116,7 +116,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+          resource contention only among cooperating
+          managers; they realize no access control function
+          with respect to uncooperative parties."
+-     SYNTAX OCTET STRING (SIZE (0..127))
++     SYNTAX DisplayString (SIZE (0..127))
+ 
+  EntryStatus ::= TEXTUAL-CONVENTION
+      STATUS current
+@@ -1582,7 +1582,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      INDEX { hostIndex, hostAddress }
+      ::= { hostTable 1 }
+  HostEntry ::= SEQUENCE {
+-     hostAddress             OCTET STRING,
++     hostAddress             DisplayString,
+      hostCreationOrder       Integer32,
+      hostIndex               Integer32,
+      hostInPkts              Counter32,
+@@ -1595,7 +1595,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+  }
+ 
+  hostAddress OBJECT-TYPE
+-     SYNTAX     OCTET STRING
++     SYNTAX     DisplayString
+      MAX-ACCESS read-only
+      STATUS     current
+      DESCRIPTION
+@@ -1744,7 +1744,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      ::= { hostTimeTable 1 }
+ 
+  HostTimeEntry ::= SEQUENCE {
+-     hostTimeAddress              OCTET STRING,
++     hostTimeAddress              DisplayString,
+      hostTimeCreationOrder        Integer32,
+      hostTimeIndex                Integer32,
+      hostTimeInPkts               Counter32,
+@@ -1757,7 +1757,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+  }
+ 
+  hostTimeAddress OBJECT-TYPE
+-     SYNTAX     OCTET STRING
++     SYNTAX     DisplayString
+      MAX-ACCESS read-only
+      STATUS     current
+      DESCRIPTION
+@@ -2123,7 +2123,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+  HostTopNEntry ::= SEQUENCE {
+      hostTopNReport                Integer32,
+      hostTopNIndex                 Integer32,
+-     hostTopNAddress               OCTET STRING,
++     hostTopNAddress               DisplayString,
+      hostTopNRate                  Integer32
+  }
+ 
+@@ -2155,7 +2155,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      ::= { hostTopNEntry 2 }
+ 
+  hostTopNAddress OBJECT-TYPE
+-     SYNTAX     OCTET STRING
++     SYNTAX     DisplayString
+      MAX-ACCESS read-only
+      STATUS     current
+      DESCRIPTION
+@@ -2329,8 +2329,8 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      ::= { matrixSDTable 1 }
+ 
+  MatrixSDEntry ::= SEQUENCE {
+-     matrixSDSourceAddress       OCTET STRING,
+-     matrixSDDestAddress         OCTET STRING,
++     matrixSDSourceAddress       DisplayString,
++     matrixSDDestAddress         DisplayString,
+      matrixSDIndex               Integer32,
+      matrixSDPkts                Counter32,
+      matrixSDOctets              Counter32,
+@@ -2338,7 +2338,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+  }
+ 
+  matrixSDSourceAddress OBJECT-TYPE
+-     SYNTAX     OCTET STRING
++     SYNTAX     DisplayString
+      MAX-ACCESS read-only
+      STATUS     current
+      DESCRIPTION
+@@ -2346,7 +2346,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      ::= { matrixSDEntry 1 }
+ 
+  matrixSDDestAddress OBJECT-TYPE
+-     SYNTAX     OCTET STRING
++     SYNTAX     DisplayString
+      MAX-ACCESS read-only
+      STATUS     current
+      DESCRIPTION
+@@ -2424,8 +2424,8 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      ::= { matrixDSTable 1 }
+ 
+  MatrixDSEntry ::= SEQUENCE {
+-     matrixDSSourceAddress       OCTET STRING,
+-     matrixDSDestAddress         OCTET STRING,
++     matrixDSSourceAddress       DisplayString,
++     matrixDSDestAddress         DisplayString,
+      matrixDSIndex               Integer32,
+      matrixDSPkts                Counter32,
+      matrixDSOctets              Counter32,
+@@ -2433,7 +2433,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+  }
+ 
+  matrixDSSourceAddress OBJECT-TYPE
+-     SYNTAX     OCTET STRING
++     SYNTAX     DisplayString
+      MAX-ACCESS read-only
+      STATUS     current
+      DESCRIPTION
+@@ -2441,7 +2441,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      ::= { matrixDSEntry 1 }
+ 
+  matrixDSDestAddress OBJECT-TYPE
+-     SYNTAX     OCTET STRING
++     SYNTAX     DisplayString
+      MAX-ACCESS read-only
+      STATUS     current
+      DESCRIPTION
+@@ -2544,9 +2544,9 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      filterIndex                 Integer32,
+      filterChannelIndex          Integer32,
+      filterPktDataOffset         Integer32,
+-     filterPktData               OCTET STRING,
+-     filterPktDataMask           OCTET STRING,
+-     filterPktDataNotMask        OCTET STRING,
++     filterPktData               DisplayString,
++     filterPktDataMask           DisplayString,
++     filterPktDataNotMask        DisplayString,
+      filterPktStatus             Integer32,
+      filterPktStatusMask         Integer32,
+      filterPktStatusNotMask      Integer32,
+@@ -2595,7 +2595,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      ::= { filterEntry 3 }
+ 
+  filterPktData OBJECT-TYPE
+-     SYNTAX     OCTET STRING
++     SYNTAX     DisplayString
+      MAX-ACCESS read-create
+      STATUS     current
+      DESCRIPTION
+@@ -2632,7 +2632,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      ::= { filterEntry 4 }
+ 
+  filterPktDataMask OBJECT-TYPE
+-     SYNTAX     OCTET STRING
++     SYNTAX     DisplayString
+      MAX-ACCESS read-create
+      STATUS     current
+      DESCRIPTION
+@@ -2652,7 +2652,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      ::= { filterEntry 5 }
+ 
+  filterPktDataNotMask OBJECT-TYPE
+-     SYNTAX     OCTET STRING
++     SYNTAX     DisplayString
+      MAX-ACCESS read-create
+      STATUS     current
+      DESCRIPTION
+@@ -3354,7 +3354,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      captureBufferControlIndex   Integer32,
+      captureBufferIndex          Integer32,
+      captureBufferPacketID       Integer32,
+-     captureBufferPacketData     OCTET STRING,
++     captureBufferPacketData     DisplayString,
+      captureBufferPacketLength   Integer32,
+      captureBufferPacketTime     Integer32,
+      captureBufferPacketStatus   Integer32
+@@ -3402,7 +3402,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      ::= { captureBufferEntry 3 }
+ 
+  captureBufferPacketData OBJECT-TYPE
+-     SYNTAX     OCTET STRING
++     SYNTAX     DisplayString
+      MAX-ACCESS read-only
+      STATUS     current
+      DESCRIPTION
+@@ -3523,7 +3523,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      eventIndex          Integer32,
+      eventDescription    DisplayString,
+      eventType           INTEGER,
+-     eventCommunity      OCTET STRING,
++     eventCommunity      DisplayString,
+      eventLastTimeSent   TimeTicks,
+      eventOwner          OwnerString,
+      eventStatus         EntryStatus
+@@ -3566,7 +3566,7 @@ RMON-MIB DEFINITIONS ::= BEGIN
+      ::= { eventEntry 3 }
+ 
+  eventCommunity OBJECT-TYPE
+-     SYNTAX     OCTET STRING (SIZE (0..127))
++     SYNTAX     DisplayString (SIZE (0..127))
+      MAX-ACCESS read-create
+      STATUS     current
+      DESCRIPTION

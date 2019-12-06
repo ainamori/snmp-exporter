@@ -1,0 +1,403 @@
+diff --git a/mibs/cisco/wlc/v2/CISCO-LWAPP-IDS-MIB.my b/mibs/cisco/wlc/v2/CISCO-LWAPP-IDS-MIB.my
+index a72ae00..264e881 100644
+--- a/mibs/cisco/wlc/v2/CISCO-LWAPP-IDS-MIB.my
++++ b/mibs/cisco/wlc/v2/CISCO-LWAPP-IDS-MIB.my
+@@ -1,5 +1,5 @@
+ -- *******************************************************************
+--- CISCO-LWAPP-IDS-MIB.my 
++-- CISCO-LWAPP-IDS-MIB.my
+ -- November 2005, Devesh Pujari, Prasanna Viswakumar
+ --
+ -- Copyright (c) 2005, 2006 by Cisco Systems, Inc.
+@@ -8,20 +8,21 @@
+ --
+ CISCO-LWAPP-IDS-MIB DEFINITIONS ::= BEGIN
+ 
+-IMPORTS 
+-        MODULE-IDENTITY, 
++IMPORTS
++        MODULE-IDENTITY,
+         OBJECT-TYPE,
+         NOTIFICATION-TYPE,
+         Unsigned32
+                 FROM SNMPv2-SMI
+-        MODULE-COMPLIANCE, 
++        MODULE-COMPLIANCE,
+         OBJECT-GROUP,
+         NOTIFICATION-GROUP
+                 FROM SNMPv2-CONF
+         TruthValue,
+         TimeInterval,
+-        RowStatus
+-                FROM SNMPv2-TC 
++        RowStatus,
++        DisplayString
++                FROM SNMPv2-TC
+         SnmpAdminString
+                 FROM SNMP-FRAMEWORK-MIB
+         InetAddressType,
+@@ -37,7 +38,7 @@ IMPORTS
+ ciscoLwappIdsMIB        MODULE-IDENTITY
+         LAST-UPDATED    "200604100000Z"
+         ORGANIZATION    "Cisco Systems Inc."
+-        CONTACT-INFO  
++        CONTACT-INFO
+                "        Cisco Systems,
+                         Customer Service
+                 Postal: 170 West Tasman Drive
+@@ -60,7 +61,7 @@ ciscoLwappIdsMIB        MODULE-IDENTITY
+                 various threats that would compromise the overall
+                 security of the network.
+ 
+-                The arrangement of the IDS / IPS applications, 
++                The arrangement of the IDS / IPS applications,
+                 controller (referred to as CC in the diagram) and the
+                 LWAPP APs appear as follows.
+ 
+@@ -106,7 +107,7 @@ ciscoLwappIdsMIB        MODULE-IDENTITY
+                 the protocol defined by the 802.11 standard.  The
+                 controllers and the IDS systems exchange information
+                 through Cisco proprietary event exchange mechanisms.
+-                
++
+                 LWAPP APs, upon bootup, discover and join one of the
+                 controllers and the controller pushes the configuration,
+                 that includes the WLAN parameters, to the LWAPP APs.
+@@ -114,10 +115,10 @@ ciscoLwappIdsMIB        MODULE-IDENTITY
+                 wireless clients inside LWAPP frames and forward
+                 the LWAPP frames to the controller.
+ 
+-                One or more controllers hold logical connections to 
++                One or more controllers hold logical connections to
+                 an IDS / IPS and interact with it to enforce security
+                 on the network.
+-              
++
+                                    GLOSSARY
+ 
+                 Access Point ( AP )
+@@ -125,7 +126,7 @@ ciscoLwappIdsMIB        MODULE-IDENTITY
+                 An entity that contains an 802.11 medium access
+                 control ( MAC ) and physical layer ( PHY ) interface
+                 and provides access to the distribution services via
+-                the wireless medium for associated clients.  
++                the wireless medium for associated clients.
+ 
+                 LWAPP APs encapsulate all the 802.11 frames in
+                 LWAPP frames and sends them to the controller to which
+@@ -138,7 +139,7 @@ ciscoLwappIdsMIB        MODULE-IDENTITY
+                 this entity is also referred to as 'controller'.
+ 
+                 HyperText Transfer Protocol Over Secure Socket Layer
+-                (HTTPS) 
++                (HTTPS)
+ 
+                 HTTPS is a Web based protocol that encrypts and
+                 decrypts user page requests as well as the pages
+@@ -152,7 +153,7 @@ ciscoLwappIdsMIB        MODULE-IDENTITY
+                 Intrusion Detection System ( IDS )
+ 
+                 An IDS performs activities like enforcing security
+-                related policies, identifying and reporting attacks 
++                related policies, identifying and reporting attacks
+                 on the network etc., thereby helping to improve
+                 the overall security of the enterprise network.
+ 
+@@ -181,7 +182,7 @@ ciscoLwappIdsMIB        MODULE-IDENTITY
+                 The station from which the administrator manages the
+                 wired and wireless networks.
+ 
+-                Secure Hash Algorithm ( SHA )               
++                Secure Hash Algorithm ( SHA )
+ 
+                 The SHA, developed by NIST for use with the Digital
+                 Signature Standard (DSS) is specified within the
+@@ -192,15 +193,15 @@ ciscoLwappIdsMIB        MODULE-IDENTITY
+                 additional expansion operation, an extra round and
+                 the whole transformation was designed to
+                 accomodate the DSS block size for efficiency.
+- 
++
+                 REFERENCE
+- 
++
+                 [1] Wireless LAN Medium Access Control ( MAC ) and
+                 Physical Layer ( PHY ) Specifications.
+-  
+-                [2] Draft-obara-capwap-lwapp-00.txt, IETF Light 
++
++                [2] Draft-obara-capwap-lwapp-00.txt, IETF Light
+                 Weight Access Point Protocol "
+-        
++
+         REVISION      "200604100000Z"
+         DESCRIPTION
+                 "Initial version of this MIB module. "
+@@ -235,9 +236,9 @@ cLIdsIpsSensorConfigTable OBJECT-TYPE
+                 to the NMS.  The controller can accept the request, to
+                 block the packets from an IP address, from each Sensor
+                 configured through this table and block the data
+-                traffic originating from that particular source. 
++                traffic originating from that particular source.
+ 
+-                Rows are added or deleted to the table by explicit 
++                Rows are added or deleted to the table by explicit
+                 management actions initiated by the user from a
+                 network management station.  Information about each
+                 IPS sensor is uniquely identified by the network
+@@ -256,7 +257,7 @@ cLIdsIpsSensorConfigEntry OBJECT-TYPE
+         INDEX   { cLIdsIpsSensorAddressType, cLIdsIpsSensorAddress }
+         ::= { cLIdsIpsSensorConfigTable 1 }
+ 
+-CLIdsIpsSensorConfigEntry ::= 
++CLIdsIpsSensorConfigEntry ::=
+         SEQUENCE {
+                 cLIdsIpsSensorAddressType    InetAddressType,
+                 cLIdsIpsSensorAddress        InetAddress,
+@@ -264,24 +265,24 @@ CLIdsIpsSensorConfigEntry ::=
+                 cLIdsIpsSensorPassword       SnmpAdminString,
+                 cLIdsIpsSensorQueryInterval  TimeInterval,
+                 cLIdsIpsSensorEnabled        TruthValue,
+-                cLIdsIpsSensorFingerPrintHex OCTET STRING,
++                cLIdsIpsSensorFingerPrintHex DisplayString,
+                 cLIdsIpsSensorPort           Unsigned32,
+                 cLIdsIpsSensorRowStatus      RowStatus
+         }
+-        
++
+ cLIdsIpsSensorAddressType OBJECT-TYPE
+         SYNTAX     InetAddressType
+-        MAX-ACCESS not-accessible 
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-                "This object represents the type of the network 
+-                address made available through 
++                "This object represents the type of the network
++                address made available through
+                 cLIdsIpsSensorAddress. "
+         ::= { cLIdsIpsSensorConfigEntry 1 }
+ 
+ cLIdsIpsSensorAddress  OBJECT-TYPE
+         SYNTAX     InetAddress
+-        MAX-ACCESS not-accessible 
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+                 "This object represents the network address of the
+@@ -291,7 +292,7 @@ cLIdsIpsSensorAddress  OBJECT-TYPE
+         ::= { cLIdsIpsSensorConfigEntry 2 }
+ 
+ cLIdsIpsSensorUserName OBJECT-TYPE
+-        SYNTAX     SnmpAdminString 
++        SYNTAX     SnmpAdminString
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+@@ -301,7 +302,7 @@ cLIdsIpsSensorUserName OBJECT-TYPE
+         ::= { cLIdsIpsSensorConfigEntry 3 }
+ 
+ cLIdsIpsSensorPassword  OBJECT-TYPE
+-        SYNTAX     SnmpAdminString 
++        SYNTAX     SnmpAdminString
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+@@ -310,7 +311,7 @@ cLIdsIpsSensorPassword  OBJECT-TYPE
+                 authenticated with the IPS sensor.
+ 
+                 Note that the read operation on this object returns
+-                a string in the pattern '****' for security 
++                a string in the pattern '****' for security
+                 reasons. "
+         ::= { cLIdsIpsSensorConfigEntry 4 }
+ 
+@@ -345,7 +346,7 @@ cLIdsIpsSensorEnabled OBJECT-TYPE
+         ::= { cLIdsIpsSensorConfigEntry 6 }
+ 
+ cLIdsIpsSensorFingerPrintHex OBJECT-TYPE
+-        SYNTAX     OCTET STRING (SIZE(40))
++        SYNTAX     DisplayString (SIZE(40))
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+@@ -353,7 +354,7 @@ cLIdsIpsSensorFingerPrintHex OBJECT-TYPE
+                 sensor certificate and configured as a series of
+                 40 hexadecimal digits.  This hash value is needed
+                 to verify the validity of the certificate to
+-                prevent security attacks.   
++                prevent security attacks.
+ 
+                 Note that the read operation on this object returns
+                 a string in the pattern '****' for security
+@@ -386,7 +387,7 @@ cLIdsIpsSensorRowStatus OBJECT-TYPE
+ 
+ cLIdsClientExclTable OBJECT-TYPE
+         SYNTAX     SEQUENCE OF CLIdsClientExclEntry
+-        MAX-ACCESS not-accessible  
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+                 "This table lists those clients whose data packets
+@@ -397,7 +398,7 @@ cLIdsClientExclTable OBJECT-TYPE
+                 This table has an expansion dependent relationship
+                 with cLIdsIpsSensorConfigTable.  There may exist one
+                 or more rows corresponding to the row for each
+-                sensor configured through cLIdsIpsSensorConfigTable. 
++                sensor configured through cLIdsIpsSensorConfigTable.
+ 
+                 An entry is added to this row by the agent when the
+                 controller receives the block request from one of
+@@ -417,7 +418,7 @@ cLIdsClientExclTable OBJECT-TYPE
+                 through the NMS or when the controller reboots.
+ 
+                 (ii) When the remaining time period for which the
+-                client will be blocked as indicated by 
++                client will be blocked as indicated by
+                 cLIdsClientTimeRemaining, expires.
+ 
+                 (iii) When the IPS sensor explicitly requests the
+@@ -430,7 +431,7 @@ cLIdsClientExclTable OBJECT-TYPE
+                 further, on one of the three conditions for entry
+                 removal mentioned above. "
+         ::= { ciscoLwappIdsStatus 1 }
+-                                
++
+ cLIdsClientExclEntry OBJECT-TYPE
+         SYNTAX     CLIdsClientExclEntry
+         MAX-ACCESS not-accessible
+@@ -438,42 +439,42 @@ cLIdsClientExclEntry OBJECT-TYPE
+         DESCRIPTION
+                 "Each entry in this table represents the information
+                 about a wireless client whose data packets are
+-                requested to be blocked by the controller.  The 
++                requested to be blocked by the controller.  The
+                 request is made by the IPS sensor identified by
+                 cLIdsIpsSensorAddress. "
+         INDEX   { cLIdsIpsSensorAddressType,
+-                  cLIdsIpsSensorAddress, 
++                  cLIdsIpsSensorAddress,
+                   cLIdsClientAddressType,
+                   cLIdsClientAddress
+-                }                                                     
+-        ::= { cLIdsClientExclTable 1 } 
++                }
++        ::= { cLIdsClientExclTable 1 }
+ 
+ CLIdsClientExclEntry ::=
+         SEQUENCE {
+                 cLIdsClientAddressType    InetAddressType,
+                 cLIdsClientAddress        InetAddress,
+-                cLIdsClientTimeRemaining  TimeInterval 
++                cLIdsClientTimeRemaining  TimeInterval
+         }
+ 
+ cLIdsClientAddressType OBJECT-TYPE
+         SYNTAX     InetAddressType
+-        MAX-ACCESS not-accessible 
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-                "This object identifies the type of the network 
++                "This object identifies the type of the network
+                 address being populated by cLIdsClientAddress. "
+-        ::= { cLIdsClientExclEntry 1 } 
++        ::= { cLIdsClientExclEntry 1 }
+ 
+ cLIdsClientAddress  OBJECT-TYPE
+         SYNTAX     InetAddress
+-        MAX-ACCESS not-accessible 
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+                 "This object identifies the network address of the
+                 wireless client whose data packets have been
+                 requested to be blocked by the controller.  The
+                 type of the network address represented by this
+-                object is determined by the value of 
++                object is determined by the value of
+                 cLIdsClientAddressType. "
+         ::= { cLIdsClientExclEntry 2 }
+ 
+@@ -486,7 +487,7 @@ cLIdsClientTimeRemaining OBJECT-TYPE
+                 "This object indicates the remaining time for which
+                 the client's data packets are going to be blocked by
+                 the controller. "
+-        ::= { cLIdsClientExclEntry 3 }             
++        ::= { cLIdsClientExclEntry 3 }
+ 
+ --********************************************************************
+ --*    NOTIFICATIONS
+@@ -498,7 +499,7 @@ ciscoLwappIdsShunClientUpdate NOTIFICATION-TYPE
+         }
+         STATUS  current
+         DESCRIPTION
+-                "This notification is sent by the agent with 
++                "This notification is sent by the agent with
+                 cLIdsClientTimeRemaining indicating a value
+                 greater than 0, whenever it adds a row to
+                 cLIdsClientExclTable.
+@@ -507,9 +508,9 @@ ciscoLwappIdsShunClientUpdate NOTIFICATION-TYPE
+                 cLIdsClientTimeRemaining equal to 0, when it
+                 removes a row from cLIdsClientExclTable. "
+        ::= { ciscoLwappIdsMIBNotifs 1 }
+-                                     
++
+ --********************************************************************
+---*    Compliance statements  
++--*    Compliance statements
+ --********************************************************************
+ 
+ ciscoLwappIdsMIBCompliances OBJECT IDENTIFIER
+@@ -523,7 +524,7 @@ ciscoLwappIdsMIBCompliance MODULE-COMPLIANCE
+         DESCRIPTION
+                 "The compliance statement for the SNMP entities that
+                 implement the ciscoLwappIdsMIB module. "
+-        MODULE MANDATORY-GROUPS {                
++        MODULE MANDATORY-GROUPS {
+                 ciscoLwappIdsConfigGroup,
+                 ciscoLwappIdsStatusGroup,
+                 ciscoLwappIdsNotifsGroup
+@@ -532,7 +533,7 @@ ciscoLwappIdsMIBCompliance MODULE-COMPLIANCE
+         ::= { ciscoLwappIdsMIBCompliances 1 }
+ 
+ --********************************************************************
+---*    Units of conformance  
++--*    Units of conformance
+ --********************************************************************
+ 
+ ciscoLwappIdsConfigGroup OBJECT-GROUP
+@@ -544,18 +545,18 @@ ciscoLwappIdsConfigGroup OBJECT-GROUP
+                 cLIdsIpsSensorFingerPrintHex,
+                 cLIdsIpsSensorPort,
+                 cLIdsIpsSensorRowStatus
+-             }                
++             }
+         STATUS  current
+         DESCRIPTION
+                 "This collection of objects provides the
+-                information used to integrate a controller with 
++                information used to integrate a controller with
+                 external IDS/IPS applications. "
+         ::= { ciscoLwappIdsMIBGroups 1 }
+ 
+ ciscoLwappIdsStatusGroup OBJECT-GROUP
+         OBJECTS {
+-                cLIdsClientTimeRemaining 
+-        } 
++                cLIdsClientTimeRemaining
++        }
+         STATUS  current
+         DESCRIPTION
+                 "This collection of objects provides the status
+@@ -566,8 +567,8 @@ ciscoLwappIdsStatusGroup OBJECT-GROUP
+ ciscoLwappIdsNotifsGroup NOTIFICATION-GROUP
+         NOTIFICATIONS {
+                 ciscoLwappIdsShunClientUpdate
+-        }   
+-        STATUS  current 
++        }
++        STATUS  current
+         DESCRIPTION
+                 "This collection of objects provides the information
+                 about the notifications sent by the agent related

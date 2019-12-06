@@ -1,0 +1,1486 @@
+diff --git a/mibs/cisco/cat3750/v2/CISCO-ENERGYWISE-MIB.my b/mibs/cisco/cat3750/v2/CISCO-ENERGYWISE-MIB.my
+index 67b5ab1..e3faa34 100644
+--- a/mibs/cisco/cat3750/v2/CISCO-ENERGYWISE-MIB.my
++++ b/mibs/cisco/cat3750/v2/CISCO-ENERGYWISE-MIB.my
+@@ -1,14 +1,14 @@
+ -- *****************************************************************
+ -- CISCO-ENERGYWISE-MIB.my
+---   
++--
+ -- This MIB is used to manage CISCO Power Extensions
+ -- Specifications
+---   
++--
+ -- July 2008, Vitta Sudhir.
+---   
++--
+ -- Copyright (c) 2008-2010 by Cisco Systems Inc.
+ -- All rights reserved.
+---   
++--
+ -- ****************************************************************
+ 
+ CISCO-ENERGYWISE-MIB DEFINITIONS ::= BEGIN
+@@ -31,7 +31,8 @@ IMPORTS
+     TEXTUAL-CONVENTION,
+     StorageType,
+     TimeStamp,
+-    MacAddress
++    MacAddress,
++    DisplayString
+         FROM SNMPv2-TC
+     InetAddress,
+     InetAddressType,
+@@ -64,7 +65,7 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+             E-mail: cs-snmp@cisco.com"
+     DESCRIPTION
+         "The MIB is used to manage and optimize power usage
+-        in networks. 
++        in networks.
+ 
+         Cisco EnergyWise is a specification of data, discovery and
+         protocols for managing power on and between network devices.
+@@ -73,7 +74,7 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+         Cisco EnergyWise specification.
+ 
+         A Cisco EnergyWise entity is characterized by the power related
+-        attributes of a physical entity present in ENTITY-MIB. 
++        attributes of a physical entity present in ENTITY-MIB.
+ 
+         Cisco EnergyWise solves the problem of Network Power
+         Management.   One of goals of Cisco EnergyWise is to manage
+@@ -81,12 +82,12 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+         on
+         managing a single element but Cisco EnergyWise provides the
+         capability to handle the management of a network of devices, as
+-        well as a single device. 
++        well as a single device.
+ 
+         Concepts and Definitions:
+         =========================
+         Cisco EnergyWise Entity: A physical entity that is part of the
+-        network that provides power or draws power from another 
++        network that provides power or draws power from another
+         part of the network.
+ 
+         Cisco EnergyWise Level: A uniform way to classify power
+@@ -97,7 +98,7 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+         Cisco EnergyWise Usage: The consumption of power by a Cisco
+         EnergyWise entity in watts.
+ 
+-            Current         The current power consumption by an 
++            Current         The current power consumption by an
+                             Cisco EnergyWise entity.
+ 
+             Provisioned     The maximum power a Cisco EnergyWise
+@@ -105,7 +106,7 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+ 
+             Usage Vector    A vector 0..10 representing the maximum
+                             power a Cisco EnergyWise entity can draw at
+-                            each level. 
++                            each level.
+ 
+             Delta Vector    This defines a vector 0..10 representing
+                             the difference between the Current and
+@@ -117,9 +118,9 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+         International) units of measure.  The value represents an
+         exponent of 10.
+ 
+-            For example, if current usage of an EnergyWise entity is 
++            For example, if current usage of an EnergyWise entity is
+             3, it could be 3 W, 3 mW, 3 KW, 3 MW depending on the value
+-            of Cisco EnergyWise power unit, i.e. 0, -3, 3, or 6 
++            of Cisco EnergyWise power unit, i.e. 0, -3, 3, or 6
+             respectively.
+ 
+         Cisco EnergyWise Domain: A collection of entities that is
+@@ -134,7 +135,7 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+         administrators to manage power in context of importance.
+ 
+             For example, assuming we have 2 phones deployed in a
+-            enterprise.  One phone is in a shared spare office and one 
++            enterprise.  One phone is in a shared spare office and one
+             used by trader generating lot of money as part of core
+             business of enterprise.
+ 
+@@ -147,19 +148,19 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+         Cisco EnergyWise entity can be managed by itself, but for some
+         others, a parent has to nanny.
+ 
+-        Nanny: An EnergyWise entity acts on behalf of another 
++        Nanny: An EnergyWise entity acts on behalf of another
+         another Cisco EnergyWise entity.
+ 
+         Cisco EnergyWise Parent: A Cisco EnergyWise entity that does
+         not have a nanny vector.  This entity can manage all its power
+         setting for itself as well as for Cisco EnergyWise entities
+         contained in it.  The contained in relationship is same as
+-        defined in ENTITY-MIB. 
++        defined in ENTITY-MIB.
+ 
+         Cisco EnergyWise Child: A Cisco EnergyWise entity that has a
+         nanny vector.  It requires a Cisco EnergyWise parent to serve
+         as nanny.  Depending on the nanny vector a Cisco EnergyWise
+-        child can be fully or partially managed.  
++        child can be fully or partially managed.
+ 
+         Cisco EnergyWise Neighbor: A Cisco EnergyWise entity to which
+         Cisco EnergyWise protocol events can be forwarded to.  An
+@@ -170,29 +171,29 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+         nanny a Cisco EnergyWise neighbor.
+ 
+             For example, A Cisco EnergyWise compatible entity like an
+-            IP phone, connected to a port on the switch, can provide a 
++            IP phone, connected to a port on the switch, can provide a
+             nanny vector to the switch to serve as a nanny.
+ 
+         Cisco EnergyWise Proxy: A device attached to a port that does
+         not understand the Cisco EnergyWise protocol, but has the
+         provision to manage power through network APIs or a proprietary
+-        protocol.  
++        protocol.
+ 
+         A Proxy is always configured on a port.  It allows the
+         Cisco EnergyWise protocol to be used with other non networking
+-        devices that draw power indirectly. 
++        devices that draw power indirectly.
+ 
+-            For example, a Lutron controller (building lighting 
++            For example, a Lutron controller (building lighting
+             controller) is a nonnetworking device which does not
+-            understand Cisco EnergyWise protocol.  However, it runs a 
++            understand Cisco EnergyWise protocol.  However, it runs a
+             proprietary BACNET protocol.
+ 
+-        The following diagram represents the relationship between 
+-        cewEntTable and cewNeighborTable, 
++        The following diagram represents the relationship between
++        cewEntTable and cewNeighborTable,
+         cewEntTable and cewProxyTable.
+ 
+ 
+-                              Points to a 
++                              Points to a
+         --------------------- nbr entry for    ---------------------
+         | EntPhyIdx | NbrId | which it does    | NbrId |  Name     |
+         --------------------- Nanny            ---------------------
+@@ -226,7 +227,7 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+         to some criteria, typically time.
+ 
+             For example, a Management station can configure an
+-            EnergyWise event on a switch to control devices in branch 
++            EnergyWise event on a switch to control devices in branch
+             offices, to go to power level standby at 8pm and power
+             level full at 7am.
+ 
+@@ -241,9 +242,9 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+         including set, collect, sum and delta.
+            set: changes or turns off power usage levels
+            collect: retrieves power usage information (in watts) from
+-        the cloud.  
++        the cloud.
+            sum: aggregates power information across multiple Members
+-        and Endpoints. 
++        and Endpoints.
+            delta: runs what if calculations.
+ 
+         Cisco EnergyWise Neighbor Id : The Cisco EnergyWise Neighbor's
+@@ -279,9 +280,9 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+         cewEntEnergyUsageCategory
+         cewEntEnergyUsageDirection
+ 
+-        cewNeighborKeyword            
+-        cewNeighborConfiguredKeyword 
+-        cewNeighborName  
++        cewNeighborKeyword
++        cewNeighborConfiguredKeyword
++        cewNeighborName
+         cewNeighborConfiguredName
+         cewNeighborRoleDescription
+         cewNeighborConfiguredRoleDescription
+@@ -296,7 +297,7 @@ ciscoEnergywiseMIB MODULE-IDENTITY
+ 
+         cewNeighborLevelTable :-
+ 
+-        cewNeighborLevelEntry 
++        cewNeighborLevelEntry
+         cewNeighborLevelIndex
+         cewNeighborLevelMaxUsage
+         cewNeighborLevelDeltaUsage
+@@ -366,13 +367,13 @@ EnergywiseLevel ::= TEXTUAL-CONVENTION
+                           availability is longer than sleep. Minimal,
+                           nearly zero, or zero power is consumed.
+ 
+-            sleep(3)    : No entity features are available.  The 
+-                          entity may be available but the time for 
++            sleep(3)    : No entity features are available.  The
++                          entity may be available but the time for
+                           availability is longer than standby.
+                           Minimal power is consumed.
+ 
+             standby(4)  : Indicates some entity features may not be
+-                          available.  The entity may be available 
++                          available.  The entity may be available
+                           but the time for availability is longer
+                           than ready.  Minimal power is consumed.
+ 
+@@ -390,7 +391,7 @@ EnergywiseLevel ::= TEXTUAL-CONVENTION
+                           and the entity has taken measures/options to
+                           provide less than medium usage.
+ 
+-            medium(8)   : Indicates all entity features are available 
++            medium(8)   : Indicates all entity features are available
+                           but the entity has taken measures/options to
+                           provide less than reduced usage.
+ 
+@@ -424,14 +425,14 @@ EnergywiseId ::= TEXTUAL-CONVENTION
+         "A unique identifier for the Cisco EnergyWise entity in the
+         Cisco EnergyWise domain.  Implementation must make sure that the
+         ID for each entity should be unique among all entities within
+-        the Cisco EnergyWise domain. 
++        the Cisco EnergyWise domain.
+ 
+-            For example, for Cisco entities, ID is based on UDI. 
++            For example, for Cisco entities, ID is based on UDI.
+             where UDI consists of:
+             PID - Product Identifier
+             VID - Version Identifier
+             SN  - Serial Number."
+-    SYNTAX          OCTET STRING (SIZE (0..32))
++    SYNTAX          DisplayString (SIZE (0..32))
+ 
+ EnergywisePowerUnits ::= TEXTUAL-CONVENTION
+     STATUS          current
+@@ -445,12 +446,12 @@ EnergywiseKeywordList ::= TEXTUAL-CONVENTION
+     DESCRIPTION
+         "A list of keywords.  If multiple keywords are present, then
+         this string will contain all the keywords separated by ','
+-        character. 
++        character.
+ 
+-            For example, If a Cisco EnergyWise entity is tagged with 
++            For example, If a Cisco EnergyWise entity is tagged with
+             keywords 'building' and 'lobby', then the keyword list
+             will be 'building,lobby'."
+-    SYNTAX          OCTET STRING (SIZE (0..255))
++    SYNTAX          DisplayString (SIZE (0..255))
+ 
+ -- Objects
+ 
+@@ -460,7 +461,7 @@ cewDeviceId OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the Cisco EnergyWise identifier assigned
+-        to the device." 
++        to the device."
+     ::= { ciscoEnergywiseMIBObjects 1 }
+ 
+ cewDeviceNeighborCount OBJECT-TYPE
+@@ -469,7 +470,7 @@ cewDeviceNeighborCount OBJECT-TYPE
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+-        "This object indicates the current number of neighbors." 
++        "This object indicates the current number of neighbors."
+     ::= { ciscoEnergywiseMIBObjects 2 }
+ 
+ cewDomainName OBJECT-TYPE
+@@ -488,7 +489,7 @@ cewDomainName OBJECT-TYPE
+         as that entity remains instantiated.  This includes
+         instantiations across all re-initializations/reboots of the
+         network management system, including those which result in a
+-        change of the physical entity's entPhysicalIndex value." 
++        change of the physical entity's entPhysicalIndex value."
+     ::= { ciscoEnergywiseMIBObjects 3 }
+ 
+ cewMaxImportance OBJECT-TYPE
+@@ -498,7 +499,7 @@ cewMaxImportance OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the maximum importance value
+-        among all the Cisco EnergyWise entities in the domain." 
++        among all the Cisco EnergyWise entities in the domain."
+     ::= { ciscoEnergywiseMIBObjects 4 }
+ 
+ cewMaxImportanceId OBJECT-TYPE
+@@ -508,11 +509,11 @@ cewMaxImportanceId OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the Cisco EnergyWise identifier of the
+         Cisco EnergyWise entity having maximum importance in the
+-        domain." 
++        domain."
+     ::= { ciscoEnergywiseMIBObjects 5 }
+ 
+ cewEntTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CewEntEntry 
++    SYNTAX          SEQUENCE OF CewEntEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -529,10 +530,10 @@ cewEntEntry OBJECT-TYPE
+     DESCRIPTION
+         "An entry describes attributes of a Cisco EnergyWise entity.
+ 
+-        Whenever the device creates/destroys a Cisco EnergyWise 
++        Whenever the device creates/destroys a Cisco EnergyWise
+         compliant entity, the device creates/destroys a row in the
+         cewEntTable."
+-    INDEX           { entPhysicalIndex } 
++    INDEX           { entPhysicalIndex }
+     ::= { cewEntTable 1 }
+ 
+ CewEntEntry ::= SEQUENCE {
+@@ -611,14 +612,14 @@ cewEntNannyVector OBJECT-TYPE
+ 
+            powerLevel11(11): Feature to set to power level 11(full).
+ 
+-           powerShutNWakeUp: Feature to shutdown and wake up a Cisco 
++           powerShutNWakeUp: Feature to shutdown and wake up a Cisco
+                              EnergyWise entity.
+ 
+            powerUsage:       Feature to manage Cisco EnergyWise usage of
+                              a Cisco EnergyWise entity.
+ 
+            powerImportance:  Feature to manage Cisco EnergyWise
+-                             importance of a Cisco EnergyWise entity." 
++                             importance of a Cisco EnergyWise entity."
+     ::= { cewEntEntry 1 }
+ 
+ cewEntNeighborIndex OBJECT-TYPE
+@@ -628,7 +629,7 @@ cewEntNeighborIndex OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates an arbitrary unsigned integer-value that
+         uniquely identifies the Cisco EnergyWise neighbor, for which the
+-        current Cisco EnergyWise entity serves as a nanny." 
++        current Cisco EnergyWise entity serves as a nanny."
+     ::= { cewEntEntry 2 }
+ 
+ cewEntKeyword OBJECT-TYPE
+@@ -647,7 +648,7 @@ cewEntKeyword OBJECT-TYPE
+         instantiated.  This includes instantiations across all
+         re-initializations/reboots of the network management system,
+         including those which result in a change of the physical
+-        entity's entPhysicalIndex value." 
++        entity's entPhysicalIndex value."
+     ::= { cewEntEntry 3 }
+ 
+ cewEntName OBJECT-TYPE
+@@ -656,7 +657,7 @@ cewEntName OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies an administratively assigned human
+-        readable name to the Cisco EnergyWise entity.  
++        readable name to the Cisco EnergyWise entity.
+ 
+            For example, we can have a switch deployed to lobby
+            with cewEntName as 'LL'.
+@@ -670,7 +671,7 @@ cewEntName OBJECT-TYPE
+         instantiated.  This includes instantiations across all
+         re-initializations/reboots of the network management system,
+         including those which result in a change of the physical
+-        entity's entPhysicalIndex value." 
++        entity's entPhysicalIndex value."
+     ::= { cewEntEntry 4 }
+ 
+ cewEntRoleDescription OBJECT-TYPE
+@@ -682,7 +683,7 @@ cewEntRoleDescription OBJECT-TYPE
+         indicate the purpose a Cisco EnergyWise entity serves in the
+         network.
+ 
+-           For example, we can have switches deployed to a lobby 
++           For example, we can have switches deployed to a lobby
+            with cewEntName as 'LL', cewEntRoleDescription as
+            'LobbySwitch'.
+ 
+@@ -697,7 +698,7 @@ cewEntRoleDescription OBJECT-TYPE
+         instantiated.  This includes instantiations across all re-
+         initializations/reboots of the network management system,
+         including those which result in a change of the physical
+-        entity's entPhysicalIndex value." 
++        entity's entPhysicalIndex value."
+     ::= { cewEntEntry 5 }
+ 
+ cewEntFullName OBJECT-TYPE
+@@ -714,7 +715,7 @@ cewEntFullName OBJECT-TYPE
+             where,
+             cewDomainName - gcom.cisco.bldg19
+             cewEntRole - LobbySwitch
+-            cewEntName - LL" 
++            cewEntName - LL"
+     ::= { cewEntEntry 6 }
+ 
+ cewEntEnergyUnits OBJECT-TYPE
+@@ -727,7 +728,7 @@ cewEntEnergyUnits OBJECT-TYPE
+ 
+         The value of this column applies to the following objects:
+         cewEntEnergyUsage
+-        cewEntEnergyUsageProvisioned." 
++        cewEntEnergyUsageProvisioned."
+     ::= { cewEntEntry 7 }
+ 
+ cewEntEnergyUsage OBJECT-TYPE
+@@ -737,7 +738,7 @@ cewEntEnergyUsage OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the current usage for the Cisco
+         EnergyWise entity.  This should be less than or equal to
+-        the power that can be consumed at that specified level." 
++        the power that can be consumed at that specified level."
+     ::= { cewEntEntry 8 }
+ 
+ cewEntEnergyUsageCaliber OBJECT-TYPE
+@@ -755,26 +756,26 @@ cewEntEnergyUsageCaliber OBJECT-TYPE
+         cewEntityEnergyUsage.
+ 
+             max: This indicates that the actual power drawn cannot be
+-            determined. A presumed value that is the maximum the 
++            determined. A presumed value that is the maximum the
+             Cisco EnergyWise entity could draw is provided.
+ 
+             presumed: This indicates that the actual power drawn cannot
+             be determined but can be  presumed from the model.
+-            A dell box X draws 200W, Dell Model y draws 210W. 
++            A dell box X draws 200W, Dell Model y draws 210W.
+ 
+-            actual: This indicates that the usage data reported is not 
++            actual: This indicates that the usage data reported is not
+             presumed or max but the real power drawn.  A PoE phone
+             drawing X amount of power can be determined by reading from
+-            the port.  A PoE phone can report the actual usage as X W. 
++            the port.  A PoE phone can report the actual usage as X W.
+ 
+             unknown: This indicates that the usage reported is unknown.
+-            In some cases, entities report aggregate power like what a 
+-            lighting controller or aggregate controller does.  In such 
++            In some cases, entities report aggregate power like what a
++            lighting controller or aggregate controller does.  In such
+             cases it is not known whether the usage reported is actual
+-            or presumed.  
++            or presumed.
+ 
+-            trusted: This indicates that the usage data reported was 
+-            reported from another source." 
++            trusted: This indicates that the usage data reported was
++            reported from another source."
+     ::= { cewEntEntry 9 }
+ 
+ cewEntEnergyLevel OBJECT-TYPE
+@@ -783,7 +784,7 @@ cewEntEnergyLevel OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the current power level for the
+-        Cisco EnergyWise entity." 
++        Cisco EnergyWise entity."
+     ::= { cewEntEntry 10 }
+ 
+ cewEntEnergyUsageProvisioned OBJECT-TYPE
+@@ -792,7 +793,7 @@ cewEntEnergyUsageProvisioned OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the maximum power a Cisco EnergyWise
+-        entity can draw at current level." 
++        entity can draw at current level."
+     ::= { cewEntEntry 11 }
+ 
+ cewEntImportanceInt OBJECT-TYPE
+@@ -802,7 +803,7 @@ cewEntImportanceInt OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies Cisco EnergyWise importance for the
+         Cisco EnergyWise entity."
+-    DEFVAL          { 1 } 
++    DEFVAL          { 1 }
+     ::= { cewEntEntry 12 }
+ 
+ cewEntImportanceExt OBJECT-TYPE
+@@ -811,7 +812,7 @@ cewEntImportanceExt OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the sum of its own importance and
+-        intrinsic importance of all the entities dependent on it." 
++        intrinsic importance of all the entities dependent on it."
+     ::= { cewEntEntry 13 }
+ 
+ cewEntImportanceRelative OBJECT-TYPE
+@@ -824,7 +825,7 @@ cewEntImportanceRelative OBJECT-TYPE
+         value in the domain.
+ 
+         It is derived using the formula:
+-        (cewEntImportanceExt / cewEntMaxImportance) * 100." 
++        (cewEntImportanceExt / cewEntMaxImportance) * 100."
+     ::= { cewEntEntry 14 }
+ 
+ cewEntImportanceParentId OBJECT-TYPE
+@@ -836,12 +837,12 @@ cewEntImportanceParentId OBJECT-TYPE
+         identifies itself as important for the current entity's
+         functionality in the network.
+ 
+-           For example, assume a network consisting of switches, IP 
++           For example, assume a network consisting of switches, IP
+            phones and a call manager (device which supports call
+-           related operations in a phone).  
++           related operations in a phone).
+ 
+            Though an IP phone derives its power from the switch, it
+-           will not work if the call-manager is not operational.  It 
++           will not work if the call-manager is not operational.  It
+            clearly demonstrates the importance of the call-manager in
+            the network.  Hence it is the parent of the IP phones in
+            terms of importance.
+@@ -852,7 +853,7 @@ cewEntImportanceParentId OBJECT-TYPE
+         Importance calculations enable the management stations to
+         identify the Cisco EnergyWise entities that support other
+         Cisco EnergyWise entities and weigh them as more important
+-        to the network as a whole." 
++        to the network as a whole."
+     ::= { cewEntEntry 15 }
+ 
+ cewEntParentId OBJECT-TYPE
+@@ -863,7 +864,7 @@ cewEntParentId OBJECT-TYPE
+         "This object indicates the Cisco EnergyWise parent of this
+         entity.
+         If a Cisco EnergyWise entity is a Cisco EnergyWise parent,
+-        then the value of this column is the null string." 
++        then the value of this column is the null string."
+     ::= { cewEntEntry 16 }
+ 
+ cewEntAdminStatus OBJECT-TYPE
+@@ -879,7 +880,7 @@ cewEntAdminStatus OBJECT-TYPE
+ 
+             up:   enables Cisco EnergyWise protocol on the entity.
+ 
+-            down: disables Cisco EnergyWise protocol on the entity." 
++            down: disables Cisco EnergyWise protocol on the entity."
+     ::= { cewEntEntry 17 }
+ 
+ cewEntOperStatus OBJECT-TYPE
+@@ -892,14 +893,14 @@ cewEntOperStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the operational status for the
+-        Cisco EnergyWise entity. 
++        Cisco EnergyWise entity.
+ 
+         If the cewEntAdminStatus is down(2), then cewEntOperStatus
+         should be down(2).
+ 
+         If cewEntAdminStatus is changed to up(1), then cewEntOperStatus
+         should change to up(1), unless some error has occurred, then it
+-        should be in error(3) state." 
++        should be in error(3) state."
+     ::= { cewEntEntry 18 }
+ 
+ cewEntConfiguredLevel OBJECT-TYPE
+@@ -913,7 +914,7 @@ cewEntConfiguredLevel OBJECT-TYPE
+ 
+         When a network administrator sets the level of this object the
+         value of cewEntEnergyLevel will change to that value if the
+-        configured level is successfully accepted by the system." 
++        configured level is successfully accepted by the system."
+     ::= { cewEntEntry 19 }
+ 
+ cewEntEnergyUsageCategory OBJECT-TYPE
+@@ -933,7 +934,7 @@ cewEntEnergyUsageCategory OBJECT-TYPE
+         producer: This indicates that the Cisco Energywise Entity
+         generates energy.
+         meter: This indicates that the Cisco Energywise Entity is a
+-        meter which reads the energy consumed or produced." 
++        meter which reads the energy consumed or produced."
+     ::= { cewEntEntry 20 }
+ 
+ cewEntEnergyUsageDirection OBJECT-TYPE
+@@ -950,7 +951,7 @@ cewEntEnergyUsageDirection OBJECT-TYPE
+         out: This indicates that the power is being consumed or drawn
+         out of the power grid by the Cisco EnergyWise Entity.
+         in: This indicates that the power is being produced and supplied
+-        into the power grid by the Cisco EnergyWise Entity." 
++        into the power grid by the Cisco EnergyWise Entity."
+     ::= { cewEntEntry 21 }
+ 
+ cewEntAllowSet OBJECT-TYPE
+@@ -961,11 +962,11 @@ cewEntAllowSet OBJECT-TYPE
+         "This object specifies the value of the flag used to determine
+         if the Cisco Energywise Query Set is set to true/false. If the
+         flag is set to true, the cli, energywise allow query set is
+-        activated for this Cisco Energywise Entity. 
++        activated for this Cisco Energywise Entity.
+ 
+         When its set to false, the user will be prevented from setting
+         the parameters from the query. For more information on Cisco
+-        Energywise Queries, refer to the description above." 
++        Energywise Queries, refer to the description above."
+     ::= { cewEntEntry 22 }
+ 
+ cewEntActivityCheck OBJECT-TYPE
+@@ -979,18 +980,18 @@ cewEntActivityCheck OBJECT-TYPE
+         check to be done on this Cisco Energywise Entity.Activity check
+         is done to determine if an IP Phone entity connected to the
+         switch is in use or not before the port can be turned OFF or
+-        ON." 
++        ON."
+     ::= { cewEntEntry 23 }
+- 
++
+ 
+ 
+ cewLevelTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CewLevelEntry 
++    SYNTAX          SEQUENCE OF CewLevelEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table lists the power usage at each level for each
+-        Cisco EnergyWise entity. 
++        Cisco EnergyWise entity.
+ 
+         This table has an expansion dependent relationship on the
+         cewEntTable, containing rows describing each level for the
+@@ -1015,7 +1016,7 @@ cewLevelEntry OBJECT-TYPE
+     INDEX           {
+                         entPhysicalIndex,
+                         cewLevelIndex
+-                    } 
++                    }
+     ::= { cewLevelTable 1 }
+ 
+ CewLevelEntry ::= SEQUENCE {
+@@ -1031,7 +1032,7 @@ cewLevelIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the level for which this entry describes
+-        the power usage." 
++        the power usage."
+     ::= { cewLevelEntry 1 }
+ 
+ cewLevelMaxUsage OBJECT-TYPE
+@@ -1040,7 +1041,7 @@ cewLevelMaxUsage OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the maximum power usage for the
+-        Cisco EnergyWise entity at the particular level." 
++        Cisco EnergyWise entity at the particular level."
+     ::= { cewLevelEntry 2 }
+ 
+ cewLevelDeltaUsage OBJECT-TYPE
+@@ -1050,7 +1051,7 @@ cewLevelDeltaUsage OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the delta; that is the difference between
+         the current cewEntityEnergyUsage and the cewLevelMaxUsage
+-        value of a Cisco EnergyWise entity at a level." 
++        value of a Cisco EnergyWise entity at a level."
+     ::= { cewLevelEntry 3 }
+ 
+ cewLevelUnits OBJECT-TYPE
+@@ -1059,13 +1060,13 @@ cewLevelUnits OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the Cisco EnergyWise power units for
+-        cewLevelMaxUsage and cewLevelDeltaUsage values." 
++        cewLevelMaxUsage and cewLevelDeltaUsage values."
+     ::= { cewLevelEntry 4 }
+- 
++
+ 
+ 
+ cewProxyTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CewProxyEntry 
++    SYNTAX          SEQUENCE OF CewProxyEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -1091,7 +1092,7 @@ cewProxyEntry OBJECT-TYPE
+     INDEX           {
+                         entPhysicalIndex,
+                         cewProxyId
+-                    } 
++                    }
+     ::= { cewProxyTable 1 }
+ 
+ CewProxyEntry ::= SEQUENCE {
+@@ -1110,7 +1111,7 @@ cewProxyId OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates an arbitrary unsigned integer-value that
+-        uniquely identifies the proxy." 
++        uniquely identifies the proxy."
+     ::= { cewProxyEntry 1 }
+ 
+ cewProxyAddressType OBJECT-TYPE
+@@ -1122,7 +1123,7 @@ cewProxyAddressType OBJECT-TYPE
+         cewProxyAddress.
+ 
+         Cisco EnergyWise proxy entries are only valid for the address
+-        type of ipv4(1) and ipv6(2)." 
++        type of ipv4(1) and ipv6(2)."
+     ::= { cewProxyEntry 2 }
+ 
+ cewProxyAddress OBJECT-TYPE
+@@ -1130,7 +1131,7 @@ cewProxyAddress OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the IP address of the proxy." 
++        "This object specifies the IP address of the proxy."
+     ::= { cewProxyEntry 3 }
+ 
+ cewProxyPort OBJECT-TYPE
+@@ -1138,7 +1139,7 @@ cewProxyPort OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the port used by the proxy." 
++        "This object specifies the port used by the proxy."
+     ::= { cewProxyEntry 4 }
+ 
+ cewProxyClass OBJECT-TYPE
+@@ -1152,7 +1153,7 @@ cewProxyClass OBJECT-TYPE
+ 
+         For example, all the building controllers (Cisco EnergyWise
+         proxies which understand BACNET proprietary protocol) will be
+-        tagged with 'BACNET' string." 
++        tagged with 'BACNET' string."
+     ::= { cewProxyEntry 5 }
+ 
+ cewProxyStorage OBJECT-TYPE
+@@ -1162,7 +1163,7 @@ cewProxyStorage OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the memory realization of a Cisco
+         EnergyWise proxy."
+-    DEFVAL          { volatile } 
++    DEFVAL          { volatile }
+     ::= { cewProxyEntry 6 }
+ 
+ cewProxyStatus OBJECT-TYPE
+@@ -1174,19 +1175,19 @@ cewProxyStatus OBJECT-TYPE
+ 
+         Once the entry status has been set to active(1), the entry
+         cannot be modified.  The only operation possible after this is
+-        to delete the entry." 
++        to delete the entry."
+     ::= { cewProxyEntry 7 }
+- 
++
+ 
+ 
+ cewNeighborTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CewNeighborEntry 
++    SYNTAX          SEQUENCE OF CewNeighborEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table lists Cisco EnergyWise neighbors.
+ 
+-        Cisco EnergyWise entity reports its connection to the network 
++        Cisco EnergyWise entity reports its connection to the network
+         via a discovery protocol.  When a new Cisco EnergyWise neighbor
+         is discovered, this table is updated with the new entry.  When
+         the Cisco EnergyWise neighbor looses its connection,
+@@ -1200,11 +1201,11 @@ cewNeighborEntry OBJECT-TYPE
+     DESCRIPTION
+         "An entry in the cewNeighborTable.
+ 
+-        An entry describes the attributes of the Cisco EnergyWise 
++        An entry describes the attributes of the Cisco EnergyWise
+         neighbor, either discovered through a discovery protocol
+         or has been added as a static neighbor by the management
+         station."
+-    INDEX           { cewNeighborIndex } 
++    INDEX           { cewNeighborIndex }
+     ::= { cewNeighborTable 1 }
+ 
+ CewNeighborEntry ::= SEQUENCE {
+@@ -1240,7 +1241,7 @@ cewNeighborIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates an arbitrary unsigned integer-value
+-        that uniquely identifies the Cisco EnergyWise neighbor." 
++        that uniquely identifies the Cisco EnergyWise neighbor."
+     ::= { cewNeighborEntry 1 }
+ 
+ cewNeighborId OBJECT-TYPE
+@@ -1249,7 +1250,7 @@ cewNeighborId OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the Cisco EnergyWise identifier of the
+-        neighbor." 
++        neighbor."
+     ::= { cewNeighborEntry 2 }
+ 
+ cewNeighborType OBJECT-TYPE
+@@ -1265,10 +1266,10 @@ cewNeighborType OBJECT-TYPE
+ 
+         static  : specifies a neighbor which is added statically.
+ 
+-        dynamic : specifies a neighbor added dynamically, by a 
++        dynamic : specifies a neighbor added dynamically, by a
+                   discovery protocol.
+ 
+-        child   : specifies a neighbor which needs a parent to nanny." 
++        child   : specifies a neighbor which needs a parent to nanny."
+     ::= { cewNeighborEntry 3 }
+ 
+ cewNeighborHeartBeat OBJECT-TYPE
+@@ -1278,7 +1279,7 @@ cewNeighborHeartBeat OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the value of sysUpTime the last time
+         a heartbeat was received from the neighbor Cisco EnergyWise
+-        entity." 
++        entity."
+     ::= { cewNeighborEntry 4 }
+ 
+ cewNeighborStorage OBJECT-TYPE
+@@ -1288,7 +1289,7 @@ cewNeighborStorage OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the memory realization of a Cisco
+         EnergyWise neighbor."
+-    DEFVAL          { volatile } 
++    DEFVAL          { volatile }
+     ::= { cewNeighborEntry 5 }
+ 
+ cewNeighborStatus OBJECT-TYPE
+@@ -1300,7 +1301,7 @@ cewNeighborStatus OBJECT-TYPE
+ 
+         Once the entry status has been set to active(1), the entry
+         cannot be modified.  The only operation possible after this is
+-        to delete the entry." 
++        to delete the entry."
+     ::= { cewNeighborEntry 6 }
+ 
+ cewNeighborDeviceType OBJECT-TYPE
+@@ -1310,7 +1311,7 @@ cewNeighborDeviceType OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the device type of the Cisco EnergyWise
+         neighbor. This object should be same as the cewDeviceType of
+-        the neighbor." 
++        the neighbor."
+     ::= { cewNeighborEntry 7 }
+ 
+ cewNeighborKeyword OBJECT-TYPE
+@@ -1324,7 +1325,7 @@ cewNeighborKeyword OBJECT-TYPE
+         If cewNeighborConfiguredKeyword is successfully changed, the
+         new value will be copied over to cewNeighborKeyword to make both
+         the objects have the same value. This object specifies the null
+-        string if no keyword has been configured." 
++        string if no keyword has been configured."
+     ::= { cewNeighborEntry 8 }
+ 
+ cewNeighborConfiguredKeyword OBJECT-TYPE
+@@ -1353,7 +1354,7 @@ cewNeighborConfiguredKeyword OBJECT-TYPE
+         This includes instantiations across all
+         re-initializations/reboots of the network management system,
+         including those which result in a
+-        change of the physical entity's entPhysicalIndex value." 
++        change of the physical entity's entPhysicalIndex value."
+     ::= { cewNeighborEntry 9 }
+ 
+ cewNeighborName OBJECT-TYPE
+@@ -1366,7 +1367,7 @@ cewNeighborName OBJECT-TYPE
+         neighbor/child. If cewNeighborConfiguredName is successfully
+         changed, the new value will be copied over to cewNeighborName to
+         make both the objects have the same value. This object specifies
+-        a null string if no name is configured." 
++        a null string if no name is configured."
+     ::= { cewNeighborEntry 10 }
+ 
+ cewNeighborConfiguredName OBJECT-TYPE
+@@ -1389,7 +1390,7 @@ cewNeighborConfiguredName OBJECT-TYPE
+         instantiated. This includes instantiations across all
+         re-initializations/reboots of the network management
+         system, including those which result in a change of the
+-        physical entity's entPhysicalIndex value." 
++        physical entity's entPhysicalIndex value."
+     ::= { cewNeighborEntry 11 }
+ 
+ cewNeighborRoleDescription OBJECT-TYPE
+@@ -1404,7 +1405,7 @@ cewNeighborRoleDescription OBJECT-TYPE
+         successfully changed, the new value will be copied over to
+         cewNeighborRoleDescription to make both the objects have the
+         same value. This object specifies a null string if no role
+-        description is configured." 
++        description is configured."
+     ::= { cewNeighborEntry 12 }
+ 
+ cewNeighborConfiguredRoleDesc OBJECT-TYPE
+@@ -1416,12 +1417,12 @@ cewNeighborConfiguredRoleDesc OBJECT-TYPE
+         Cisco Energywise neighbor/child entity.If the neighbor is of
+         type child and a role is configured, the switch will attempt to
+         set the endpoint neighbor/child entity with this value. If
+-        successful,       
++        successful,
+         cewNeighborRoleDesc will be set with the configured role.
+ 
+         This object specifies an administratively assigned name to
+         indicate the purpose a Cisco EnergyWise entity serves in the
+-        network.      
++        network.
+ 
+         This object specifies a null string if no role description is
+         configured.
+@@ -1435,7 +1436,7 @@ cewNeighborConfiguredRoleDesc OBJECT-TYPE
+         re-initializations/reboots
+         of the network management system, including those which result
+         in
+-        a change of the physical entity's entPhysicalIndex value." 
++        a change of the physical entity's entPhysicalIndex value."
+     ::= { cewNeighborEntry 13 }
+ 
+ cewNeighborEnergyLevel OBJECT-TYPE
+@@ -1444,7 +1445,7 @@ cewNeighborEnergyLevel OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the current power level for the
+-        Cisco EnergyWise neighbor/child entity." 
++        Cisco EnergyWise neighbor/child entity."
+     ::= { cewNeighborEntry 14 }
+ 
+ cewNeighborConfiguredLevel OBJECT-TYPE
+@@ -1457,7 +1458,7 @@ cewNeighborConfiguredLevel OBJECT-TYPE
+         type child and a level is configured, the switch will attempt to
+         set the endpoint neighbor/child entity with this value. If
+         successful,
+-        cewNeighborEnergyLevel will be set with the configured level." 
++        cewNeighborEnergyLevel will be set with the configured level."
+     ::= { cewNeighborEntry 15 }
+ 
+ cewNeighborImportance OBJECT-TYPE
+@@ -1467,7 +1468,7 @@ cewNeighborImportance OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies Cisco EnergyWise importance for the
+         Cisco EnergyWise neighbor/child entity."
+-    DEFVAL          { 1 } 
++    DEFVAL          { 1 }
+     ::= { cewNeighborEntry 16 }
+ 
+ cewNeighborConfiguredImportance OBJECT-TYPE
+@@ -1481,7 +1482,7 @@ cewNeighborConfiguredImportance OBJECT-TYPE
+         attempt to set the endpoint neighbor/child entity with this
+         value. If successful, cewNeighborImportance will be set with
+         the configured importance."
+-    DEFVAL          { 1 } 
++    DEFVAL          { 1 }
+     ::= { cewNeighborEntry 17 }
+ 
+ cewNeighborEnergyUnits OBJECT-TYPE
+@@ -1492,7 +1493,7 @@ cewNeighborEnergyUnits OBJECT-TYPE
+         "This object indicates the units of power for the Cisco
+         Energywise neighbor/child entity. The value of this column
+         applies to the following objects:
+-        cewNeighborEnergyUsage" 
++        cewNeighborEnergyUsage"
+     ::= { cewNeighborEntry 18 }
+ 
+ cewNeighborEnergyUsage OBJECT-TYPE
+@@ -1503,7 +1504,7 @@ cewNeighborEnergyUsage OBJECT-TYPE
+         "This object indicates the current usage for the Cisco
+         EnergyWise neighbor/child entity.  This should be less than or
+         equal to the power that can be consumed at that specified
+-        level." 
++        level."
+     ::= { cewNeighborEntry 19 }
+ 
+ cewNeighborEnergyUsageCategory OBJECT-TYPE
+@@ -1521,7 +1522,7 @@ cewNeighborEnergyUsageCategory OBJECT-TYPE
+         consumer: This indicates that the neighbor consumes energy.
+         producer: This indicates that the neighbor generates energy.
+         meter: This indicates that the neighbor is a meter which reads
+-        the energy consumed or produced." 
++        the energy consumed or produced."
+     ::= { cewNeighborEntry 20 }
+ 
+ cewNeighborEnergyUsageDirection OBJECT-TYPE
+@@ -1537,13 +1538,13 @@ cewNeighborEnergyUsageDirection OBJECT-TYPE
+         entity.
+         Example: A solar panel is a consumer, drawing power during some
+         part of the day, taking in power from the grid. It can also
+-        generate power out to the grid at other times. 
++        generate power out to the grid at other times.
+ 
+         out: This indicates that the power is being consumed or drawn
+         out by the Cisco EnergyWise neighbor entity.
+         in: This indicates that the power is being produced and supplied
+         back into the power grid by the Cisco EnergyWise neighbor
+-        entity." 
++        entity."
+     ::= { cewNeighborEntry 21 }
+ 
+ cewNeighborMacAddress OBJECT-TYPE
+@@ -1552,7 +1553,7 @@ cewNeighborMacAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the MAC Address of the Cisco EnergyWise
+-        endpoint that is connected to the Cisco EnergyWise Entity." 
++        endpoint that is connected to the Cisco EnergyWise Entity."
+     ::= { cewNeighborEntry 22 }
+ 
+ cewNeighborPhysicalEntityId OBJECT-TYPE
+@@ -1562,7 +1563,7 @@ cewNeighborPhysicalEntityId OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the entity physical index of the Cisco
+         Energywise Neighbor. If the neighbor is not a cisco device that
+-        supports the cisco entity MIB, this value will be zero." 
++        supports the cisco entity MIB, this value will be zero."
+     ::= { cewNeighborEntry 23 }
+ 
+ cewNeighborParentPortIndex OBJECT-TYPE
+@@ -1571,14 +1572,14 @@ cewNeighborParentPortIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the entPhysicalIndex of the interface
+-        on the switch to which the Cisco EnergyWise endpoint is 
+-        connected." 
++        on the switch to which the Cisco EnergyWise endpoint is
++        connected."
+     ::= { cewNeighborEntry 24 }
+- 
++
+ 
+ 
+ cewEventTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CewEventEntry 
++    SYNTAX          SEQUENCE OF CewEventEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -1604,7 +1605,7 @@ cewEventEntry OBJECT-TYPE
+     INDEX           {
+                         entPhysicalIndex,
+                         cewEventIndex
+-                    } 
++                    }
+     ::= { cewEventTable 1 }
+ 
+ CewEventEntry ::= SEQUENCE {
+@@ -1624,7 +1625,7 @@ cewEventIndex OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies an arbitrary unsigned
+         integer-value that uniquely identifies the Cisco EnergyWise
+-        event." 
++        event."
+     ::= { cewEventEntry 1 }
+ 
+ cewEventLevel OBJECT-TYPE
+@@ -1633,7 +1634,7 @@ cewEventLevel OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the level at which a Cisco EnergyWise
+-        entity is set for an event." 
++        entity is set for an event."
+     ::= { cewEventEntry 2 }
+ 
+ cewEventRecurrence OBJECT-TYPE
+@@ -1642,12 +1643,12 @@ cewEventRecurrence OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies whether an event is a recurring
+-        event. 
++        event.
+ 
+             true:  If this policy is a recurring event.
+ 
+             false: If this policy is not a recurring event."
+-    DEFVAL          { true } 
++    DEFVAL          { true }
+     ::= { cewEventEntry 3 }
+ 
+ cewEventTime OBJECT-TYPE
+@@ -1658,9 +1659,9 @@ cewEventTime OBJECT-TYPE
+         "This object specifies a string-value describing the details
+         regarding the time at which the event should get triggered.
+ 
+-            For example, 
++            For example,
+             00:30 Hrs  on Jan, June & Dec, every weekday (Mon-Fri)
+-            30     0    *   1,6,12  1-5     
++            30     0    *   1,6,12  1-5
+ 
+             *     *     *     *     *  command to be executed
+             -     -     -     -     -
+@@ -1673,7 +1674,7 @@ cewEventTime OBJECT-TYPE
+ 
+         Other management interfaces (e.g., local console) will configure
+         time in the above manner.  cewEventTime can also have wild cards
+-        as shown in the above example." 
++        as shown in the above example."
+     ::= { cewEventEntry 4 }
+ 
+ cewEventStorage OBJECT-TYPE
+@@ -1683,7 +1684,7 @@ cewEventStorage OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the memory realization of a Cisco
+         EnergyWise event."
+-    DEFVAL          { volatile } 
++    DEFVAL          { volatile }
+     ::= { cewEventEntry 5 }
+ 
+ cewEventStatus OBJECT-TYPE
+@@ -1695,7 +1696,7 @@ cewEventStatus OBJECT-TYPE
+ 
+         Once the entry status has been set to active(1), the entry
+         cannot be modified.  The only operation possible after this is
+-        to delete the entry." 
++        to delete the entry."
+     ::= { cewEventEntry 6 }
+ 
+ cewEventImportance OBJECT-TYPE
+@@ -1704,9 +1705,9 @@ cewEventImportance OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the importance at which a Cisco
+-        EnergyWise entity is set for an event." 
++        EnergyWise entity is set for an event."
+     ::= { cewEventEntry 7 }
+- 
++
+ 
+ 
+ cewLevelChangeNotifEnable OBJECT-TYPE
+@@ -1715,7 +1716,7 @@ cewLevelChangeNotifEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies whether to enable/disable the
+-        cewLevelChange notification." 
++        cewLevelChange notification."
+     ::= { ciscoEnergywiseMIBObjects 11 }
+ 
+ cewNeighborAddedNotifEnable OBJECT-TYPE
+@@ -1724,7 +1725,7 @@ cewNeighborAddedNotifEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies whether to enable/disable the
+-        cewNeighborAdded notification." 
++        cewNeighborAdded notification."
+     ::= { ciscoEnergywiseMIBObjects 12 }
+ 
+ cewNeighborDeletedNotifEnable OBJECT-TYPE
+@@ -1733,7 +1734,7 @@ cewNeighborDeletedNotifEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies whether to enable/disable the
+-        cewNeighborDeleted notification." 
++        cewNeighborDeleted notification."
+     ::= { ciscoEnergywiseMIBObjects 13 }
+ 
+ cewEventOccuredNotifEnable OBJECT-TYPE
+@@ -1742,7 +1743,7 @@ cewEventOccuredNotifEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies whether to enable/disable the
+-        cewEventOccured notification." 
++        cewEventOccured notification."
+     ::= { ciscoEnergywiseMIBObjects 14 }
+ 
+ cewEventOccuredErrorCode OBJECT-TYPE
+@@ -1763,7 +1764,7 @@ cewEventOccuredErrorCode OBJECT-TYPE
+             outofrange(3) : Set on event called with out of range
+                             values.
+             swfault(4)    : Event encountered a software fault.
+-            hwfault(5)    : Event encountered a hardware fault." 
++            hwfault(5)    : Event encountered a hardware fault."
+     ::= { ciscoEnergywiseMIBObjects 15 }
+ 
+ cewManagementSecret OBJECT-TYPE
+@@ -1778,7 +1779,7 @@ cewManagementSecret OBJECT-TYPE
+ 
+         This object should be set by the user or network administrator
+         with very high access control using only SNMPv3 protocol with
+-        authentication and privilege options." 
++        authentication and privilege options."
+     ::= { ciscoEnergywiseMIBObjects 16 }
+ 
+ cewEndPointSecret OBJECT-TYPE
+@@ -1798,7 +1799,7 @@ cewEndPointSecret OBJECT-TYPE
+ 
+         This object should be set by the user or network administrator
+         with very high access control using only SNMPv3 protocol with
+-        authentication and privilege options." 
++        authentication and privilege options."
+     ::= { ciscoEnergywiseMIBObjects 17 }
+ 
+ cewDomainSecret OBJECT-TYPE
+@@ -1816,7 +1817,7 @@ cewDomainSecret OBJECT-TYPE
+ 
+         This object should be set by the user or network administrator
+         with very high access control using only SNMPv3 protocol with
+-        authentication and privilege options." 
++        authentication and privilege options."
+     ::= { ciscoEnergywiseMIBObjects 18 }
+ 
+ cewProtocol OBJECT-TYPE
+@@ -1827,7 +1828,7 @@ cewProtocol OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the protocol used for communication
+-        between Cisco EnergyWise entities." 
++        between Cisco EnergyWise entities."
+     ::= { ciscoEnergywiseMIBObjects 19 }
+ 
+ cewAddressType OBJECT-TYPE
+@@ -1839,7 +1840,7 @@ cewAddressType OBJECT-TYPE
+         cewAddress.
+ 
+         Cisco EnergyWise is only valid for the address
+-        type of ipv4(1) and ipv6(2)." 
++        type of ipv4(1) and ipv6(2)."
+     ::= { ciscoEnergywiseMIBObjects 20 }
+ 
+ cewAddress OBJECT-TYPE
+@@ -1848,7 +1849,7 @@ cewAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the IP address of the interface that
+-        sends EnergyWise communication messages." 
++        sends EnergyWise communication messages."
+     ::= { ciscoEnergywiseMIBObjects 21 }
+ 
+ cewPort OBJECT-TYPE
+@@ -1857,7 +1858,7 @@ cewPort OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the port number used for sending and
+-        receiving the Cisco EnergyWise communication messages." 
++        receiving the Cisco EnergyWise communication messages."
+     ::= { ciscoEnergywiseMIBObjects 22 }
+ 
+ cewEnable OBJECT-TYPE
+@@ -1885,7 +1886,7 @@ cewEnable OBJECT-TYPE
+                      level on a Cisco EnergyWise entity.
+ 
+             disable: disables Cisco EnergyWise protocol at a global
+-                     level on a Cisco EnergyWise entity." 
++                     level on a Cisco EnergyWise entity."
+     ::= { ciscoEnergywiseMIBObjects 23 }
+ 
+ cewVersion OBJECT-TYPE
+@@ -1894,7 +1895,7 @@ cewVersion OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the current version of the Cisco
+-        EnergyWise software running on a Cisco Energywise Entity." 
++        EnergyWise software running on a Cisco Energywise Entity."
+     ::= { ciscoEnergywiseMIBObjects 24 }
+ 
+ cewDeviceTotalUsage OBJECT-TYPE
+@@ -1905,7 +1906,7 @@ cewDeviceTotalUsage OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the sum of the cewEntEnergyUsage of the
+         current Cisco EnergyWise entity and the cewEntEnergyUsage of
+-        all its children." 
++        all its children."
+     ::= { ciscoEnergywiseMIBObjects 25 }
+ 
+ cewDeviceTotalUsageUnits OBJECT-TYPE
+@@ -1915,7 +1916,7 @@ cewDeviceTotalUsageUnits OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the units of power for
+-        cewDeviceTotalUsage." 
++        cewDeviceTotalUsage."
+     ::= { ciscoEnergywiseMIBObjects 26 }
+ 
+ cewDeviceType OBJECT-TYPE
+@@ -1924,7 +1925,7 @@ cewDeviceType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the type of the Cisco EnergyWise
+-        device." 
++        device."
+     ::= { ciscoEnergywiseMIBObjects 27 }
+ 
+ cewAllowSet OBJECT-TYPE
+@@ -1933,19 +1934,19 @@ cewAllowSet OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "When this object is set to true, the cli, energywise allow
+-        query set is activated for the Cisco Energywise Entity. 
++        query set is activated for the Cisco Energywise Entity.
+ 
+         When its set to false, the user will be prevented from setting
+-        the parameters from the query." 
++        the parameters from the query."
+     ::= { ciscoEnergywiseMIBObjects 28 }
+ 
+ cewNeighborLevelTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CewNeighborLevelEntry 
++    SYNTAX          SEQUENCE OF CewNeighborLevelEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table lists the power usage at each level for each
+-        Cisco EnergyWise neighbor entity. 
++        Cisco EnergyWise neighbor entity.
+ 
+         This table has an expansion dependent relationship on the
+         cewNeighborTable, containing rows describing each level for the
+@@ -1971,7 +1972,7 @@ cewNeighborLevelEntry OBJECT-TYPE
+     INDEX           {
+                         cewNeighborIndex,
+                         cewNeighborLevelIndex
+-                    } 
++                    }
+     ::= { cewNeighborLevelTable 1 }
+ 
+ CewNeighborLevelEntry ::= SEQUENCE {
+@@ -1987,7 +1988,7 @@ cewNeighborLevelIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the level for which this neighbor
+-        describes the power usage." 
++        describes the power usage."
+     ::= { cewNeighborLevelEntry 1 }
+ 
+ cewNeighborLevelMaxUsage OBJECT-TYPE
+@@ -1996,7 +1997,7 @@ cewNeighborLevelMaxUsage OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the maximum power usage for the
+-        Cisco EnergyWise neighbor at the particular level." 
++        Cisco EnergyWise neighbor at the particular level."
+     ::= { cewNeighborLevelEntry 2 }
+ 
+ cewNeighborLevelDeltaUsage OBJECT-TYPE
+@@ -2007,7 +2008,7 @@ cewNeighborLevelDeltaUsage OBJECT-TYPE
+         "This object indicates the delta; that is the difference between
+         the current cewNeighborEnergyUsage and the
+         cewNeighborLevelMaxUsage value of the Cisco EnergyWise neighbor
+-        at a level." 
++        at a level."
+     ::= { cewNeighborLevelEntry 3 }
+ 
+ cewNeighborLevelUnits OBJECT-TYPE
+@@ -2017,9 +2018,9 @@ cewNeighborLevelUnits OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the Cisco EnergyWise power units for
+         cewNeighborLevelMaxUsage
+-        cewNeighborLevelDeltaUsage" 
++        cewNeighborLevelDeltaUsage"
+     ::= { cewNeighborLevelEntry 4 }
+- 
++
+ 
+ 
+ -- Notifications
+@@ -2054,7 +2055,7 @@ cewNeighborDeleted NOTIFICATION-TYPE
+         Cisco EnergyWise entity neighbor is deleted.  A neighbor can
+         be deleted in the following ways:
+ 
+-        1. The neighbor lost its connection with the current Cisco 
++        1. The neighbor lost its connection with the current Cisco
+         EnergyWise entity.
+ 
+         2. The management station deletes a neighbor entry.
+@@ -2098,8 +2099,8 @@ ciscoEnergywiseMIBFullCompliance MODULE-COMPLIANCE
+     STATUS          deprecated
+     DESCRIPTION
+         "When this MIB is implemented with support for
+-        read-create, then such an implementation can 
+-        claim full compliance. Such devices can then 
++        read-create, then such an implementation can
++        claim full compliance. Such devices can then
+         be both monitored and configured with this MIB."
+     MODULE          -- this module
+     MANDATORY-GROUPS {
+@@ -2135,8 +2136,8 @@ ciscoEnergywiseMIBReadOnlyCompliance MODULE-COMPLIANCE
+     STATUS          deprecated
+     DESCRIPTION
+         "When this MIB is implemented without support for
+-        read-create (i.e. in read-only mode), then such an 
+-        implementation can claim read-only compliance.  Such a 
++        read-create (i.e. in read-only mode), then such an
++        implementation can claim read-only compliance.  Such a
+         device can then be monitored but can not be configured
+         with this MIB."
+     MODULE          -- this module
+@@ -2211,8 +2212,8 @@ ciscoEnergywiseMIBFullComplianceRev1 MODULE-COMPLIANCE
+     STATUS          deprecated
+     DESCRIPTION
+         "When this MIB is implemented with support for
+-        read-create, then such an implementation can 
+-        claim full compliance. Such devices can then 
++        read-create, then such an implementation can
++        claim full compliance. Such devices can then
+         be both monitored and configured with this MIB."
+     MODULE          -- this module
+     MANDATORY-GROUPS {
+@@ -2251,9 +2252,9 @@ ciscoEnergywiseMIBReadOnlyComplianceRev1 MODULE-COMPLIANCE
+     STATUS          deprecated
+     DESCRIPTION
+         "When this MIB is implemented without support for
+-        read-create (i.e. in read-only mode), then such an 
+-        implementation can claim read-only compliance.  Such a 
+-        device can then be monitored but can not be configured 
++        read-create (i.e. in read-only mode), then such an
++        implementation can claim read-only compliance.  Such a
++        device can then be monitored but can not be configured
+         with this MIB."
+     MODULE          -- this module
+     MANDATORY-GROUPS {
+@@ -2370,8 +2371,8 @@ ciscoEnergywiseMIBFullComplianceRev2 MODULE-COMPLIANCE
+     STATUS          deprecated
+     DESCRIPTION
+         "When this MIB is implemented with support for
+-        read-create, then such an implementation can 
+-        claim full compliance. Such devices can then 
++        read-create, then such an implementation can
++        claim full compliance. Such devices can then
+         be both monitored and configured with this MIB."
+     MODULE          -- this module
+     MANDATORY-GROUPS {
+@@ -2413,9 +2414,9 @@ ciscoEnergywiseMIBReadOnlyComplianceRev2 MODULE-COMPLIANCE
+     STATUS          deprecated
+     DESCRIPTION
+         "When this MIB is implemented without support for
+-        read-create (i.e. in read-only mode), then such an 
+-        implementation can claim read-only compliance.  Such a 
+-        device can then be monitored but can not be configured 
++        read-create (i.e. in read-only mode), then such an
++        implementation can claim read-only compliance.  Such a
++        device can then be monitored but can not be configured
+         with this MIB."
+     MODULE          -- this module
+     MANDATORY-GROUPS {
+@@ -2539,8 +2540,8 @@ ciscoEnergywiseMIBFullComplianceRev3 MODULE-COMPLIANCE
+     STATUS          deprecated
+     DESCRIPTION
+         "When this MIB is implemented with support for
+-        read-create, then such an implementation can 
+-        claim full compliance. Such devices can then 
++        read-create, then such an implementation can
++        claim full compliance. Such devices can then
+         be both monitored and configured with this MIB."
+     MODULE          -- this module
+     MANDATORY-GROUPS {
+@@ -2584,9 +2585,9 @@ ciscoEnergywiseMIBReadOnlyComplianceRev3 MODULE-COMPLIANCE
+     STATUS          deprecated
+     DESCRIPTION
+         "When this MIB is implemented without support for
+-        read-create (i.e. in read-only mode), then such an 
+-        implementation can claim read-only compliance.  Such a 
+-        device can then be monitored but can not be configured 
++        read-create (i.e. in read-only mode), then such an
++        implementation can claim read-only compliance.  Such a
++        device can then be monitored but can not be configured
+         with this MIB."
+     MODULE          -- this module
+     MANDATORY-GROUPS {
+@@ -2712,8 +2713,8 @@ ciscoEnergywiseMIBFullComplianceRev4 MODULE-COMPLIANCE
+     STATUS          current
+     DESCRIPTION
+         "When this MIB is implemented with support for
+-        read-create, then such an implementation can 
+-        claim full compliance. Such devices can then 
++        read-create, then such an implementation can
++        claim full compliance. Such devices can then
+         be both monitored and configured with this MIB."
+     MODULE          -- this module
+     MANDATORY-GROUPS {
+@@ -2758,9 +2759,9 @@ ciscoEnergywiseMIBReadOnlyComplianceRev4 MODULE-COMPLIANCE
+     STATUS          current
+     DESCRIPTION
+         "When this MIB is implemented without support for
+-        read-create (i.e. in read-only mode), then such an 
+-        implementation can claim read-only compliance.  Such a 
+-        device can then be monitored but can not be configured 
++        read-create (i.e. in read-only mode), then such an
++        implementation can claim read-only compliance.  Such a
++        device can then be monitored but can not be configured
+         with this MIB."
+     MODULE          -- this module
+     MANDATORY-GROUPS {

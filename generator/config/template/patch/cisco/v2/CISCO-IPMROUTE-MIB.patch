@@ -1,0 +1,130 @@
+diff --git a/mibs/cisco/cat3750/v2/CISCO-IPMROUTE-MIB.my b/mibs/cisco/cat3750/v2/CISCO-IPMROUTE-MIB.my
+index 203bae0..0137638 100644
+--- a/mibs/cisco/cat3750/v2/CISCO-IPMROUTE-MIB.my
++++ b/mibs/cisco/cat3750/v2/CISCO-IPMROUTE-MIB.my
+@@ -8,7 +8,7 @@
+ --
+ -- *****************************************************************
+ 
+--- Caution: This MIB is temporary and experimental.  In the future it 
++-- Caution: This MIB is temporary and experimental.  In the future it
+ -- can/will be removed from products, perhaps with short notice, in
+ -- favor of more standard or generic MIBs.  Application developers
+ -- should not depend on long-term access to this MIB.
+@@ -33,15 +33,16 @@ IMPORTS
+ 		FROM SNMPv2-CONF
+         TimeStamp,
+         RowStatus,
+-	TruthValue
++	TruthValue,
++        DisplayString
+ 		FROM SNMPv2-TC
+-	ipMRouteEntry, 
++	ipMRouteEntry,
+         ipMRouteNextHopEntry,
+         ipMRouteInterfaceEntry
+ 		FROM IPMROUTE-STD-MIB
+         CounterBasedGauge64
+                 FROM HCNUM-TC
+-	ciscoExperiment                  
++	ciscoExperiment
+ 		FROM CISCO-SMI;
+ 
+ ciscoIpMRouteMIB MODULE-IDENTITY
+@@ -68,7 +69,7 @@ ciscoIpMRouteMIB MODULE-IDENTITY
+             "Add ciscoIpMRouteNumberOfEntries. Also add 64-bit
+             counters to represent information for high speed
+             interfaces like OC-192. Deprecate ciscoIpMRouteBps in
+-            favour of the 64-bit counter ciscoIpMRouteBps2. 
++            favour of the 64-bit counter ciscoIpMRouteBps2.
+             ciscoIpMouteMetric deprecated in favour of
+             ciscoIpMouteMetric2 to correctly represent a 32-bit
+             unsigned metric value."
+@@ -111,7 +112,7 @@ ciscoIpMRouteTable OBJECT-TYPE
+     DESCRIPTION
+             "The (conceptual) table containing multicast routing
+             information for IP datagrams sent by particular sources to
+-            the IP multicast groups known to this router. This table is 
++            the IP multicast groups known to this router. This table is
+             augmented to the ipMRouteTable."
+     ::= { ciscoIpMRoute 2 }
+ 
+@@ -123,7 +124,7 @@ ciscoIpMRouteEntry OBJECT-TYPE
+             "An entry (conceptual row) containing the multicast routing
+             information for IP datagrams from a particular source and
+             addressed to a particular IP multicast group address."
+-    AUGMENTS { ipMRouteEntry } 
++    AUGMENTS { ipMRouteEntry }
+     ::= { ciscoIpMRouteTable 1 }
+ 
+ CiscoIpMRouteEntry ::= SEQUENCE {
+@@ -391,7 +392,7 @@ ciscoIpMRouteNextHopEntry OBJECT-TYPE
+ 
+ CiscoIpMRouteNextHopEntry ::= SEQUENCE {
+     ciscoIpMRouteNextHopOutLimit  Gauge32,
+-    ciscoIpMRouteNextHopMacHdr    OCTET STRING,
++    ciscoIpMRouteNextHopMacHdr    DisplayString,
+     ciscoIpMRouteNextHopPkts      Counter64
+ }
+ 
+@@ -406,7 +407,7 @@ ciscoIpMRouteNextHopOutLimit OBJECT-TYPE
+     ::= { ciscoIpMRouteNextHopEntry 9 }
+ 
+ ciscoIpMRouteNextHopMacHdr OBJECT-TYPE
+-    SYNTAX     OCTET STRING
++    SYNTAX     DisplayString
+     MAX-ACCESS read-only
+     STATUS     current
+     DESCRIPTION
+@@ -421,7 +422,7 @@ ciscoIpMRouteNextHopPkts OBJECT-TYPE
+     DESCRIPTION
+             "The number of packets which have been forwarded using
+             this route. This object is a 64-bit version of
+-            ipMRouteNextHopPkts." 
++            ipMRouteNextHopPkts."
+     ::= { ciscoIpMRouteNextHopEntry 11 }
+ 
+ 
+@@ -632,12 +633,12 @@ ciscoIpMRouteIfHCOutMcastPkts OBJECT-TYPE
+ 
+ ciscoIpMRouteNotifications OBJECT IDENTIFIER ::= { ciscoIpMRouteMIB 3 }
+ 
+--- the following two OBJECT IDENTIFIERS are used to define SNMPv2 
++-- the following two OBJECT IDENTIFIERS are used to define SNMPv2
+ -- Notifications that are backward compatible with SNMPv1 Traps.
+ 
+-ciscoIpMRouteMissingHeartBeatsNotificationPrefix OBJECT IDENTIFIER 
++ciscoIpMRouteMissingHeartBeatsNotificationPrefix OBJECT IDENTIFIER
+     ::= { ciscoIpMRouteNotifications 1 }
+-ciscoIpMRouteMissingHeartBeatsNotifications OBJECT IDENTIFIER 
++ciscoIpMRouteMissingHeartBeatsNotifications OBJECT IDENTIFIER
+     ::= { ciscoIpMRouteMissingHeartBeatsNotificationPrefix 0 }
+ 
+ ciscoIpMRouteMissingHeartBeats NOTIFICATION-TYPE
+@@ -715,7 +716,7 @@ ciscoIpMRouteMIBComplianceV12R28S MODULE-COMPLIANCE
+ -- units of conformance
+ 
+ ciscoIpMRouteMIBGroup OBJECT-GROUP
+-    OBJECTS { 
++    OBJECTS {
+               ciscoIpMRoutePruneFlag,
+               ciscoIpMRouteSparseFlag,
+               ciscoIpMRouteConnectedFlag,
+@@ -739,7 +740,7 @@ ciscoIpMRouteMIBGroup OBJECT-GROUP
+     ::= { ciscoIpMRouteMIBGroups 1 }
+ 
+ ciscoIpMRouteMIBGroupV11R01 OBJECT-GROUP
+-    OBJECTS { 
++    OBJECTS {
+               ciscoIpMRoutePruneFlag,
+               ciscoIpMRouteSparseFlag,
+               ciscoIpMRouteConnectedFlag,
+@@ -782,7 +783,7 @@ ciscoIpMRouteMIBHeartBeatGroup OBJECT-GROUP
+     ::= { ciscoIpMRouteMIBGroups 3 }
+ 
+ ciscoIpMRouteMIBGroupV12R00S OBJECT-GROUP
+-    OBJECTS { 
++    OBJECTS {
+               ciscoIpMRouteNumberOfEntries,
+               ciscoIpMRoutePruneFlag,
+               ciscoIpMRouteSparseFlag,

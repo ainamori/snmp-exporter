@@ -1,0 +1,114 @@
+diff --git a/mibs/cisco/cat3750/v1/OLD-CISCO-CHASSIS-MIB-V1SMI.my b/mibs/cisco/cat3750/v1/OLD-CISCO-CHASSIS-MIB-V1SMI.my
+index fd0bb3d..6e74c02 100644
+--- a/mibs/cisco/cat3750/v1/OLD-CISCO-CHASSIS-MIB-V1SMI.my
++++ b/mibs/cisco/cat3750/v1/OLD-CISCO-CHASSIS-MIB-V1SMI.my
+@@ -619,7 +619,7 @@ chassisType OBJECT-TYPE
+ 
+ chassisVersion OBJECT-TYPE
+     SYNTAX DisplayString
+---    Rsyntax OCTET STRING
++--    Rsyntax DisplayString
+     ACCESS read-only
+     STATUS deprecated
+     DESCRIPTION
+@@ -629,7 +629,7 @@ chassisVersion OBJECT-TYPE
+ 
+ chassisId OBJECT-TYPE
+     SYNTAX DisplayString
+---    Rsyntax OCTET STRING
++--    Rsyntax DisplayString
+     ACCESS read-write
+     STATUS deprecated
+     DESCRIPTION
+@@ -640,7 +640,7 @@ chassisId OBJECT-TYPE
+ 
+ romVersion OBJECT-TYPE
+     SYNTAX DisplayString
+---    Rsyntax OCTET STRING
++--    Rsyntax DisplayString
+     ACCESS read-only
+     STATUS deprecated
+     DESCRIPTION
+@@ -649,7 +649,7 @@ romVersion OBJECT-TYPE
+ 
+ romSysVersion OBJECT-TYPE
+     SYNTAX DisplayString
+---    Rsyntax OCTET STRING
++--    Rsyntax DisplayString
+     ACCESS read-only
+     STATUS deprecated
+     DESCRIPTION
+@@ -2276,7 +2276,7 @@ cardType OBJECT-TYPE
+ 
+ cardDescr OBJECT-TYPE
+     SYNTAX DisplayString
+---    Rsyntax OCTET STRING
++--    Rsyntax DisplayString
+     ACCESS read-only
+     STATUS deprecated
+     DESCRIPTION
+@@ -2294,7 +2294,7 @@ cardSerial OBJECT-TYPE
+ 
+ cardHwVersion OBJECT-TYPE
+     SYNTAX DisplayString
+---    Rsyntax OCTET STRING
++--    Rsyntax DisplayString
+     ACCESS read-only
+     STATUS deprecated
+     DESCRIPTION
+@@ -2304,7 +2304,7 @@ cardHwVersion OBJECT-TYPE
+ 
+ cardSwVersion OBJECT-TYPE
+     SYNTAX DisplayString
+---    Rsyntax OCTET STRING
++--    Rsyntax DisplayString
+     ACCESS read-only
+     STATUS deprecated
+     DESCRIPTION
+@@ -2318,8 +2318,8 @@ cardSlotNumber OBJECT-TYPE
+     ACCESS read-only
+     STATUS deprecated
+     DESCRIPTION
+-        "Slot number relative to the containing card or 
+-        chassis, or -1 if neither applicable nor 
++        "Slot number relative to the containing card or
++        chassis, or -1 if neither applicable nor
+         determinable."
+     ::= { cardTableEntry 7 }
+ 
+@@ -2360,7 +2360,7 @@ cardSlots OBJECT-TYPE
+     STATUS deprecated
+     DESCRIPTION
+         "Number of slots on this card, or 0 if no
+-        slots or not applicable, or -1 if not 
++        slots or not applicable, or -1 if not
+         determinable."
+     ::= { cardTableEntry 10 }
+ 
+@@ -2420,7 +2420,7 @@ cardIfPortNumber OBJECT-TYPE
+     ACCESS read-only
+     STATUS deprecated
+     DESCRIPTION
+-        "Chassis port number, unique per port on a 
++        "Chassis port number, unique per port on a
+          given card if available. If cardIfPortNumber is not
+          applicable to the card, then the object instance
+          won't be populated"
+@@ -2431,7 +2431,7 @@ cardIfCardIndex OBJECT-TYPE
+     ACCESS read-only
+     STATUS deprecated
+     DESCRIPTION
+-        "cardIndex of the card in the Chassis 
++        "cardIndex of the card in the Chassis
+          cardTable which contains this interface, or -1 if
+          not applicable."
+     ::= { cardIfIndexEntry 4 }
+@@ -2490,7 +2490,7 @@ chassisPartner OBJECT-TYPE
+     ACCESS read-only
+     STATUS deprecated
+     DESCRIPTION
+-        "Used to determine if this is a partner 
++        "Used to determine if this is a partner
+          variant of a product."
+     ::= { chassis 14 }
+ 

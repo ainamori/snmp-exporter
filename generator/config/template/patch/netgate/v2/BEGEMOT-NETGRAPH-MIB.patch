@@ -1,0 +1,46 @@
+diff --git a/mibs/netgate/pfsense/v2/BEGEMOT-NETGRAPH.txt b/mibs/netgate/pfsense/v2/BEGEMOT-NETGRAPH.txt
+index c53d3f6..8359cab 100644
+--- a/mibs/netgate/pfsense/v2/BEGEMOT-NETGRAPH.txt
++++ b/mibs/netgate/pfsense/v2/BEGEMOT-NETGRAPH.txt
+@@ -36,7 +36,7 @@ BEGEMOT-NETGRAPH-MIB DEFINITIONS ::= BEGIN
+ IMPORTS
+     MODULE-IDENTITY, OBJECT-TYPE, Counter32, Unsigned32
+ 	FROM SNMPv2-SMI
+-    TEXTUAL-CONVENTION, TruthValue
++    TEXTUAL-CONVENTION, TruthValue, DisplayString
+ 	FROM SNMPv2-TC
+     MODULE-COMPLIANCE, OBJECT-GROUP
+ 	FROM SNMPv2-CONF
+@@ -70,28 +70,28 @@ NgTypeName ::= TEXTUAL-CONVENTION
+     STATUS	current
+     DESCRIPTION
+ 	"Name of a netgraph type."
+-    SYNTAX	OCTET STRING (SIZE(1..31))
++    SYNTAX	DisplayString (SIZE(1..31))
+ 
+ NgNodeName ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "31a"
+     STATUS	current
+     DESCRIPTION
+ 	"Name of a netgraph node."
+-    SYNTAX	OCTET STRING (SIZE(1..31))
++    SYNTAX	DisplayString (SIZE(1..31))
+ 
+ NgNodeNameOrEmpty ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "31a"
+     STATUS	current
+     DESCRIPTION
+ 	"Name of a netgraph node."
+-    SYNTAX	OCTET STRING (SIZE(0..31))
++    SYNTAX	DisplayString (SIZE(0..31))
+ 
+ NgHookName ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "31a"
+     STATUS	current
+     DESCRIPTION
+ 	"Name of a netgraph hook."
+-    SYNTAX	OCTET STRING (SIZE(1..31))
++    SYNTAX	DisplayString (SIZE(1..31))
+ 
+ NgNodeId ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "x"

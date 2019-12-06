@@ -1,0 +1,132 @@
+diff --git a/mibs/cisco/cat3750/v2/CISCO-MAC-AUTH-BYPASS-MIB.my b/mibs/cisco/cat3750/v2/CISCO-MAC-AUTH-BYPASS-MIB.my
+index 6b70771..360883b 100644
+--- a/mibs/cisco/cat3750/v2/CISCO-MAC-AUTH-BYPASS-MIB.my
++++ b/mibs/cisco/cat3750/v2/CISCO-MAC-AUTH-BYPASS-MIB.my
+@@ -1,12 +1,12 @@
+ -- *********************************************************************
+ -- CISCO-MAC-AUTH-BYPASS-MIB.my: MAC Authentication Bypass MIB
+---   
++--
+ -- August 2007, Binh Le
+---   
++--
+ -- Copyright (c) 2007-2008 by Cisco Systems Inc.
+---   
++--
+ -- All rights reserved.
+---   
++--
+ -- *******************************************************************
+ 
+ CISCO-MAC-AUTH-BYPASS-MIB DEFINITIONS ::= BEGIN
+@@ -19,7 +19,8 @@ IMPORTS
+     OBJECT-GROUP
+         FROM SNMPv2-CONF
+     MacAddress,
+-    TruthValue
++    TruthValue,
++    DisplayString
+         FROM SNMPv2-TC
+     ifIndex
+         FROM IF-MIB
+@@ -82,7 +83,7 @@ cmabSession  OBJECT IDENTIFIER
+ 
+ 
+ cmabIfConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CmabIfConfigEntry 
++    SYNTAX          SEQUENCE OF CmabIfConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -97,7 +98,7 @@ cmabIfConfigEntry OBJECT-TYPE
+     DESCRIPTION
+         "Entry containing Mac Authentication Bypass configuration for
+         a particular interface."
+-    INDEX           { ifIndex } 
++    INDEX           { ifIndex }
+     ::= { cmabIfConfigTable 1 }
+ 
+ CmabIfConfigEntry ::= SEQUENCE {
+@@ -111,7 +112,7 @@ cmabIfAuthEnabled OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Specifies if MAC Authentication Bypass feature is enabled on
+-        the interface." 
++        the interface."
+     ::= { cmabIfConfigEntry 1 }
+ 
+ cmabIfAuthMethod OBJECT-TYPE
+@@ -129,13 +130,13 @@ cmabIfAuthMethod OBJECT-TYPE
+                     is performed via RADIUS messages.
+ 
+         eap(2)    : communication with authentication server
+-                    is performed via EAP messages." 
++                    is performed via EAP messages."
+     ::= { cmabIfConfigEntry 2 }
+- 
++
+ 
+ 
+ cmabClientInfoTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CmabClientInfoEntry 
++    SYNTAX          SEQUENCE OF CmabClientInfoEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -159,22 +160,22 @@ cmabClientInfoEntry OBJECT-TYPE
+     INDEX           {
+                         ifIndex,
+                         IMPLIED cmabClientSessionId
+-                    } 
++                    }
+     ::= { cmabClientInfoTable 1 }
+ 
+ CmabClientInfoEntry ::= SEQUENCE {
+-        cmabClientSessionId  OCTET STRING,
++        cmabClientSessionId  DisplayString,
+         cmabClientMacAddress MacAddress,
+         cmabClientMabState   INTEGER,
+         cmabClientAuthStatus INTEGER
+ }
+ 
+ cmabClientSessionId OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (1..64))
++    SYNTAX          DisplayString (SIZE  (1..64))
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "A unique identifier of the MAC Authentication Bypass session." 
++        "A unique identifier of the MAC Authentication Bypass session."
+     ::= { cmabClientInfoEntry 1 }
+ 
+ cmabClientMacAddress OBJECT-TYPE
+@@ -182,7 +183,7 @@ cmabClientMacAddress OBJECT-TYPE
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+-        "The MAC address of the MAB client." 
++        "The MAC address of the MAB client."
+     ::= { cmabClientInfoEntry 2 }
+ 
+ cmabClientMabState OBJECT-TYPE
+@@ -208,7 +209,7 @@ cmabClientMabState OBJECT-TYPE
+ 
+            authorizing: Authorization is in progress.
+ 
+-           terminate  : Authorization is completed." 
++           terminate  : Authorization is completed."
+     ::= { cmabClientInfoEntry 3 }
+ 
+ cmabClientAuthStatus OBJECT-TYPE
+@@ -223,9 +224,9 @@ cmabClientAuthStatus OBJECT-TYPE
+ 
+         authorized  : the session is authorized.
+ 
+-        unauthorized: the session is not authorized." 
++        unauthorized: the session is not authorized."
+     ::= { cmabClientInfoEntry 4 }
+- 
++
+ 
+ -- Conformance
+ 

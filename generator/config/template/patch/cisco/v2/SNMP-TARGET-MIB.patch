@@ -1,0 +1,32 @@
+diff --git a/mibs/cisco/cat3750/v2/SNMP-TARGET-MIB.my b/mibs/cisco/cat3750/v2/SNMP-TARGET-MIB.my
+index c1e0cd2..83a336f 100644
+--- a/mibs/cisco/cat3750/v2/SNMP-TARGET-MIB.my
++++ b/mibs/cisco/cat3750/v2/SNMP-TARGET-MIB.my
+@@ -15,7 +15,8 @@
+        TimeInterval,
+        RowStatus,
+        StorageType,
+-       TestAndIncr
++       TestAndIncr,
++       DisplayString
+            FROM SNMPv2-TC
+ 
+        SnmpSecurityModel,
+@@ -156,7 +157,7 @@
+ 
+             The use of a tag value to select table entries is
+             application and MIB specific."
+-       SYNTAX       OCTET STRING (SIZE (0..255))
++       SYNTAX       DisplayString (SIZE (0..255))
+ 
+    SnmpTagList ::= TEXTUAL-CONVENTION
+        DISPLAY-HINT "255a"
+@@ -234,7 +235,7 @@
+             will provide one or more tag values, and any entry
+             which contains some combination of these tag values
+             will be selected."
+-       SYNTAX       OCTET STRING (SIZE (0..255))
++       SYNTAX       DisplayString (SIZE (0..255))
+ 
+    --
+    --

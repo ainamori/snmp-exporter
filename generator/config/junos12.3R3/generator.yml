@@ -1,0 +1,18 @@
+# ------------------------------------------------
+# junos OS 12.3R12
+# ------------------------------------------------
+modules:
+  junos_12_3R12:
+    version: 2
+    retries: 3
+    timeout: '10s'
+    auth:
+      community: 'public'
+    walk: 
+      - sysUpTime
+      - sysObjectID
+      - interfaces
+      - ifXTable
+      - 1.3.6.1.4.1.2636
+    #lookups:
+

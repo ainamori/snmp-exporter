@@ -1,0 +1,99 @@
+diff --git a/mibs/netgate/pfsense/v2/BEGEMOT-WIRELESS-MIB.txt b/mibs/netgate/pfsense/v2/BEGEMOT-WIRELESS-MIB.txt
+index 3185cf5..e585b4b 100644
+--- a/mibs/netgate/pfsense/v2/BEGEMOT-WIRELESS-MIB.txt
++++ b/mibs/netgate/pfsense/v2/BEGEMOT-WIRELESS-MIB.txt
+@@ -506,9 +506,9 @@ wlanIfaceConfigEntry OBJECT-TYPE
+ 
+ WlanIfaceConfigEntry ::= SEQUENCE {
+     wlanIfacePacketBurst			TruthValue,
+-    wlanIfaceCountryCode			OCTET STRING,
++    wlanIfaceCountryCode			DisplayString,
+     wlanIfaceRegDomain				INTEGER,
+-    wlanIfaceDesiredSsid			OCTET STRING,
++    wlanIfaceDesiredSsid			DisplayString,
+     wlanIfaceDesiredChannel			INTEGER,
+     wlanIfaceDynamicFreqSelection		TruthValue,
+     wlanIfaceFastFrames				TruthValue,
+@@ -565,7 +565,7 @@ wlanIfacePacketBurst OBJECT-TYPE
+     ::= { wlanIfaceConfigEntry 1 }
+ 
+ wlanIfaceCountryCode OBJECT-TYPE
+-    SYNTAX	OCTET STRING (SIZE(3))
++    SYNTAX	DisplayString (SIZE(3))
+     MAX-ACCESS	read-write
+     STATUS	current
+     DESCRIPTION
+@@ -596,7 +596,7 @@ wlanIfaceRegDomain OBJECT-TYPE
+     ::= { wlanIfaceConfigEntry 3 }
+ 
+ wlanIfaceDesiredSsid OBJECT-TYPE
+-    SYNTAX	OCTET STRING (SIZE(0..32))
++    SYNTAX	DisplayString (SIZE(0..32))
+     MAX-ACCESS	read-write
+     STATUS	current
+     DESCRIPTION
+@@ -1477,7 +1477,7 @@ wlanScanResultsEntry OBJECT-TYPE
+     ::= { wlanScanResultsTable 1 }
+ 
+ WlanScanResultsEntry ::= SEQUENCE {
+-    wlanScanResultID				OCTET STRING,
++    wlanScanResultID				DisplayString,
+     wlanScanResultBssid				MacAddress,
+     wlanScanResultChannel			INTEGER,
+     wlanScanResultRate				INTEGER,
+@@ -1487,7 +1487,7 @@ WlanScanResultsEntry ::= SEQUENCE {
+ }
+ 
+ wlanScanResultID OBJECT-TYPE
+-    SYNTAX	OCTET STRING (SIZE(0..32))
++    SYNTAX	DisplayString (SIZE(0..32))
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -3027,8 +3027,8 @@ wlanWepKeyEntry OBJECT-TYPE
+ WlanWepKeyEntry ::= SEQUENCE {
+     wlanWepKeyID				INTEGER,
+     wlanWepKeyLength				INTEGER,
+-    wlanWepKeySet				OCTET STRING,
+-    wlanWepKeyHash				OCTET STRING,
++    wlanWepKeySet				DisplayString,
++    wlanWepKeyHash				DisplayString,
+     wlanWepKeyStatus				RowStatus
+ }
+ 
+@@ -3049,7 +3049,7 @@ wlanWepKeyLength OBJECT-TYPE
+     ::= { wlanWepKeyEntry 2 }
+ 
+ wlanWepKeySet OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-write
+     STATUS	current
+     DESCRIPTION
+@@ -3058,7 +3058,7 @@ wlanWepKeySet OBJECT-TYPE
+     ::= { wlanWepKeyEntry 3 }
+ 
+ wlanWepKeyHash OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -3257,7 +3257,7 @@ wlanMeshInterfaceEntry OBJECT-TYPE
+     ::= { wlanMeshInterfaceTable 1 }
+ 
+ WlanMeshInterfaceEntry ::= SEQUENCE {
+-    wlanMeshId					OCTET STRING,
++    wlanMeshId					DisplayString,
+     wlanMeshTTL					INTEGER,
+     wlanMeshPeeringEnabled			TruthValue,
+     wlanMeshForwardingEnabled			TruthValue,
+@@ -3267,7 +3267,7 @@ WlanMeshInterfaceEntry ::= SEQUENCE {
+ }
+ 
+ wlanMeshId OBJECT-TYPE
+-    SYNTAX	OCTET STRING (SIZE(1..32))
++    SYNTAX	DisplayString (SIZE(1..32))
+     MAX-ACCESS	read-write
+     STATUS	current
+     DESCRIPTION

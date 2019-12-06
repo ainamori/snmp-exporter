@@ -1,0 +1,569 @@
+diff --git a/mibs/cisco/wlc/v2/CISCO-LWAPP-WLAN-SECURITY-MIB.my b/mibs/cisco/wlc/v2/CISCO-LWAPP-WLAN-SECURITY-MIB.my
+index 702b7ae..39c2a6a 100644
+--- a/mibs/cisco/wlc/v2/CISCO-LWAPP-WLAN-SECURITY-MIB.my
++++ b/mibs/cisco/wlc/v2/CISCO-LWAPP-WLAN-SECURITY-MIB.my
+@@ -1,7 +1,7 @@
+ -- *******************************************************************
+ -- CISCO-LWAPP-WLAN-SECURITY-MIB.my
+ -- December 2005, Bharat Biswal, Prasanna Viswakumar
+---   
++--
+ -- Copyright (c) 2005-2006, 2015-2017 by Cisco Systems, Inc.
+ -- All rights reserved.
+ -- *******************************************************************
+@@ -16,7 +16,8 @@ IMPORTS
+     MODULE-COMPLIANCE,
+     OBJECT-GROUP
+         FROM SNMPv2-CONF
+-    TruthValue
++    TruthValue,
++    DisplayString
+         FROM SNMPv2-TC
+     CLSecEncryptType,
+     CLSecKeyFormat
+@@ -46,21 +47,21 @@ ciscoLwappWlanSecurityMIB MODULE-IDENTITY
+         tunnel from Cisco Light-weight LWAPP Access Points.
+ 
+         Information provided by this MIB is for WLAN security
+-        related features as specified in the CCKM, CKIP 
+-        specifications. 
++        related features as specified in the CCKM, CKIP
++        specifications.
+ 
+-        The relationship between the controller and the 
++        The relationship between the controller and the
+         LWAPP APs is depicted as follows:
+ 
+-              +......+     +......+     +......+ 
++              +......+     +......+     +......+
+               +      +     +      +     +      +
+               +  CC  +     +  CC  +     +  CC  +
+               +      +     +      +     +      +
+               +......+     +......+     +......+
+-                ..            .             .   
+-                ..            .             .   
+-               .  .            .             .  
+-              .    .            .             . 
++                ..            .             .
++                ..            .             .
++               .  .            .             .
++              .    .            .             .
+              .      .            .             .
+             .        .            .             .
+         +......+ +......+     +......+      +......+
+@@ -135,7 +136,7 @@ ciscoLwappWlanSecurityMIB MODULE-IDENTITY
+ 
+         The central entity that terminates the LWAPP protocol
+         tunnel from the LWAPP APs.  Throughout this MIB,
+-        this entity also referred to as 'controller'. 
++        this entity also referred to as 'controller'.
+ 
+         Cisco Centralized Key Management ( CCKM )
+ 
+@@ -252,7 +253,7 @@ ciscoLwappWlanSecurityMIB MODULE-IDENTITY
+         Protected Management Frame (PFM)
+ 
+         Wi-Fi certified WPA2 with Protected Management Frames
+-        provides a WPA2-level of protection for unicast 
++        provides a WPA2-level of protection for unicast
+         and multicast management action frames. Unicast management
+         actions frames are protected from both eavesdropping and
+         forging, and multicast management action frames are protected
+@@ -263,9 +264,9 @@ ciscoLwappWlanSecurityMIB MODULE-IDENTITY
+ 
+         Authentication, Authorization, and Accounting (AAA)
+ 
+-        Authentication, authorization, and accounting (AAA) is a term 
++        Authentication, authorization, and accounting (AAA) is a term
+         for a framework for intelligently controlling access to computer
+-        resources, enforcing policies, auditing usage, and providing the 
++        resources, enforcing policies, auditing usage, and providing the
+         information necessary to bill for services.
+ 
+         Remote Authentication Dial In User Service (RADIUS)
+@@ -281,7 +282,7 @@ ciscoLwappWlanSecurityMIB MODULE-IDENTITY
+         Physical Layer ( PHY ) Specifications,
+         Amendment 6, MAC Security Enhancements.
+ 
+-        [2] draft-obara-capwap-lwapp-00.txt, IETF Light 
++        [2] draft-obara-capwap-lwapp-00.txt, IETF Light
+         Weight Access Point Protocol"
+     REVISION        "201705170000Z"
+     DESCRIPTION
+@@ -329,12 +330,12 @@ clwsAaaConfig  OBJECT IDENTIFIER
+ -- ********************************************************************
+ 
+ cLWSecDot11EssCckmTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLWSecDot11EssCckmEntry 
++    SYNTAX          SEQUENCE OF CLWSecDot11EssCckmEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table represents the CCKM configuration
+-        for the WLANs configured on this controller.  
++        for the WLANs configured on this controller.
+ 
+         There exist a row in this table corresponding to each
+         row representing a WLAN in cLWlanConfigTable.  The
+@@ -350,7 +351,7 @@ cLWSecDot11EssCckmEntry OBJECT-TYPE
+         "Each entry represents a conceptual row in
+         cLWSecDot11EssCckmTable and uniquely identified
+         by cLWlanIndex."
+-    INDEX           { cLWlanIndex } 
++    INDEX           { cLWlanIndex }
+     ::= { cLWSecDot11EssCckmTable 1 }
+ 
+ CLWSecDot11EssCckmEntry ::= SEQUENCE {
+@@ -361,7 +362,7 @@ CLWSecDot11EssCckmEntry ::= SEQUENCE {
+         cLWSecDot11EssCckmWpa2EncType  CLSecEncryptType,
+         cLWSecDot11EssCckmKeyMgmtMode  BITS,
+         cLWSecDot11EssPskFmt           CLSecKeyFormat,
+-        cLWSecDot11EssPsk              OCTET STRING,
++        cLWSecDot11EssPsk              DisplayString,
+         cLWSecDot11EssCckmGtkRandomize TruthValue,
+         cLWSecDot11EssFtEnable         TruthValue,
+         cLWSecDot11EssFtReassocTime    Unsigned32,
+@@ -378,12 +379,12 @@ cLWSecDot11EssCckmWpaSupport OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object  specifies to enable or disable layer-2
+-        security using WPA1 or WPA2.  When this 
++        security using WPA1 or WPA2.  When this
+         object is set to 'true'  layer-2 security is enabled.
+         When this object is set to 'false' layer-2 security
+         is disabled.
+ 
+-        When layer-2 security is enabled, the following objects 
++        When layer-2 security is enabled, the following objects
+         are only applied to environment and can be set.
+ 
+           cLWSecDot11EssCckmWpa1Security
+@@ -392,7 +393,7 @@ cLWSecDot11EssCckmWpaSupport OBJECT-TYPE
+           cLWSecDot11EssCckmWpa2EncType
+           cLWSecDot11EssCckmKeyMgmtMode
+           cLWSecDot11EssCckmGtkRandomize."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLWSecDot11EssCckmEntry 1 }
+ 
+ cLWSecDot11EssCckmWpa1Security OBJECT-TYPE
+@@ -404,9 +405,9 @@ cLWSecDot11EssCckmWpa1Security OBJECT-TYPE
+         is enabled or not.
+                    A value of 'true' indicates that WPA1 security
+         is enabled on the controller.
+-        A value of 'false' indicates that WPA1 security 
++        A value of 'false' indicates that WPA1 security
+         is disabled on the controller."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLWSecDot11EssCckmEntry 2 }
+ 
+ cLWSecDot11EssCckmWpa1EncType OBJECT-TYPE
+@@ -419,7 +420,7 @@ cLWSecDot11EssCckmWpa1EncType OBJECT-TYPE
+         The value populated by this object is applicable
+         only when cLWSecDot11EssCckmWpa1Security populates
+         a value of 'true'."
+-    DEFVAL          { {  } } 
++    DEFVAL          { {  } }
+     ::= { cLWSecDot11EssCckmEntry 3 }
+ 
+ cLWSecDot11EssCckmWpa2Security OBJECT-TYPE
+@@ -431,9 +432,9 @@ cLWSecDot11EssCckmWpa2Security OBJECT-TYPE
+         cckmwpa2 security is enabled or not.
+               A value of 'true' indicates that WPA2 security
+         is enabled on the controller.
+-        A value of 'false' indicates that WPA2 security 
++        A value of 'false' indicates that WPA2 security
+         is disabled on the controller."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLWSecDot11EssCckmEntry 4 }
+ 
+ cLWSecDot11EssCckmWpa2EncType OBJECT-TYPE
+@@ -446,7 +447,7 @@ cLWSecDot11EssCckmWpa2EncType OBJECT-TYPE
+         The value populated by this object is applicable
+         only when cLWSecDot11EssCckmWpa2Security populates
+         a value of 'true'."
+-    DEFVAL          { {  } } 
++    DEFVAL          { {  } }
+     ::= { cLWSecDot11EssCckmEntry 5 }
+ 
+ cLWSecDot11EssCckmKeyMgmtMode OBJECT-TYPE
+@@ -471,7 +472,7 @@ cLWSecDot11EssCckmKeyMgmtMode OBJECT-TYPE
+         The following are the possible key management
+         configurations allowed and accepted by the system.
+ 
+-        dot1x + CCKM 
++        dot1x + CCKM
+         dot1x only
+         CCKM  only
+         PSK   only
+@@ -484,7 +485,7 @@ cLWSecDot11EssCckmKeyMgmtMode OBJECT-TYPE
+         dot1x + 11w
+         CCKM + 11w
+         PSK + 11wPsk"
+-    DEFVAL          { { dot1x } } 
++    DEFVAL          { { dot1x } }
+     ::= { cLWSecDot11EssCckmEntry 6 }
+ 
+ cLWSecDot11EssPskFmt OBJECT-TYPE
+@@ -497,28 +498,28 @@ cLWSecDot11EssPskFmt OBJECT-TYPE
+         the object cLWSecDot11EssCckmPsk.  Note
+         that the key configuration is applicable only
+         when psk is configured as the key management
+-        mechanism through the 
++        mechanism through the
+         cLWSecDot11EssCckmKeyMgmtMode object."
+-    DEFVAL          { default } 
++    DEFVAL          { default }
+     ::= { cLWSecDot11EssCckmEntry 7 }
+ 
+ cLWSecDot11EssPsk OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (8..64))
++    SYNTAX          DisplayString (SIZE  (8..64))
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the authentication pre-shared
+         key in the hex format that is applicable only when
+-        the 'psk' bit is specified in the 
++        the 'psk' bit is specified in the
+         cLWSecDot11EssCckmKeyMgmtMode object.
+ 
+         The length of the key that can be specified for
+         the cLWSecDot11EssPsk object depends on the
+-        value of the cLWSecDot11EssPskFmt object as  
++        value of the cLWSecDot11EssPskFmt object as
+         follows.
+ 
+         'ascii'    8-63 octets
+-        'hex'      32 octets." 
++        'hex'      32 octets."
+     ::= { cLWSecDot11EssCckmEntry 8 }
+ 
+ cLWSecDot11EssCckmGtkRandomize OBJECT-TYPE
+@@ -527,7 +528,7 @@ cLWSecDot11EssCckmGtkRandomize OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the Group Temporal Key(GTK)
+-        used for multicast and broadcast packet encryption 
++        used for multicast and broadcast packet encryption
+         in wpa1 and wpa2 clients.
+ 
+         This object indicates the Group Temporal Key (GTK)
+@@ -539,7 +540,7 @@ cLWSecDot11EssCckmGtkRandomize OBJECT-TYPE
+         (GTK) Randomization is enabled for a WLAN.
+         A value of 'false' indicates that Group Temporal Key
+         (GTK) Randomization is disabled for a WLAN."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLWSecDot11EssCckmEntry 9 }
+ 
+ cLWSecDot11EssFtEnable OBJECT-TYPE
+@@ -550,7 +551,7 @@ cLWSecDot11EssFtEnable OBJECT-TYPE
+         "This object specifies whether fast transition is enabled
+         for particular WLAN.
+         A value of 'true' means that fast transition is enabled and
+-        A value of 'false' means that fast transition is disabled." 
++        A value of 'false' means that fast transition is disabled."
+     ::= { cLWSecDot11EssCckmEntry 10 }
+ 
+ cLWSecDot11EssFtReassocTime OBJECT-TYPE
+@@ -559,7 +560,7 @@ cLWSecDot11EssFtReassocTime OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the fast transition
+-        re-association time." 
++        re-association time."
+     ::= { cLWSecDot11EssCckmEntry 11 }
+ 
+ cLWSecDot11EssFtOverDs OBJECT-TYPE
+@@ -569,10 +570,10 @@ cLWSecDot11EssFtOverDs OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies whether fast transition over
+         distributed system is enabled.
+-        A 'true' value means that fast transition over the 
++        A 'true' value means that fast transition over the
+         distributed system  is enabled.
+-        A 'false' value means fast transition over the 
+-        distributed system is disabled." 
++        A 'false' value means fast transition over the
++        distributed system is disabled."
+     ::= { cLWSecDot11EssCckmEntry 12 }
+ 
+ cLWSecDot11Ess11wPfm OBJECT-TYPE
+@@ -586,7 +587,7 @@ cLWSecDot11Ess11wPfm OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the 802.11w PFM status for a
+         particular WLAN."
+-    DEFVAL          { disabled } 
++    DEFVAL          { disabled }
+     ::= { cLWSecDot11EssCckmEntry 13 }
+ 
+ cLWSecDot11EssRetryTime OBJECT-TYPE
+@@ -596,7 +597,7 @@ cLWSecDot11EssRetryTime OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the 802.11w Security Association(SA)
+-        query retry timeout." 
++        query retry timeout."
+     ::= { cLWSecDot11EssCckmEntry 14 }
+ 
+ cLWSecDot11EssComebackTime OBJECT-TYPE
+@@ -604,7 +605,7 @@ cLWSecDot11EssComebackTime OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the 802.11w association comeback time." 
++        "This object specifies the 802.11w association comeback time."
+     ::= { cLWSecDot11EssCckmEntry 15 }
+ 
+ cLWSecDot11EssFtMode OBJECT-TYPE
+@@ -619,9 +620,9 @@ cLWSecDot11EssFtMode OBJECT-TYPE
+         "This object indicates the  11r status for a wlan
+         cLWSecDot11EssFtMode is set to a value of
+         'adaptive'."
+-    DEFVAL          { adaptive } 
++    DEFVAL          { adaptive }
+     ::= { cLWSecDot11EssCckmEntry 16 }
+- 
++
+ 
+ -- ********************************************************************
+ -- Table to represent CKIP parameters
+@@ -629,22 +630,22 @@ cLWSecDot11EssFtMode OBJECT-TYPE
+ -- ********************************************************************
+ 
+ cLWSecDot11EssCkipTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLWSecDot11EssCkipEntry 
++    SYNTAX          SEQUENCE OF CLWSecDot11EssCkipEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table represents the CKIP parameters of a
+         WLAN.
+ 
+-        This is a new layer-2 security policy similar to 
+-        static WEP.  User can select this policy on a WLAN.  
+-        This policy will be allowed to be configured only when 
++        This is a new layer-2 security policy similar to
++        static WEP.  User can select this policy on a WLAN.
++        This policy will be allowed to be configured only when
+         Aironet Extensions are enabled on the WLAN.
+ 
+-        Once user has selected CKIP he will be given an option 
+-        to : 
+-            1> configure key 
+-            2> select  MMH 
++        Once user has selected CKIP he will be given an option
++        to :
++            1> configure key
++            2> select  MMH
+ 
+         There exist a row in this table corresponding to each
+         row representing a WLAN in cLWlanConfigTable.  The
+@@ -660,7 +661,7 @@ cLWSecDot11EssCkipEntry OBJECT-TYPE
+         "Each entry represents a conceptual row in
+         cLWSecDot11EssCkipTable and uniquely identified
+         by cLWlanIndex."
+-    INDEX           { cLWlanIndex } 
++    INDEX           { cLWlanIndex }
+     ::= { cLWSecDot11EssCkipTable 1 }
+ 
+ CLWSecDot11EssCkipEntry ::= SEQUENCE {
+@@ -668,7 +669,7 @@ CLWSecDot11EssCkipEntry ::= SEQUENCE {
+         cLWSecDot11EssCkipKeyIndex  Unsigned32,
+         cLWSecDot11EssCkipKeyLength INTEGER,
+         cLWSecDot11EssCkipKeyFmt    CLSecKeyFormat,
+-        cLWSecDot11EssCkipKey       OCTET STRING,
++        cLWSecDot11EssCkipKey       DisplayString,
+         cLWSecDot11EssCkipMMHMode   TruthValue,
+         cLWSecDot11EssCkipKPEnable  TruthValue
+ }
+@@ -679,11 +680,11 @@ cLWSecDot11EssCkipSecurity OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object is used to enable to disable layer-2
+-        CKIP as security policy for this WLAN.  When this 
++        CKIP as security policy for this WLAN.  When this
+         object is set to 'true', layer-2 CKIP security is
+         enabled.  When this object is set to 'false',
+         layer-2 CKIP security is disabled."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLWSecDot11EssCkipEntry 1 }
+ 
+ cLWSecDot11EssCkipKeyIndex OBJECT-TYPE
+@@ -694,7 +695,7 @@ cLWSecDot11EssCkipKeyIndex OBJECT-TYPE
+         "This object specifies the key index corresponding
+         to the key being configured.  A value of 0 indicates
+         that the CKIP key hasn't been configured."
+-    DEFVAL          { 0 } 
++    DEFVAL          { 0 }
+     ::= { cLWSecDot11EssCkipEntry 2 }
+ 
+ cLWSecDot11EssCkipKeyLength OBJECT-TYPE
+@@ -709,7 +710,7 @@ cLWSecDot11EssCkipKeyLength OBJECT-TYPE
+         "This object specifies the length of CKIP key in bits
+         that is applicable only when cLWSecDot11EssCkipSecurity
+         is set as 'true'."
+-    DEFVAL          { none } 
++    DEFVAL          { none }
+     ::= { cLWSecDot11EssCkipEntry 3 }
+ 
+ cLWSecDot11EssCkipKeyFmt OBJECT-TYPE
+@@ -720,11 +721,11 @@ cLWSecDot11EssCkipKeyFmt OBJECT-TYPE
+         "This object specifies the type of the key
+         configured through the object
+         cLWSecDot11EssCkipKey."
+-    DEFVAL          { default } 
++    DEFVAL          { default }
+     ::= { cLWSecDot11EssCkipEntry 4 }
+ 
+ cLWSecDot11EssCkipKey OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (5..26))
++    SYNTAX          DisplayString (SIZE  (5..26))
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+@@ -745,15 +746,15 @@ cLWSecDot11EssCkipKey OBJECT-TYPE
+          ascii       5/13  ascii characters for 40/104 bits.
+ 
+          When cLWSecDot11EssCkipKeyFmt is set to 'hex',
+-         cLWSecDot11EssCkipKey can only be set to 
++         cLWSecDot11EssCkipKey can only be set to
+          hexadecimal characters.
+ 
+          To ensure consistency the following objects must be
+          set together.
+             cLWSecDot11EssCkipKeyFmt
+             cLWSecDot11EssCkipKeyIndex
+-            cLWSecDot11EssCkipKeyLength 
+-            cLWSecDot11EssCkipKey." 
++            cLWSecDot11EssCkipKeyLength
++            cLWSecDot11EssCkipKey."
+     ::= { cLWSecDot11EssCkipEntry 5 }
+ 
+ cLWSecDot11EssCkipMMHMode OBJECT-TYPE
+@@ -762,11 +763,11 @@ cLWSecDot11EssCkipMMHMode OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object is used to enable or disable MMH MIC
+-        mode for the CKIP for this WLAN. 
++        mode for the CKIP for this WLAN.
+ 
+         'true' -  MMH MIC mode is enabled
+         'false' -  MMH MIC mode is disabled."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLWSecDot11EssCkipEntry 6 }
+ 
+ cLWSecDot11EssCkipKPEnable OBJECT-TYPE
+@@ -777,11 +778,11 @@ cLWSecDot11EssCkipKPEnable OBJECT-TYPE
+         "This object specifies whether CKIP is enabled.
+         A value of 'true' indicates that the encryption
+         keys will be generated by permuting the static CKIP
+-        key configured through cLWSecDot11EssCkipKey. 
++        key configured through cLWSecDot11EssCkipKey.
+         A value of 'false' indicates that CKIP is disabled."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLWSecDot11EssCkipEntry 7 }
+- 
++
+ 
+ -- ********************************************************************
+ -- Table to represent CISCO WEB-CONDITIONAL-REDIRECT parameters
+@@ -789,12 +790,12 @@ cLWSecDot11EssCkipKPEnable OBJECT-TYPE
+ -- ********************************************************************
+ 
+ cLWSecDot11EssWebPolicyTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLWSecDot11EssWebPolicyEntry 
++    SYNTAX          SEQUENCE OF CLWSecDot11EssWebPolicyEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table represents the conditional web-redirect
+-        parameters for the WLANs configured on this controller.  
++        parameters for the WLANs configured on this controller.
+ 
+         There exist a row in this table corresponding to each
+         row representing a WLAN in cLWlanConfigTable.  The
+@@ -810,7 +811,7 @@ cLWSecDot11EssWebPolicyEntry OBJECT-TYPE
+         "Each entry represents a conceptual row in
+         cLWSecDot11EssWebPolicyTable and uniquely identified
+         by cLWlanIndex."
+-    INDEX           { cLWlanIndex } 
++    INDEX           { cLWlanIndex }
+     ::= { cLWSecDot11EssWebPolicyTable 1 }
+ 
+ CLWSecDot11EssWebPolicyEntry ::= SEQUENCE {
+@@ -825,18 +826,18 @@ cLWSecDot11EssWebPolicyCondRedirect OBJECT-TYPE
+     DESCRIPTION
+         "This object is used to enable or disable conditional redirect.
+ 
+-        When this attribute is 'true', it signifies that conditional 
++        When this attribute is 'true', it signifies that conditional
+         redirect is enabled and redirection of the client is done
+         based on the url-redirect attribute provided by radius server.
+ 
+-        When this attribute is 'false', it signifies that conditional 
+-        redirect is disabled and redirection of the client is not 
+-        done, even if the url-redirect attribute is provided by the 
++        When this attribute is 'false', it signifies that conditional
++        redirect is disabled and redirection of the client is not
++        done, even if the url-redirect attribute is provided by the
+         radius server.
+ 
+         This attribute can be enabled only when 802.1x has been configured
+         as layer-2 security the wlan and web policy is enabled on the wlan."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLWSecDot11EssWebPolicyEntry 1 }
+ 
+ cLWSecDot11EssWebPolicySplashPageWebRedirect OBJECT-TYPE
+@@ -847,21 +848,21 @@ cLWSecDot11EssWebPolicySplashPageWebRedirect OBJECT-TYPE
+         "This object is used to enable or disable splash page web
+         redirect.
+ 
+-        When this attribute is 'true', it signifies that splash page 
++        When this attribute is 'true', it signifies that splash page
+         redirect is enabled and redirection of the client is done
+         based on the url-redirect attribute provided by radius server.
+         The redirect function works only for HTTP traffic.
+         HTTPS redirect is not supported for any of the Web Policies.
+ 
+-        When this attribute is 'false', it signifies that splash page 
+-        redirect is disabled and redirection of the client is not 
++        When this attribute is 'false', it signifies that splash page
++        redirect is disabled and redirection of the client is not
+         done.
+ 
+         This attribute can be enabled only when 802.1x or WPA1+WPA2
+         has been configured as layer-2 security on the wlan."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLWSecDot11EssWebPolicyEntry 2 }
+- 
++
+ 
+ 
+ cLWSecAaaRadiusAuthCallStationIdType OBJECT-TYPE
+@@ -897,7 +898,7 @@ cLWSecAaaRadiusAuthCallStationIdType OBJECT-TYPE
+         apMacEthAddress(10)- Sets Called Station Id Type to the AP's Ethernet MAC address.
+         apMacEthAddressSsid(11)- Sets Called Station Id Type to the format <AP Ethernet MAC address>:<SSID>.
+         apLabelAddress(12)- Sets Call Station Id Type to the AP MAC address printed on APLabel.
+-        apLabelAddressSsid(13)- Sets Call Station Id Type to the format <AP Label MAC address>:<SSID>." 
++        apLabelAddressSsid(13)- Sets Call Station Id Type to the format <AP Label MAC address>:<SSID>."
+     ::= { clwsAaaConfig 1 }
+ 
+ cLWSecAaaRadiusAccUsernameDelimiter OBJECT-TYPE
+@@ -919,7 +920,7 @@ cLWSecAaaRadiusAccUsernameDelimiter OBJECT-TYPE
+         noDelimiter  - display it as 1234567890ab.
+         hyphen       - display it as 12-34-56-78-90-ab
+         colon        - display it as 12:34:56:78:90:ab
+-        singleHyphen - display it as 123456-7890ab" 
++        singleHyphen - display it as 123456-7890ab"
+     ::= { clwsAaaConfig 2 }
+ -- ********************************************************************
+ -- *    Compliance statements

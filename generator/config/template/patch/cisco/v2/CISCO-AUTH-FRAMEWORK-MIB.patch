@@ -1,0 +1,837 @@
+diff --git a/mibs/cisco/cat3750/v2/CISCO-AUTH-FRAMEWORK-MIB.my b/mibs/cisco/cat3750/v2/CISCO-AUTH-FRAMEWORK-MIB.my
+index ad8e981..55f5dd8 100644
+--- a/mibs/cisco/cat3750/v2/CISCO-AUTH-FRAMEWORK-MIB.my
++++ b/mibs/cisco/cat3750/v2/CISCO-AUTH-FRAMEWORK-MIB.my
+@@ -1,13 +1,13 @@
+ -- *********************************************************************
+ -- CISCO-AUTH-FRAMEWORK-MIB.my: Authentication Framework configuration
+ -- and information MIB
+---   
++--
+ -- August 2008, Binh Phu Le
+---   
++--
+ -- Copyright (c) 2008-2009, 2010, 2013 by Cisco Systems Inc.
+---   
++--
+ -- All rights reserved.
+---   
++--
+ -- *******************************************************************
+ 
+ CISCO-AUTH-FRAMEWORK-MIB DEFINITIONS ::= BEGIN
+@@ -25,7 +25,8 @@ IMPORTS
+         FROM SNMPv2-CONF
+     MacAddress,
+     TEXTUAL-CONVENTION,
+-    TruthValue
++    TruthValue,
++    DisplayString
+         FROM SNMPv2-TC
+     SnmpAdminString
+         FROM SNMP-FRAMEWORK-MIB
+@@ -167,7 +168,7 @@ CiscoAuthMethod ::= TEXTUAL-CONVENTION
+ 
+         dot1x        : 802.1x Protocol.
+ 
+-        macAuthBypass: MAC Authentication Bypass. 
++        macAuthBypass: MAC Authentication Bypass.
+ 
+         webAuth      : Web-Proxy Authentication.
+ 
+@@ -191,7 +192,7 @@ CiscoAuthMethodList ::= TEXTUAL-CONVENTION
+ 
+         The DESCRIPTION clause of CiscoAuthMethodList objects
+         must fully describe the relationship between methods."
+-    SYNTAX          OCTET STRING
++    SYNTAX          DisplayString
+ 
+ CiscoAuthHostMode ::= TEXTUAL-CONVENTION
+     STATUS          current
+@@ -227,21 +228,21 @@ cafAaaNoRespRecoveryDelay OBJECT-TYPE
+         "Specifies the AAA recovery delay for authentication methods
+         registered in Authentication Framework when AAA server becomes
+         active again after being inactive. A value of zero indicates
+-        that AAA recovery delay is disabled in the system." 
++        that AAA recovery delay is disabled in the system."
+     ::= { ciscoAuthFrameworkSystem 1 }
+ 
+ cafAuthMethodRegTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CafAuthMethodRegEntry 
++    SYNTAX          SEQUENCE OF CafAuthMethodRegEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "A list of authentication methods which are currrently
+-        registered with Authentication Framework. 
++        registered with Authentication Framework.
+ 
+-        An entry is created by the agent when an authentication method 
+-        has successfully registered with Authentication Framework. 
++        An entry is created by the agent when an authentication method
++        has successfully registered with Authentication Framework.
+ 
+-        An entry is deleted by the agent upon de-registration of the 
++        An entry is deleted by the agent upon de-registration of the
+         authentication method."
+     ::= { ciscoAuthFrameworkSystem 2 }
+ 
+@@ -252,7 +253,7 @@ cafAuthMethodRegEntry OBJECT-TYPE
+     DESCRIPTION
+         "An entry containing registration information of a particular
+         authentication method with Authentication Framework."
+-    INDEX           { cafAuthMethod } 
++    INDEX           { cafAuthMethod }
+     ::= { cafAuthMethodRegTable 1 }
+ 
+ CafAuthMethodRegEntry ::= SEQUENCE {
+@@ -267,7 +268,7 @@ cafAuthMethod OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The authentication method registered with Authentication
+-        Framework." 
++        Framework."
+     ::= { cafAuthMethodRegEntry 1 }
+ 
+ cafAuthMethodDefaultPriority OBJECT-TYPE
+@@ -278,9 +279,9 @@ cafAuthMethodDefaultPriority OBJECT-TYPE
+         "A unique number which indicates the default priority of a
+         authentication method.
+ 
+-        The default priority is assigned by Authentication Framework 
+-        during method registration.  The method with smallest value 
+-        has highest priority." 
++        The default priority is assigned by Authentication Framework
++        during method registration.  The method with smallest value
++        has highest priority."
+     ::= { cafAuthMethodRegEntry 2 }
+ 
+ cafAuthMethodDefaultExecOrder OBJECT-TYPE
+@@ -289,13 +290,13 @@ cafAuthMethodDefaultExecOrder OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "A unique number which indicates the default execution order
+-        of a authentication method. 
++        of a authentication method.
+ 
+         The default execution order is assigned by Authentication
+         Framework during method registration.  The method with
+-        smallest value will be execute first." 
++        smallest value will be execute first."
+     ::= { cafAuthMethodRegEntry 3 }
+- 
++
+ 
+ 
+ cafMacMoveMode OBJECT-TYPE
+@@ -307,17 +308,17 @@ cafMacMoveMode OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the MAC Move configuration for
+-        Authentication Framework. 
++        Authentication Framework.
+ 
+-        deny : When a host is authenticated on one port, 
+-              that address is not allowed on another 
+-              authenticated manager-enabled port of the device. 
++        deny : When a host is authenticated on one port,
++              that address is not allowed on another
++              authenticated manager-enabled port of the device.
+ 
+-        permit: Authenticated hosts are allowed to move from one 
+-               port to another on the same device. When a host moves to 
+-               a new port, the authenticated session on the original 
+-               port is deleted, and the host is reauthenticated on the 
+-               new port." 
++        permit: Authenticated hosts are allowed to move from one
++               port to another on the same device. When a host moves to
++               a new port, the authenticated session on the original
++               port is deleted, and the host is reauthenticated on the
++               new port."
+     ::= { ciscoAuthFrameworkSystem 3 }
+ 
+ cafCoABouncePortCommandIgnoreEnabled OBJECT-TYPE
+@@ -327,7 +328,7 @@ cafCoABouncePortCommandIgnoreEnabled OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies whether the device ignores the bounce
+         port command that sent from RADIUS via Change-of-Authorization
+-        (CoA) packets." 
++        (CoA) packets."
+     ::= { ciscoAuthFrameworkSystem 4 }
+ 
+ cafCoADisablePortCommandIgnoreEnabled OBJECT-TYPE
+@@ -337,12 +338,12 @@ cafCoADisablePortCommandIgnoreEnabled OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies whether the device ingores the
+         disable port command that sent from RADIUS via
+-        Change-of-Authorization (CoA) packets." 
++        Change-of-Authorization (CoA) packets."
+     ::= { ciscoAuthFrameworkSystem 5 }
+ -- ciscoAuthFrwkAuthenticator
+ 
+ cafPortConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CafPortConfigEntry 
++    SYNTAX          SEQUENCE OF CafPortConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -357,7 +358,7 @@ cafPortConfigEntry OBJECT-TYPE
+     DESCRIPTION
+         "An entry containing management information of Authentication
+         Framework applicable to a particular port."
+-    INDEX           { ifIndex } 
++    INDEX           { ifIndex }
+     ::= { cafPortConfigTable 1 }
+ 
+ CafPortConfigEntry ::= SEQUENCE {
+@@ -378,7 +379,7 @@ cafPortControlledDirection OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "Specifies the controlled direction of this port." 
++        "Specifies the controlled direction of this port."
+     ::= { cafPortConfigEntry 1 }
+ 
+ cafPortFallBackProfile OBJECT-TYPE
+@@ -389,7 +390,7 @@ cafPortFallBackProfile OBJECT-TYPE
+         "Specifies the name of the fallback profile to be used when
+         failing over to Web Proxy Authentication.  A zero length
+         string indicates that fallback mechanism to Web Proxy
+-        Authentication is disabled in Authentication Framework." 
++        Authentication is disabled in Authentication Framework."
+     ::= { cafPortConfigEntry 2 }
+ 
+ cafPortAuthHostMode OBJECT-TYPE
+@@ -397,7 +398,7 @@ cafPortAuthHostMode OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "Specifies the authentication host mode for this port." 
++        "Specifies the authentication host mode for this port."
+     ::= { cafPortConfigEntry 3 }
+ 
+ cafPortPreAuthOpenAccess OBJECT-TYPE
+@@ -406,12 +407,12 @@ cafPortPreAuthOpenAccess OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Specifies if the Pre-Authentication Open Access feature
+-        allows clients/devices to gain network access before 
+-        authentication is performed. 
++        allows clients/devices to gain network access before
++        authentication is performed.
+ 
+-        A value of 'true' for this object indicates that client/device 
+-        is able to gain network access before authentication is 
+-        performed." 
++        A value of 'true' for this object indicates that client/device
++        is able to gain network access before authentication is
++        performed."
+     ::= { cafPortConfigEntry 4 }
+ 
+ cafPortAuthorizeControl OBJECT-TYPE
+@@ -419,7 +420,7 @@ cafPortAuthorizeControl OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "Specifies the authorization control for this port." 
++        "Specifies the authorization control for this port."
+     ::= { cafPortConfigEntry 5 }
+ 
+ cafPortReauthEnabled OBJECT-TYPE
+@@ -427,7 +428,7 @@ cafPortReauthEnabled OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "Specifies if reauthentication is enabled for this port." 
++        "Specifies if reauthentication is enabled for this port."
+     ::= { cafPortConfigEntry 6 }
+ 
+ cafPortReauthInterval OBJECT-TYPE
+@@ -441,7 +442,7 @@ cafPortReauthInterval OBJECT-TYPE
+         of cafPortReauthEnabled is 'true'.
+ 
+         A value of zero indicates that the reauthentication interval
+-        is downloaded from AAA server when this port is authenticated." 
++        is downloaded from AAA server when this port is authenticated."
+     ::= { cafPortConfigEntry 7 }
+ 
+ cafPortRestartInterval OBJECT-TYPE
+@@ -454,7 +455,7 @@ cafPortRestartInterval OBJECT-TYPE
+         attempt should be made to this port if it is not authorized.
+ 
+         A value of zero indicates that no further authentication attempt
+-        will be made if this port is unauthorized." 
++        will be made if this port is unauthorized."
+     ::= { cafPortConfigEntry 8 }
+ 
+ cafPortInactivityTimeout OBJECT-TYPE
+@@ -472,7 +473,7 @@ cafPortInactivityTimeout OBJECT-TYPE
+         this port.
+ 
+         A value of -1 indicates that inactivity timeout is downloaded
+-        from the AAA server when this port is authenticated." 
++        from the AAA server when this port is authenticated."
+     ::= { cafPortConfigEntry 9 }
+ 
+ cafPortViolationAction OBJECT-TYPE
+@@ -499,13 +500,13 @@ cafPortViolationAction OBJECT-TYPE
+                         port will be terminated and replaced by a new
+                         authentication session, upon the detection of
+                         security violation on the current authentication
+-                        session on the port." 
++                        session on the port."
+     ::= { cafPortConfigEntry 10 }
+- 
++
+ 
+ 
+ cafPortMethodTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CafPortMethodEntry 
++    SYNTAX          SEQUENCE OF CafPortMethodEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -520,7 +521,7 @@ cafPortMethodEntry OBJECT-TYPE
+     DESCRIPTION
+         "Entry containing configuration and information of
+         authentication methods for a particular port."
+-    INDEX           { ifIndex } 
++    INDEX           { ifIndex }
+     ::= { cafPortMethodTable 1 }
+ 
+ CafPortMethodEntry ::= SEQUENCE {
+@@ -547,7 +548,7 @@ cafPortMethodAdminExecOrder OBJECT-TYPE
+         A zero length string of this object indicates that no per
+         port execution order configuration has been specified on
+         this port. The actual execution order is based on the value
+-        of cafAuthMethodDefaultExecOrder in cafAuthMethodRegTable." 
++        of cafAuthMethodDefaultExecOrder in cafAuthMethodRegTable."
+     ::= { cafPortMethodEntry 1 }
+ 
+ cafPortMethodAdminPriority OBJECT-TYPE
+@@ -565,8 +566,8 @@ cafPortMethodAdminPriority OBJECT-TYPE
+ 
+         A zero length string of this object indicates that no per
+         port method priority configuration has been specified on
+-        this port.  The actual execution order is based on the value 
+-        of cafAuthMethodDefaultExecOrder in cafAuthMethodRegTable." 
++        this port.  The actual execution order is based on the value
++        of cafAuthMethodDefaultExecOrder in cafAuthMethodRegTable."
+     ::= { cafPortMethodEntry 2 }
+ 
+ cafPortMethodAvailable OBJECT-TYPE
+@@ -575,7 +576,7 @@ cafPortMethodAvailable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the authentication methods currently
+-        available on this port." 
++        available on this port."
+     ::= { cafPortMethodEntry 3 }
+ 
+ cafPortMethodOperExecOrder OBJECT-TYPE
+@@ -589,7 +590,7 @@ cafPortMethodOperExecOrder OBJECT-TYPE
+ 
+         Method which is at the beginning of the method list will be
+         executed first.  Method which is at the end of method list
+-        will be executed last." 
++        will be executed last."
+     ::= { cafPortMethodEntry 4 }
+ 
+ cafPortMethodOperPriority OBJECT-TYPE
+@@ -603,14 +604,14 @@ cafPortMethodOperPriority OBJECT-TYPE
+ 
+         Method which is at the beginning of the method list has
+         highest priority.  Method which is at the end of method list
+-        has lowest priority." 
++        has lowest priority."
+     ::= { cafPortMethodEntry 5 }
+- 
++
+ 
+ -- ciscoAuthFrameworkEvent
+ 
+ cafAuthFailedEventPortTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CafAuthFailedEventPortEntry 
++    SYNTAX          SEQUENCE OF CafAuthFailedEventPortEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -627,7 +628,7 @@ cafAuthFailedEventPortEntry OBJECT-TYPE
+     DESCRIPTION
+         "Entry containing management information of Authentication
+         Fail event for a particular port."
+-    INDEX           { ifIndex } 
++    INDEX           { ifIndex }
+     ::= { cafAuthFailedEventPortTable 1 }
+ 
+ CafAuthFailedEventPortEntry ::= SEQUENCE {
+@@ -646,7 +647,7 @@ cafAuthFailedMaxRetry OBJECT-TYPE
+         performed before generating Authentication Fail event.
+ 
+         A value of zero indicates that Authentication Fail event will
+-        be generated upon authentication fail without any retry." 
++        be generated upon authentication fail without any retry."
+     ::= { cafAuthFailedEventPortEntry 1 }
+ 
+ cafAuthFailedNoActionEnabled OBJECT-TYPE
+@@ -661,7 +662,7 @@ cafAuthFailedNoActionEnabled OBJECT-TYPE
+         be performed when Authentication Fail event occurs.
+ 
+         The read-only value 'false' indicates that an action will
+-        be performed when an Authentication Fail event occurs." 
++        be performed when an Authentication Fail event occurs."
+     ::= { cafAuthFailedEventPortEntry 2 }
+ 
+ cafAuthFailedAuthorizedVlan OBJECT-TYPE
+@@ -679,7 +680,7 @@ cafAuthFailedAuthorizedVlan OBJECT-TYPE
+ 
+         Setting a non-zero value on this object indicates that this port
+         will be authorized to the VLAN as specified by this object
+-        value, when Authentication Fail event occurs." 
++        value, when Authentication Fail event occurs."
+     ::= { cafAuthFailedEventPortEntry 3 }
+ 
+ cafAuthFailedNextMethodEnabled OBJECT-TYPE
+@@ -692,14 +693,14 @@ cafAuthFailedNextMethodEnabled OBJECT-TYPE
+         current authentication method.
+ 
+         Setting this object to 'true' indicates that the next available
+-        authentication method will be used when Authentication Fail 
++        authentication method will be used when Authentication Fail
+         event occurs.
+ 
+         The read-only value 'false' indicates that the next available
+         authentication method will not be used when Authentication Fail
+-        event occurs." 
++        event occurs."
+     ::= { cafAuthFailedEventPortEntry 4 }
+- 
++
+ 
+ 
+ cafSecurityViolationClient OBJECT-TYPE
+@@ -709,7 +710,7 @@ cafSecurityViolationClient OBJECT-TYPE
+     DESCRIPTION
+         "The MAC address included in the notification currently being
+         sent, indicating the client who triggered the security violation
+-        notification." 
++        notification."
+     ::= { ciscoAuthFrwkNotifInfo 1 }
+ 
+ cafAuthFailClient OBJECT-TYPE
+@@ -718,11 +719,11 @@ cafAuthFailClient OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The MAC address included in the cafAuthFailNotif being
+-        sent, indicating the client which failed to authenticate." 
++        sent, indicating the client which failed to authenticate."
+     ::= { ciscoAuthFrwkNotifInfo 2 }
+ 
+ cafClientNoRespEventPortTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CafClientNoRespEventPortEntry 
++    SYNTAX          SEQUENCE OF CafClientNoRespEventPortEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -739,7 +740,7 @@ cafClientNoRespEventPortEntry OBJECT-TYPE
+     DESCRIPTION
+         "Entry containing management information of No Response
+         event for a particular port."
+-    INDEX           { ifIndex } 
++    INDEX           { ifIndex }
+     ::= { cafClientNoRespEventPortTable 1 }
+ 
+ CafClientNoRespEventPortEntry ::= SEQUENCE {
+@@ -759,7 +760,7 @@ cafClientNoRespNoActionEnabled OBJECT-TYPE
+         be performed when No Response event occurs.
+ 
+         The read-only value 'false' of this object indicates that an
+-        action will be performed when No Response event occurs." 
++        action will be performed when No Response event occurs."
+     ::= { cafClientNoRespEventPortEntry 1 }
+ 
+ cafClientNoRespAuthorizedVlan OBJECT-TYPE
+@@ -777,13 +778,13 @@ cafClientNoRespAuthorizedVlan OBJECT-TYPE
+ 
+         Setting a non-zero value on this object indicates that this port
+         will be authorized to the VLAN as specified by this object
+-        value, when No Response event occurs." 
++        value, when No Response event occurs."
+     ::= { cafClientNoRespEventPortEntry 2 }
+- 
++
+ 
+ 
+ cafServerEventPortTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CafServerEventPortEntry 
++    SYNTAX          SEQUENCE OF CafServerEventPortEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -800,7 +801,7 @@ cafServerEventPortEntry OBJECT-TYPE
+     DESCRIPTION
+         "Entry containing management information of AAA Server
+         Reachability event for a particular port."
+-    INDEX           { ifIndex } 
++    INDEX           { ifIndex }
+     ::= { cafServerEventPortTable 1 }
+ 
+ CafServerEventPortEntry ::= SEQUENCE {
+@@ -822,7 +823,7 @@ cafServerDeadNoActionEnabled OBJECT-TYPE
+         will be performed when AAA Server Reachability event occurs.
+ 
+         The read-only value 'false' indicates that an action will
+-        be performed when AAA Server Reachability event occurs." 
++        be performed when AAA Server Reachability event occurs."
+     ::= { cafServerEventPortEntry 1 }
+ 
+ cafServerDeadRemainAuthorized OBJECT-TYPE
+@@ -840,7 +841,7 @@ cafServerDeadRemainAuthorized OBJECT-TYPE
+ 
+         The read-only value 'false' indicates that the current
+         authorization will not be retained for the port when
+-        AAA Server Reachability event occurs." 
++        AAA Server Reachability event occurs."
+     ::= { cafServerEventPortEntry 2 }
+ 
+ cafServerDeadAuthorizedVlan OBJECT-TYPE
+@@ -860,7 +861,7 @@ cafServerDeadAuthorizedVlan OBJECT-TYPE
+ 
+         Setting a non-zero value on this object indicates that this port
+         will be authorized to the VLAN as specified by this object
+-        value, when AAA Server Reachability event occurs." 
++        value, when AAA Server Reachability event occurs."
+     ::= { cafServerEventPortEntry 3 }
+ 
+ cafServerAliveAction OBJECT-TYPE
+@@ -876,14 +877,14 @@ cafServerAliveAction OBJECT-TYPE
+ 
+         none        : no action will be applied.
+         reinitialize: the port will be reinitialized with the current
+-                     authentication method." 
++                     authentication method."
+     ::= { cafServerEventPortEntry 4 }
+- 
++
+ 
+ -- ciscoAuthFrameworkSession
+ 
+ cafSessionTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CafSessionEntry 
++    SYNTAX          SEQUENCE OF CafSessionEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -906,11 +907,11 @@ cafSessionEntry OBJECT-TYPE
+     INDEX           {
+                         ifIndex,
+                         IMPLIED cafSessionId
+-                    } 
++                    }
+     ::= { cafSessionTable 1 }
+ 
+ CafSessionEntry ::= SEQUENCE {
+-        cafSessionId                  OCTET STRING,
++        cafSessionId                  DisplayString,
+         cafSessionClientMacAddress    MacAddress,
+         cafSessionClientAddrType      InetAddressType,
+         cafSessionClientAddress       InetAddress,
+@@ -935,11 +936,11 @@ CafSessionEntry ::= SEQUENCE {
+ }
+ 
+ cafSessionId OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (1..64))
++    SYNTAX          DisplayString (SIZE  (1..64))
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "A unique identifier of the authentication session." 
++        "A unique identifier of the authentication session."
+     ::= { cafSessionEntry 1 }
+ 
+ cafSessionClientMacAddress OBJECT-TYPE
+@@ -948,7 +949,7 @@ cafSessionClientMacAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the MAC address of the device associates with the
+-        authentication session." 
++        authentication session."
+     ::= { cafSessionEntry 2 }
+ 
+ cafSessionClientAddrType OBJECT-TYPE
+@@ -957,7 +958,7 @@ cafSessionClientAddrType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the type of Internet address of the client
+-        associates with the authentication session." 
++        associates with the authentication session."
+     ::= { cafSessionEntry 3 }
+ 
+ cafSessionClientAddress OBJECT-TYPE
+@@ -967,7 +968,7 @@ cafSessionClientAddress OBJECT-TYPE
+     DESCRIPTION
+         "Indicates the Internet address of the client associates with
+         the authentication session. The type of this address is
+-        determined by the value of cafSessionClientAddrType object." 
++        determined by the value of cafSessionClientAddrType object."
+     ::= { cafSessionEntry 4 }
+ 
+ cafSessionStatus OBJECT-TYPE
+@@ -1004,7 +1005,7 @@ cafSessionStatus OBJECT-TYPE
+                     session.
+ 
+         authorizationFailed : authorization is failed for this
+-                    session." 
++                    session."
+     ::= { cafSessionEntry 5 }
+ 
+ cafSessionDomain OBJECT-TYPE
+@@ -1023,7 +1024,7 @@ cafSessionDomain OBJECT-TYPE
+ 
+         data : indicates the data domain.
+ 
+-        voice: indicates the voice domain." 
++        voice: indicates the voice domain."
+     ::= { cafSessionEntry 6 }
+ 
+ cafSessionAuthHostMode OBJECT-TYPE
+@@ -1032,7 +1033,7 @@ cafSessionAuthHostMode OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the authentication host mode of the port in the
+-        authentication session." 
++        authentication session."
+     ::= { cafSessionEntry 7 }
+ 
+ cafSessionControlledDirection OBJECT-TYPE
+@@ -1041,7 +1042,7 @@ cafSessionControlledDirection OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the operational controlled directions parameter
+-        for this port in the authentication session." 
++        for this port in the authentication session."
+     ::= { cafSessionEntry 8 }
+ 
+ cafSessionPostureToken OBJECT-TYPE
+@@ -1050,7 +1051,7 @@ cafSessionPostureToken OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the posture token associates with the authentication
+-        session." 
++        session."
+     ::= { cafSessionEntry 9 }
+ 
+ cafSessionAuthUserName OBJECT-TYPE
+@@ -1059,7 +1060,7 @@ cafSessionAuthUserName OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the name of the authenticated user for the
+-        authentication session." 
++        authentication session."
+     ::= { cafSessionEntry 10 }
+ 
+ cafSessionClientFramedIpPool OBJECT-TYPE
+@@ -1068,7 +1069,7 @@ cafSessionClientFramedIpPool OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the name of the address pool from which the
+-        session's client IP address is assigned." 
++        session's client IP address is assigned."
+     ::= { cafSessionEntry 11 }
+ 
+ cafSessionAuthorizedBy OBJECT-TYPE
+@@ -1077,7 +1078,7 @@ cafSessionAuthorizedBy OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the name of the feature which authorizes the
+-        authentication session." 
++        authentication session."
+     ::= { cafSessionEntry 12 }
+ 
+ cafSessionCriticalTimeLeft OBJECT-TYPE
+@@ -1089,7 +1090,7 @@ cafSessionCriticalTimeLeft OBJECT-TYPE
+         "Indicates the leftover time before the next authentication
+         attempt for the authentication session after Server Reachability
+         event occurred.  Value zero indicates that this session is
+-        currently being authenticated or it is not applicable." 
++        currently being authenticated or it is not applicable."
+     ::= { cafSessionEntry 13 }
+ 
+ cafSessionAuthVlan OBJECT-TYPE
+@@ -1099,7 +1100,7 @@ cafSessionAuthVlan OBJECT-TYPE
+     DESCRIPTION
+         "Indicates the authorized VLAN applied to the authentication
+         session. Value zero indicates that no authorized VLAN has been
+-        applied, or it is not applicable." 
++        applied, or it is not applicable."
+     ::= { cafSessionEntry 14 }
+ 
+ cafSessionTimeout OBJECT-TYPE
+@@ -1109,7 +1110,7 @@ cafSessionTimeout OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the session timeout used by Authentication
+-        Framework in the authentication session." 
++        Framework in the authentication session."
+     ::= { cafSessionEntry 15 }
+ 
+ cafSessionTimeLeft OBJECT-TYPE
+@@ -1119,7 +1120,7 @@ cafSessionTimeLeft OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the leftover time of the current authentication
+-        session." 
++        session."
+     ::= { cafSessionEntry 16 }
+ 
+ cafSessionTimeoutAction OBJECT-TYPE
+@@ -1133,13 +1134,13 @@ cafSessionTimeoutAction OBJECT-TYPE
+     DESCRIPTION
+         "Indicates the timeout action on the authentication session,
+         when value of the corresponding instance of cafSessionTimeLeft
+-        reaches zero. 
++        reaches zero.
+ 
+          unknown       : None of the below.
+ 
+          terminate     : Session will be terminated.
+ 
+-         reauthenticate: Session will be reauthenticated." 
++         reauthenticate: Session will be reauthenticated."
+     ::= { cafSessionEntry 17 }
+ 
+ cafSessionInactivityTimeout OBJECT-TYPE
+@@ -1149,7 +1150,7 @@ cafSessionInactivityTimeout OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the inactivity timeout used by Authentication
+-        Framework in the authentication session." 
++        Framework in the authentication session."
+     ::= { cafSessionEntry 18 }
+ 
+ cafSessionInactivityTimeLeft OBJECT-TYPE
+@@ -1159,7 +1160,7 @@ cafSessionInactivityTimeLeft OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the leftover time of the inactivity timer of
+-        the authentication session." 
++        the authentication session."
+     ::= { cafSessionEntry 19 }
+ 
+ cafSessionReauth OBJECT-TYPE
+@@ -1172,7 +1173,7 @@ cafSessionReauth OBJECT-TYPE
+         session to reauthenticate the authenticated client. Setting
+         this object to 'false' has no effect.
+ 
+-        This object always returns 'false' when being read." 
++        This object always returns 'false' when being read."
+     ::= { cafSessionEntry 20 }
+ 
+ cafSessionTerminate OBJECT-TYPE
+@@ -1184,7 +1185,7 @@ cafSessionTerminate OBJECT-TYPE
+         Setting this object to 'true' terminates the current session.
+         Setting this object to 'false' has no effect.
+ 
+-        This object always returns 'false' when being read." 
++        This object always returns 'false' when being read."
+     ::= { cafSessionEntry 21 }
+ 
+ cafSessionVlanGroupName OBJECT-TYPE
+@@ -1193,16 +1194,16 @@ cafSessionVlanGroupName OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The name of the VLAN group that has been used during VLAN
+-        assignment for this session. 
++        assignment for this session.
+ 
+         A zero length string indicates that there is no VLAN group been
+-        used during VLAN assignment." 
++        used during VLAN assignment."
+     ::= { cafSessionEntry 22 }
+- 
++
+ 
+ 
+ cafSessionMethodsInfoTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CafSessionMethodsInfoEntry 
++    SYNTAX          SEQUENCE OF CafSessionMethodsInfoEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -1220,13 +1221,13 @@ cafSessionMethodsInfoEntry OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Entry containing method information for a particular runnable
+-        authentication methods which is associated with a session for 
++        authentication methods which is associated with a session for
+         an Authentication Framework managed port."
+     INDEX           {
+                         ifIndex,
+                         cafSessionId,
+                         cafSessionMethod
+-                    } 
++                    }
+     ::= { cafSessionMethodsInfoTable 1 }
+ 
+ CafSessionMethodsInfoEntry ::= SEQUENCE {
+@@ -1239,7 +1240,7 @@ cafSessionMethod OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "Indicates this authentication method." 
++        "Indicates this authentication method."
+     ::= { cafSessionMethodsInfoEntry 1 }
+ 
+ cafSessionMethodState OBJECT-TYPE
+@@ -1266,9 +1267,9 @@ cafSessionMethodState OBJECT-TYPE
+                      authentication result for this session.
+ 
+         authcFailed : The method has provided a failed authentication
+-                     result for this session." 
++                     result for this session."
+     ::= { cafSessionMethodsInfoEntry 2 }
+- 
++
+ 
+ 
+ -- Notifications and notification controls
+@@ -1281,8 +1282,8 @@ cafSecurityViolationNotifEnable OBJECT-TYPE
+         "This variable indicates whether the system produces
+         the cafSecurityViolationNotif.
+ 
+-        A 'false' value will prevent cafSecurityViolationNotif 
+-        from being generated by this system." 
++        A 'false' value will prevent cafSecurityViolationNotif
++        from being generated by this system."
+     ::= { ciscoAuthFrwkNotifControl 1 }
+ 
+ cafAuthFailNotifEnable OBJECT-TYPE
+@@ -1296,8 +1297,8 @@ cafAuthFailNotifEnable OBJECT-TYPE
+         A 'true' value will cause cafAuthFailNotif to be generated by
+         this system when an authentication failure happens.
+ 
+-        A 'false' value will prevent cafAuthFailNotif 
+-        from being generated by this system." 
++        A 'false' value will prevent cafAuthFailNotif
++        from being generated by this system."
+     ::= { ciscoAuthFrwkNotifControl 2 }
+ 
+ cafSecurityViolationNotif NOTIFICATION-TYPE
+@@ -1309,7 +1310,7 @@ cafSecurityViolationNotif NOTIFICATION-TYPE
+     STATUS          current
+     DESCRIPTION
+         "A cafSecurityViolationNotif is sent if a security violation
+-        is detected on a port, and the instance value of 
++        is detected on a port, and the instance value of
+         cafSecurityViolationNotifEnable is 'true'."
+    ::= { ciscoAuthFrameworkMIBNotifs 1 }
+ 
+@@ -1321,7 +1322,7 @@ cafAuthFailNotif NOTIFICATION-TYPE
+     STATUS          current
+     DESCRIPTION
+         "A cafAuthFailNotif is sent if an authentication failure is
+-        detected on a port, and the instance value of 
++        detected on a port, and the instance value of
+         cafAuthFailNotifEnable is 'true'.
+ 
+         ifName contains the name of the interface where the

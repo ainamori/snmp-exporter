@@ -1,0 +1,949 @@
+diff --git a/mibs/cisco/wlc/v2/CISCO-LWAPP-MOBILITY-MIB.my b/mibs/cisco/wlc/v2/CISCO-LWAPP-MOBILITY-MIB.my
+index d1183b0..a681f36 100644
+--- a/mibs/cisco/wlc/v2/CISCO-LWAPP-MOBILITY-MIB.my
++++ b/mibs/cisco/wlc/v2/CISCO-LWAPP-MOBILITY-MIB.my
+@@ -1,7 +1,7 @@
+ -- *******************************************************************
+ -- CISCO-LWAPP-MOBILITY-MIB.my
+ -- June 2006, Bharat Biswal,Arun Kumar A
+---   
++--
+ -- Copyright (c) 2005-2017 by Cisco Systems, Inc.
+ -- All rights reserved.
+ -- *******************************************************************
+@@ -21,7 +21,8 @@ IMPORTS
+         FROM SNMPv2-CONF
+     TruthValue,
+     RowStatus,
+-    MacAddress
++    MacAddress,
++    DisplayString
+         FROM SNMPv2-TC
+     InetAddressType,
+     InetAddress
+@@ -57,7 +58,7 @@ ciscoLwappMobilityMIB MODULE-IDENTITY
+         tunnel from Light-weight LWAPP Access Points.
+ 
+         This MIB provides configuration and status information
+-        about the 802.11 WLAN mobility.                 
++        about the 802.11 WLAN mobility.
+ 
+         The relationship between CC and the LWAPP APs
+         can be depicted as follows:
+@@ -108,7 +109,7 @@ ciscoLwappMobilityMIB MODULE-IDENTITY
+         An entity that contains an 802.11 medium access
+         control ( MAC ) and physical layer ( PHY ) interface
+         and provides access to the distribution services via
+-        the wireless medium for associated clients.  
++        the wireless medium for associated clients.
+ 
+         LWAPP APs encapsulate all the 802.11 frames in
+         LWAPP frames and sends it to the controller to which
+@@ -122,52 +123,52 @@ ciscoLwappMobilityMIB MODULE-IDENTITY
+         happens to be the MAC address of the dot11 radio
+         interface of the Access Point.  The wireless
+         clients that associate with the Access Point
+-        get the wired uplink through this particular 
+-        dot11 interface. 
++        get the wired uplink through this particular
++        dot11 interface.
+ 
+         Central Controller ( CC )
+ 
+         The central entity that terminates the LWAPP protocol
+         tunnel from the LWAPP APs.  Throughout this MIB,
+-        this entity also referred to as 'controller'. 
++        this entity also referred to as 'controller'.
+ 
+-        Light Weight Access Point Protocol ( LWAPP ) 
++        Light Weight Access Point Protocol ( LWAPP )
+ 
+-        This is a generic protocol that defines the 
++        This is a generic protocol that defines the
+         communication between the Access Points and the
+-        Central Controller. 
++        Central Controller.
+ 
+         Mobile Node ( MN )
+ 
+         A roaming 802.11 wireless device in a wireless
+-        network associated with an access point. 
++        network associated with an access point.
+ 
+-        Mobility 
++        Mobility
+ 
+-        Concept by which a Mobile Node can roam from one 
++        Concept by which a Mobile Node can roam from one
+         Access Point to another Access Point, across multiple
+-        Central Controllers, without need for repeated 
+-        authentication. 
++        Central Controllers, without need for repeated
++        authentication.
+ 
+         Mobility Group
+ 
+-        A set of Central Controllers which exchange Mobile 
++        A set of Central Controllers which exchange Mobile
+         Node's authentication information, so that the Mobile
+-        Node upon roaming need not re-authenticate.  
++        Node upon roaming need not re-authenticate.
+ 
+         Mobility Anchor
+ 
+-        When a Central Controller in the Mobility Group is 
+-        designated as Mobility Anchor, then all the Mobile 
++        When a Central Controller in the Mobility Group is
++        designated as Mobility Anchor, then all the Mobile
+         Node's traffic is tunneled to it by other
+         Controllers in the Mobility Group.
+ 
+         Guest Tunneling (GT)
+ 
+-        The concept of designating a Central Controller in 
++        The concept of designating a Central Controller in
+         the Mobility Group as Mobility Anchor, so that all
+         the Mobile Node's traffic is tunneled to it by other
+-        Controllers in the Mobility Group.              
++        Controllers in the Mobility Group.
+ 
+         Station Management (SMT)
+ 
+@@ -178,12 +179,12 @@ ciscoLwappMobilityMIB MODULE-IDENTITY
+ 
+         Ethernet over Internet Protocol (EoIP)
+ 
+-        Ethernet over IP (EoIP) is a protocol that creates 
++        Ethernet over IP (EoIP) is a protocol that creates
+         an Ethernet tunnel between two routers on top of an
+-        IP connection. The EoIP interface appears as an 
++        IP connection. The EoIP interface appears as an
+         Ethernet interface.
+ 
+-        Reverse path filtering (RPF) 
++        Reverse path filtering (RPF)
+ 
+         Reverse path filtering (RPF) is a feature provided
+         by most modern Internet Protocol routers, which may
+@@ -198,17 +199,17 @@ ciscoLwappMobilityMIB MODULE-IDENTITY
+         change, often randomly, and for every packet, the
+         target of such an attack can't easily filter out the
+         attacking packets. However, the source of the attack,
+-        i.e. the network service provider of the attacking 
++        i.e. the network service provider of the attacking
+         host, has a simple way to stop such packets from ever
+-        leaving its network. A router always knows which 
+-        networks are reachable via any of its interfaces. 
+-        By checking the source IP address of all packets 
++        leaving its network. A router always knows which
++        networks are reachable via any of its interfaces.
++        By checking the source IP address of all packets
+         coming in via an interface against the networks known
+-        to be behind that interface, the router can simply 
++        to be behind that interface, the router can simply
+         drop packets that aren't supposed to come from there.
+-        Hence, reverse path filtering filters packets 
+-        according to the 'reverse path' to their source 
+-        address. If the path back to the source address 
++        Hence, reverse path filtering filters packets
++        according to the 'reverse path' to their source
++        address. If the path back to the source address
+         does not match the path the packet is coming from,
+         it is dropped.
+ 
+@@ -217,13 +218,13 @@ ciscoLwappMobilityMIB MODULE-IDENTITY
+         [1] Part 11 Wireless LAN Medium Access Control ( MAC )
+         and Physical Layer ( PHY ) Specifications.
+ 
+-        [2] Draft-obara-capwap-lwapp-00.txt, IETF Light 
++        [2] Draft-obara-capwap-lwapp-00.txt, IETF Light
+         Weight Access Point Protocol."
+     REVISION        "201704270000Z"
+     DESCRIPTION
+         "Added ciscoLwappMobilityMIBComplianceRev02 that deprecates
+         ciscoLwappMobilityMIBComplianceRev01.
+-        Added cLMobilityGroupMemberRev02ConfigGroup and 
++        Added cLMobilityGroupMemberRev02ConfigGroup and
+         cLMobilityGroupMemberRev02StatusGroup."
+     REVISION        "201404010000Z"
+     DESCRIPTION
+@@ -234,7 +235,7 @@ ciscoLwappMobilityMIB MODULE-IDENTITY
+         "Added ciscoLwappMobilityMIBComplianceRev01 that deprecates
+         ciscoLwappMobilityMIBCompliance.
+         Added cLMobilityGroupRev01ConfigGroup object group.
+-        cLMobilityGroupRev01ConfigGroup object group has  been 
++        cLMobilityGroupRev01ConfigGroup object group has  been
+         deprecated."
+     REVISION        "200607190000Z"
+     DESCRIPTION
+@@ -268,39 +269,39 @@ cLMobilityStats  OBJECT IDENTIFIER
+ -- *******************************************************************
+ 
+ cLMobilityAnchorTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLMobilityAnchorEntry 
++    SYNTAX          SEQUENCE OF CLMobilityAnchorEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table represents the information about the
+-        802.11 LWAPP Mobility Anchors on individual WLANs.  
++        802.11 LWAPP Mobility Anchors on individual WLANs.
+ 
+ 
+-           +...............+   
+-           +               +   
+-           +    ROUTER     +   
+-           +   10.16.1.1   +   
+-           +...............+   
+-                  .. 
++           +...............+
++           +               +
++           +    ROUTER     +
++           +   10.16.1.1   +
++           +...............+
++                  ..
+                 .    .
+               .        .
+             .            .
+           .                .
+         .                    .
+         10.16.109.112        10.16.105.39
+-        +......+   <<-------->>   +......+    
+-        +      +  [3]CC2 tunnels  +      +    
+-        +  CC1 +   MN1's traffic  +  CC2 +    
+-        +      +   to Anchor CC1  +      +    
+-        +......+   using EoIP     +......+    
++        +......+   <<-------->>   +......+
++        +      +  [3]CC2 tunnels  +      +
++        +  CC1 +   MN1's traffic  +  CC2 +
++        +      +   to Anchor CC1  +      +
++        +......+   using EoIP     +......+
+         .                        .
+         . Anchor        Foreign  .
+         .                        .
+-        +......+                  +......+          
+-        +      +                  +      +          
+-        +  AP1 +                  +  AP2 +          
+-        +      +                  +      +          
+-        +......+                  +......+          
++        +......+                  +......+
++        +      +                  +      +
++        +  AP1 +                  +  AP2 +
++        +      +                  +      +
++        +......+                  +......+
+         'typhoon'   .                      ^'typhoon'
+         .                          |
+         .           [2] associates  |
+@@ -316,21 +317,21 @@ cLMobilityAnchorTable OBJECT-TYPE
+         In the above diagram, Central Controllers CC1 and CC2 have
+         been configured in a Mobility Group.
+ 
+-        Currently the Mobile Node 'MN1' obtains its IP from the 
+-        Central Controller 'CC1' with which it first associates 
+-        via WLAN 'typhoon' through Access Point 'AP1'. 'CC1' 
++        Currently the Mobile Node 'MN1' obtains its IP from the
++        Central Controller 'CC1' with which it first associates
++        via WLAN 'typhoon' through Access Point 'AP1'. 'CC1'
+         obtains DHCP address, say 10.16.109.199 for client 'MN1'.
+-        Now the client 'MN1' is identified by 10.16.109.199 for 
+-        further communication with the network and the 
+-        communication happens via 'CC1'. 
++        Now the client 'MN1' is identified by 10.16.109.199 for
++        further communication with the network and the
++        communication happens via 'CC1'.
+ 
+-        Since, 'CC1' and 'CC2' are in same mobility group, 'CC1' 
++        Since, 'CC1' and 'CC2' are in same mobility group, 'CC1'
+         sends the authentication block of 'MN1' to 'CC2'.
+ 
+ 
+-        Central Controller 'CC2' has an associated Access Point 
+-        'AP2' which beams WLAN 'typhoon' and uses 10.16.105.0 / 
+-        255.255.255.0 subnet instead.         
++        Central Controller 'CC2' has an associated Access Point
++        'AP2' which beams WLAN 'typhoon' and uses 10.16.105.0 /
++        255.255.255.0 subnet instead.
+ 
+         Next, the Mobile Node 'MN1' moves out of range of 'AP1'
+         and gets in to proximity with 'AP2' and continues to use
+@@ -338,16 +339,16 @@ cLMobilityAnchorTable OBJECT-TYPE
+         authentication block shared from 'CC1'. 'CC2' forwards all
+         traffic from 'MN1' to router. This is called WLAN mobility.
+ 
+-        But hold on, 'CC2' uses 10.16.105.0 / 255.255.255.0 subnet 
+-        for WLAN 'typhoon'. So we have two problems here :    
++        But hold on, 'CC2' uses 10.16.105.0 / 255.255.255.0 subnet
++        for WLAN 'typhoon'. So we have two problems here :
+ 
+         a> Traffic of 10.16.109.0 / 255.255.255.0 subnet has to be
+         accessible from 10.16.105.0 / 255.255.255.0 subnet.
+ 
+-        b> Unnecessary overloading of 10.16.105.0 / 255.255.255.0 
++        b> Unnecessary overloading of 10.16.105.0 / 255.255.255.0
+         subnet by traffic from 10.16.109.0 / 255.255.255.0 subnet.
+ 
+-        How do we address these issues ??           
++        How do we address these issues ??
+ 
+         If an EoIP tunnel can be established between 'CC1' and 'CC2'
+         and 'CC1' sends all traffic bound to 'MN1', 10.16.109.199,
+@@ -357,13 +358,13 @@ cLMobilityAnchorTable OBJECT-TYPE
+         the 'Foreign' for WLAN 'typhoon'.
+ 
+         As per the configuration, user creates a MobilityAnchor entry
+-        in 'CC2' for WLAN 'typhoon' with IP address as 'CC1', i.e. 
+-        10.16.109.112. So, when 'MN1' connects to WLAN 'typhoon' via 
++        in 'CC2' for WLAN 'typhoon' with IP address as 'CC1', i.e.
++        10.16.109.112. So, when 'MN1' connects to WLAN 'typhoon' via
+         'AP2', then 'CC2' establishes EoIP tunnel with 10.16.109.112
+         and forwards the packets to 'MN1'.
+ 
+         Given the above example, the cLMobilityAnchorEntry on 'CC2'
+-        looks like :    
++        looks like :
+ 
+         ------------------------------------------------------------------
+         |      MIB - ATTRIBUTES           |       ROW#1        |  ROW#2  |
+@@ -377,16 +378,16 @@ cLMobilityAnchorTable OBJECT-TYPE
+         | cLMobilityAnchorRowStatus       |      active(1)     |         |
+         ------------------------------------------------------------------
+ 
+-        This feature has advantages for both security and load 
++        This feature has advantages for both security and load
+         balancing.  It can be used to restrict a WLAN to a single
+         subnet, regardless of the MN's entry point into the network.
+         A 'public' or guest WLAN can thus be accessed throughout an
+-        enterprise, but still is restricted to a specific subnet.  
++        enterprise, but still is restricted to a specific subnet.
+         It can also be used to provide some geographic load balancing,
+-        since the WLANs can represent a particular section of a 
+-        building (i.e., engineering, marketing).  Those groups can be 
+-        'anchored' on a particular subnet/switch rather than on the 
+-        CC of first occurrence (i.e., the switch controlling the APs 
++        since the WLANs can represent a particular section of a
++        building (i.e., engineering, marketing).  Those groups can be
++        'anchored' on a particular subnet/switch rather than on the
++        CC of first occurrence (i.e., the switch controlling the APs
+         by the front door)."
+     ::= { ciscoLwappMobilityMIBObjects 1 }
+ 
+@@ -401,23 +402,23 @@ cLMobilityAnchorEntry OBJECT-TYPE
+     INDEX           {
+                         cLMobilityAnchorWlanProfileName,
+                         cLMobilityAnchorSwitchIPAddress
+-                    } 
++                    }
+     ::= { cLMobilityAnchorTable 1 }
+ 
+ CLMobilityAnchorEntry ::= SEQUENCE {
+-        cLMobilityAnchorWlanProfileName OCTET STRING,
++        cLMobilityAnchorWlanProfileName DisplayString,
+         cLMobilityAnchorSwitchIPAddress IpAddress,
+         cLMobilityAnchorStatus          BITS,
+         cLMobilityAnchorRowStatus       RowStatus
+ }
+ 
+ cLMobilityAnchorWlanProfileName OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (1..32))
++    SYNTAX          DisplayString (SIZE  (1..32))
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This object represenst local WLAN-profile name to connect
+-        to guest/anchor switch." 
++        to guest/anchor switch."
+     ::= { cLMobilityAnchorEntry 1 }
+ 
+ cLMobilityAnchorSwitchIPAddress OBJECT-TYPE
+@@ -426,7 +427,7 @@ cLMobilityAnchorSwitchIPAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the guest/anchor switch IP
+-        address." 
++        address."
+     ::= { cLMobilityAnchorEntry 2 }
+ 
+ cLMobilityAnchorStatus OBJECT-TYPE
+@@ -438,19 +439,19 @@ cLMobilityAnchorStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents operational and connectivity
+-        status of the mobility anchor.            
++        status of the mobility anchor.
+ 
+         controlpath:
+                 When bit is set to '0', this means successive
+-                ICMP pings to the anchor have failed. 
++                ICMP pings to the anchor have failed.
+                 When bit is set to '1', this means anchor is
+                 reachable and responding to ICMP pings.
+ 
+         datapath:
+-                When bit is set to '0', this means successive 
++                When bit is set to '0', this means successive
+                 EoIP pings to the anchor have failed.
+-                When bit is set to '1', this means anchor is 
+-                reachable and responding to EoIP pings." 
++                When bit is set to '1', this means anchor is
++                reachable and responding to EoIP pings."
+     ::= { cLMobilityAnchorEntry 3 }
+ 
+ cLMobilityAnchorRowStatus OBJECT-TYPE
+@@ -459,10 +460,10 @@ cLMobilityAnchorRowStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This is the status column for this row and is used to
+-        create and delete specific instances of rows in this 
+-        table." 
++        create and delete specific instances of rows in this
++        table."
+     ::= { cLMobilityAnchorEntry 4 }
+- 
++
+ 
+ 
+ -- ********************************************************************
+@@ -475,9 +476,9 @@ cLMobilityAnchorGroupKeepAliveNumber OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies how many successive
+-        ping attempts to the anchor should fail before the 
++        ping attempts to the anchor should fail before the
+         anchor is declared DOWN."
+-    DEFVAL          { 3 } 
++    DEFVAL          { 3 }
+     ::= { cLMobilityAnchorGlobalDot11Config 1 }
+ 
+ cLMobilityAnchorGroupKeepAliveInterval OBJECT-TYPE
+@@ -488,7 +489,7 @@ cLMobilityAnchorGroupKeepAliveInterval OBJECT-TYPE
+         "This object specifies the time interval
+         (in seconds) between two consecutive ping attempts
+         to an anchor."
+-    DEFVAL          { 10 } 
++    DEFVAL          { 10 }
+     ::= { cLMobilityAnchorGlobalDot11Config 2 }
+ 
+ cLMobilityAnchorSmtStatus OBJECT-TYPE
+@@ -499,35 +500,35 @@ cLMobilityAnchorSmtStatus OBJECT-TYPE
+         "This object specifies whether it allows user to enable or
+         disable symmetric mobility tunneling for the controller.
+ 
+-        The controller provides inter-subnet mobility 
++        The controller provides inter-subnet mobility
+         for clients roaming from one AP to another within
+-        a wireless LAN. This mobility is asymmetric in 
+-        nature where the client traffic to the wired 
++        a wireless LAN. This mobility is asymmetric in
++        nature where the client traffic to the wired
+         network is routed out directly via the 'foreign'
+         controller. See the diagram above. This mechanism
+-        breaks when an upstream router has RPF enabled. 
+-        In this case the client traffic will be dropped 
++        breaks when an upstream router has RPF enabled.
++        In this case the client traffic will be dropped
+         at the router because the RPF check ensures that
+-        the path back to the source address matches the 
+-        path the packet is coming from. 
++        the path back to the source address matches the
++        path the packet is coming from.
+ 
+-        This attribute is aimed at addressing this issue. 
++        This attribute is aimed at addressing this issue.
+ 
+         It will allow enabling 'Symmetric Mobility
+         Tunneling' or 'Bi-directional Tunneling'
+         for mobile clients such that all the client
+         traffic is sent to the 'anchor' controller and
+-        go successfully through RPF check. 
++        go successfully through RPF check.
+ 
+-        When set to 'true', Symmetric Mobility Tunneling 
+-        will be enabled on the Controller on next reset. 
++        When set to 'true', Symmetric Mobility Tunneling
++        will be enabled on the Controller on next reset.
+ 
+-        When set to 'false', Symmetric Mobility Tunneling 
++        When set to 'false', Symmetric Mobility Tunneling
+         will be disabled on the Controller on next reset.
+ 
+         After setting this attribute to the desired value,
+         user should reset the Controller for the change to
+-        take effect." 
++        take effect."
+     ::= { cLMobilityAnchorGlobalDot11Config 3 }
+ 
+ cLMobilityAnchorCurrentSmt OBJECT-TYPE
+@@ -538,10 +539,10 @@ cLMobilityAnchorCurrentSmt OBJECT-TYPE
+         "This object represents whether the Symmetric Mobility
+         Tunneling is enabled or disabled on the controller.
+ 
+-        A value of 'true' indicates that Symmetric Mobility 
+-        Tunneling is currently enabled on the controller. 
+-        A value of 'false' indicates that Symmetric Mobility 
+-        Tunneling is currently disabled on the controller." 
++        A value of 'true' indicates that Symmetric Mobility
++        Tunneling is currently enabled on the controller.
++        A value of 'false' indicates that Symmetric Mobility
++        Tunneling is currently disabled on the controller."
+     ::= { cLMobilityAnchorGlobalDot11Config 4 }
+ 
+ cLMobilityAnchorDscpValue OBJECT-TYPE
+@@ -549,7 +550,7 @@ cLMobilityAnchorDscpValue OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the intercontroller DSCP value." 
++        "This object specifies the intercontroller DSCP value."
+     ::= { cLMobilityAnchorGlobalDot11Config 5 }
+ 
+ -- ********************************************************************
+@@ -562,22 +563,22 @@ cLMobilityMulticastMessagingEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies whether the mobility multicast
+-        messaging feature is enabled or disabled on the 
++        messaging feature is enabled or disabled on the
+         controller.
+ 
+-        A value of 'true' indicates that multicast messaging among 
++        A value of 'true' indicates that multicast messaging among
+         the mobility group members is enabled.
+         A value of 'false' indicates that multicast messaging among
+-        the mobility group members is disabled." 
++        the mobility group members is disabled."
+     ::= { cLMobilityMulticastGroupConfig 1 }
+ 
+ cLMobilityMulticastGroupTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLMobilityMulticastGroupEntry 
++    SYNTAX          SEQUENCE OF CLMobilityMulticastGroupEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table is used to configure multicast group
+-        IP address per mobility group. Entries are added to the 
++        IP address per mobility group. Entries are added to the
+         table when configuring multicast group IP address per
+         mobility group."
+     ::= { cLMobilityMulticastGroupConfig 2 }
+@@ -589,7 +590,7 @@ cLMobilityMulticastGroupEntry OBJECT-TYPE
+     DESCRIPTION
+         "Each entry in this table provides information about
+         multicast group IP address per mobility group."
+-    INDEX           { cLMobilityGroupMacAddress } 
++    INDEX           { cLMobilityGroupMacAddress }
+     ::= { cLMobilityMulticastGroupTable 1 }
+ 
+ CLMobilityMulticastGroupEntry ::= SEQUENCE {
+@@ -604,7 +605,7 @@ cLMobilityGroupMacAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the mobility group MAC address
+-        present on the controller." 
++        present on the controller."
+     ::= { cLMobilityMulticastGroupEntry 1 }
+ 
+ cLMobilityMulticastGroupIPAddressType OBJECT-TYPE
+@@ -613,7 +614,7 @@ cLMobilityMulticastGroupIPAddressType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the multicast group IP address
+-        type. The IP address is limited to IPv4 and IPv6." 
++        type. The IP address is limited to IPv4 and IPv6."
+     ::= { cLMobilityMulticastGroupEntry 2 }
+ 
+ cLMobilityMulticastGroupIPAddress OBJECT-TYPE
+@@ -622,21 +623,21 @@ cLMobilityMulticastGroupIPAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the multicast group IP address per
+-        group. The IP address is limited to IPv4 and IPv6. 
+-        The IP address should be reset only after disabling 
++        group. The IP address is limited to IPv4 and IPv6.
++        The IP address should be reset only after disabling
+         the mobility multicast mode
+-        (cLMobilityMulticastMessagingEnable)." 
++        (cLMobilityMulticastMessagingEnable)."
+     ::= { cLMobilityMulticastGroupEntry 3 }
+- 
++
+ 
+ 
+ cLMobilityGroupMembersTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLMobilityGroupMembersEntry 
++    SYNTAX          SEQUENCE OF CLMobilityGroupMembersEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table represents the MWAR List (statically configured
+-        members of the mobility group). Entries are added to the 
++        members of the mobility group). Entries are added to the
+         table when configuring mobility group members."
+     ::= { ciscoLwappMobilityMIBObjects 5 }
+ 
+@@ -647,7 +648,7 @@ cLMobilityGroupMembersEntry OBJECT-TYPE
+     DESCRIPTION
+         "This object represents an entry (conceptual row) in the
+         cLMobilityGroupMembers table."
+-    INDEX           { cLMobilityGroupMacAddress } 
++    INDEX           { cLMobilityGroupMacAddress }
+     ::= { cLMobilityGroupMembersTable 1 }
+ 
+ CLMobilityGroupMembersEntry ::= SEQUENCE {
+@@ -655,7 +656,7 @@ CLMobilityGroupMembersEntry ::= SEQUENCE {
+         cLMobilityGroupMemberIPAddress           InetAddress,
+         cLMobilityGroupMemberControlPathStatusUp TruthValue,
+         cLMobilityGroupMemberDataPathStatusUp    TruthValue,
+-        cLMobilityGroupMemberHashKey             OCTET STRING,
++        cLMobilityGroupMemberHashKey             DisplayString,
+         cLMobilityGroupMemberAddressType         InetAddressType,
+         cLMobilityGroupMemberAddress             InetAddress,
+         cLMobilityGroupMemberGroupName           SnmpAdminString,
+@@ -668,11 +669,11 @@ cLMobilityGroupMemberIPAddressType OBJECT-TYPE
+     STATUS          deprecated
+     DESCRIPTION
+         "This object represents the IP address type of the
+-        mobility member IP address represented by 
++        mobility member IP address represented by
+         cLMobilityGroupMemberIPAddress. The IP address is limited
+         to IPv4 and IPv6. For clarity, this object is being
+-        deprecated in favor of the new read-write object 
+-        'cLMobilityGroupMemberAddressType." 
++        deprecated in favor of the new read-write object
++        'cLMobilityGroupMemberAddressType."
+     ::= { cLMobilityGroupMembersEntry 1 }
+ 
+ cLMobilityGroupMemberIPAddress OBJECT-TYPE
+@@ -682,9 +683,9 @@ cLMobilityGroupMemberIPAddress OBJECT-TYPE
+     DESCRIPTION
+         "This object represents the IP address of the mobility
+         member corresponding to cLMobilityGroupMacAddress. The
+-        IP address is limited to IPv4 and IPv6. For clarity, this 
+-        object is being deprecated in favor of the new read-write 
+-        object 'cLMobilityGroupMemberAddress." 
++        IP address is limited to IPv4 and IPv6. For clarity, this
++        object is being deprecated in favor of the new read-write
++        object 'cLMobilityGroupMemberAddress."
+     ::= { cLMobilityGroupMembersEntry 2 }
+ 
+ cLMobilityGroupMemberControlPathStatusUp OBJECT-TYPE
+@@ -693,11 +694,11 @@ cLMobilityGroupMemberControlPathStatusUp OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the control path status of the
+-        mobility member corresponding to 
++        mobility member corresponding to
+         cLMobilityGroupMacAddress.
+         A value of 'true' indicates that control path is up.
+         A value of 'false' indicates that control path is down."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLMobilityGroupMembersEntry 3 }
+ 
+ cLMobilityGroupMemberDataPathStatusUp OBJECT-TYPE
+@@ -706,22 +707,22 @@ cLMobilityGroupMemberDataPathStatusUp OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the data path status of the
+-        mobility member corresponding to 
++        mobility member corresponding to
+         cLMobilityGroupMacAddress.
+         A value of 'true' indicates that data path is up.
+         A value of 'false' indicates that data path is down."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLMobilityGroupMembersEntry 4 }
+ 
+ cLMobilityGroupMemberHashKey OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (4..40))
++    SYNTAX          DisplayString (SIZE  (4..40))
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the Hash key of the peer
+-        mobility member. 
++        mobility member.
+         It is a 40 hex digit value or 'none' to
+-        clear the previously configured hash key" 
++        clear the previously configured hash key"
+     ::= { cLMobilityGroupMembersEntry 5 }
+ 
+ cLMobilityGroupMemberAddressType OBJECT-TYPE
+@@ -730,9 +731,9 @@ cLMobilityGroupMemberAddressType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the IP address type of the mobility
+-        member IP address represented by 
+-        cLMobilityGroupMemberIPAddress. The IP address is limited 
+-        to IPv4 and IPv6." 
++        member IP address represented by
++        cLMobilityGroupMemberIPAddress. The IP address is limited
++        to IPv4 and IPv6."
+     ::= { cLMobilityGroupMembersEntry 6 }
+ 
+ cLMobilityGroupMemberAddress OBJECT-TYPE
+@@ -741,8 +742,8 @@ cLMobilityGroupMemberAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the IP address of the mobility
+-        member corresponding to cLMobilityGroupMacAddress. The IP 
+-        address is limited to IPv4 and IPv6." 
++        member corresponding to cLMobilityGroupMacAddress. The IP
++        address is limited to IPv4 and IPv6."
+     ::= { cLMobilityGroupMembersEntry 7 }
+ 
+ cLMobilityGroupMemberGroupName OBJECT-TYPE
+@@ -751,8 +752,8 @@ cLMobilityGroupMemberGroupName OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies member's group name. If left empty
+-        while adding a new group member, this assumes the default 
+-        mobility group name of the switch." 
++        while adding a new group member, this assumes the default
++        mobility group name of the switch."
+     ::= { cLMobilityGroupMembersEntry 8 }
+ 
+ cLMobilityGroupMemberRowStatus OBJECT-TYPE
+@@ -761,20 +762,20 @@ cLMobilityGroupMemberRowStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This is the status column for this row and is used to
+-        create and delete specific instances of rows in this 
+-        table." 
++        create and delete specific instances of rows in this
++        table."
+     ::= { cLMobilityGroupMembersEntry 9 }
+- 
++
+ 
+ 
+ cLMobilityForeignWlcMapTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLMobilityForeignWlcMapEntry 
++    SYNTAX          SEQUENCE OF CLMobilityForeignWlcMapEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table is used to create mappings of the foreign
+         controller with the interface/interface group to be used,
+-        when clients are directly connected to the foreign 
++        when clients are directly connected to the foreign
+         controller send the DHCP request to the anchor
+         controller."
+     ::= { ciscoLwappMobilityMIBObjects 6 }
+@@ -785,12 +786,12 @@ cLMobilityForeignWlcMapEntry OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Each entry in this table represents a row in the
+-        cLMobilityForeignWlcIfMappingTable .Entries are added and 
++        cLMobilityForeignWlcIfMappingTable .Entries are added and
+         deleted by explicit user driven action."
+     INDEX           {
+                         cLMobilityAnchorWlanProfileName,
+                         cLMobilityForeignWlcMapMacAddress
+-                    } 
++                    }
+     ::= { cLMobilityForeignWlcMapTable 1 }
+ 
+ CLMobilityForeignWlcMapEntry ::= SEQUENCE {
+@@ -805,8 +806,8 @@ cLMobilityForeignWlcMapMacAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the MAC address of the foreign
+-        controller, to which the interface mapping is to be 
+-        configured." 
++        controller, to which the interface mapping is to be
++        configured."
+     ::= { cLMobilityForeignWlcMapEntry 1 }
+ 
+ cLMobilityForeignWlcMapIf OBJECT-TYPE
+@@ -817,7 +818,7 @@ cLMobilityForeignWlcMapIf OBJECT-TYPE
+         "This object specifies name of the interface/interface
+         group which would be used for the communication with the
+         clients connected to the foreign controller, represented by
+-        cLMobilityForeignWlcMapMacAddress." 
++        cLMobilityForeignWlcMapMacAddress."
+     ::= { cLMobilityForeignWlcMapEntry 2 }
+ 
+ cLMobilityForeignWlcMapRowStatus OBJECT-TYPE
+@@ -826,10 +827,10 @@ cLMobilityForeignWlcMapRowStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This is the status column for this row and is used to
+-        create and delete specific instances of rows in this 
+-        table." 
++        create and delete specific instances of rows in this
++        table."
+     ::= { cLMobilityForeignWlcMapEntry 3 }
+- 
++
+ 
+ 
+ -- *******************************************************************
+@@ -844,7 +845,7 @@ cLMobilityIncomingCount OBJECT-TYPE
+         "This object represents the number of successfully incoming
+         inter-WLC roaming count for this WLC. If a client roams in
+         from other WLC with the same SSID and successfully
+-        re-associated, the count should be increased." 
++        re-associated, the count should be increased."
+     ::= { cLMobilityStats 1 }
+ 
+ cLMobilityOutgoingCount OBJECT-TYPE
+@@ -853,9 +854,9 @@ cLMobilityOutgoingCount OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the number of successfully outgoing
+-        inter-WLC roaming count for this WLC. If a client roams 
++        inter-WLC roaming count for this WLC. If a client roams
+         out to other WLC with the same SSID successfully, the
+-        count should be increased." 
++        count should be increased."
+     ::= { cLMobilityStats 2 }
+ 
+ -- *******************************************************************
+@@ -868,7 +869,7 @@ cLMobilityAnchorWlanId OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents index of the WLAN in the
+-        controller." 
++        controller."
+     ::= { cLMobilityTrapVariables 1 }
+ 
+ cLMobilityAnchorAddressType OBJECT-TYPE
+@@ -877,7 +878,7 @@ cLMobilityAnchorAddressType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the guest/anchor switch address
+-        type." 
++        type."
+     ::= { cLMobilityTrapVariables 2 }
+ 
+ cLMobilityAnchorAddress OBJECT-TYPE
+@@ -886,13 +887,13 @@ cLMobilityAnchorAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the guest/anchor switch address.
+-        The IP address is limited to IPv4 and IPv6." 
++        The IP address is limited to IPv4 and IPv6."
+     ::= { cLMobilityTrapVariables 3 }
+ 
+ -- *******************************************************************
+ -- * END OF - DEFINITION OF OBJECTS ACCESSIBLE FOR NOTIFICATIONS ONLY
+ -- *******************************************************************
+---   
++--
+ 
+ -- *******************************************************************
+ -- *    NOTIFICATIONS
+@@ -906,8 +907,8 @@ ciscoLwappMobilityAnchorControlPathDown NOTIFICATION-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This trap will be generated by the controller when,
+-        successive ICMP ping attempts to the anchor fails 
+-        and the anchor is conclusively down. 
++        successive ICMP ping attempts to the anchor fails
++        and the anchor is conclusively down.
+         Variable cLMobilityAnchorAddress denotes the
+         IP address of the anchor."
+    ::= { ciscoLwappMobilityMIBNotifs 1 }
+@@ -920,8 +921,8 @@ ciscoLwappMobilityAnchorControlPathUp NOTIFICATION-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This trap will be generated by the controller when,
+-        ICMP ping to the anchor is restored and anchor is 
+-        conclusively up. 
++        ICMP ping to the anchor is restored and anchor is
++        conclusively up.
+         Variable cLMobilityAnchorAddress denotes the
+         IP address of the anchor."
+    ::= { ciscoLwappMobilityMIBNotifs 2 }
+@@ -935,7 +936,7 @@ ciscoLwappMobilityAnchorDataPathDown NOTIFICATION-TYPE
+     DESCRIPTION
+         "This trap will be generated by the controller when,
+         successive EoIP ping attempts to the anchor fails
+-        and the anchor is conclusively down. 
++        and the anchor is conclusively down.
+         Variable cLMobilityAnchorAddress denotes the
+         IP address of the anchor."
+    ::= { ciscoLwappMobilityMIBNotifs 3 }
+@@ -948,8 +949,8 @@ ciscoLwappMobilityAnchorDataPathUp NOTIFICATION-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This trap will be generated by the controller when,
+-        EoIP ping to the anchor is restored and anchor is 
+-        conclusively up. 
++        EoIP ping to the anchor is restored and anchor is
++        conclusively up.
+         Variable cLMobilityAnchorAddress denotes the
+         IP address of the anchor."
+    ::= { ciscoLwappMobilityMIBNotifs 4 }
+@@ -960,7 +961,7 @@ ciscoLwappMobilityAllAnchorsOnWlanDown NOTIFICATION-TYPE
+     DESCRIPTION
+         "This trap will be generated by the controller when,
+         successive EoIP ping attempts to all the anchors on
+-        WLAN, denoted by cLMobilityAnchorWlanId, fails and 
++        WLAN, denoted by cLMobilityAnchorWlanId, fails and
+         all the anchors are conclusively down."
+    ::= { ciscoLwappMobilityMIBNotifs 5 }
+ 
+@@ -969,14 +970,14 @@ ciscoLwappMobilityOneAnchorOnWlanUp NOTIFICATION-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This trap will be generated by the controller when,
+-        successive EoIP and UDP ping to atleast one anchor 
+-        on the WLAN, denoted by cLMobilityAnchorWlanId, is 
++        successive EoIP and UDP ping to atleast one anchor
++        on the WLAN, denoted by cLMobilityAnchorWlanId, is
+         restored and anchor is conclusively up."
+    ::= { ciscoLwappMobilityMIBNotifs 6 }
+ -- *******************************************************************
+ -- *   END OF -  NOTIFICATIONS
+ -- *******************************************************************
+---   
++--
+ -- *******************************************************************
+ -- *    Compliance statements
+ -- *******************************************************************
+@@ -1047,7 +1048,7 @@ cLNplus1RedundancyRev01ConfigGroup OBJECT-GROUP
+     STATUS          current
+     DESCRIPTION
+         "This is a collection of objects which can
+-        configured to control functional parameters 
++        configured to control functional parameters
+         of guest tunneling N+1 redundancy feature."
+     ::= { ciscoLwappMobilityMIBGroups 1 }
+ 
+@@ -1062,7 +1063,7 @@ cLNplus1RedundancyRev01StatusGroup OBJECT-GROUP
+     STATUS          current
+     DESCRIPTION
+         "This collection of objects represents the information
+-        about the general status attributes of guest tunneling 
++        about the general status attributes of guest tunneling
+         N+1 redundancy feature."
+     ::= { ciscoLwappMobilityMIBGroups 2 }
+ 
+@@ -1078,7 +1079,7 @@ cLNplus1RedundancyRev01NotifsGroup NOTIFICATION-GROUP
+     STATUS          current
+     DESCRIPTION
+         "This is a collection of notifications about the
+-        general functional behavior of guest tunneling 
++        general functional behavior of guest tunneling
+         N+1 redundancy feature."
+     ::= { ciscoLwappMobilityMIBGroups 3 }
+ 
+@@ -1087,7 +1088,7 @@ cLSymmetricTunnelingRev01ConfigGroup OBJECT-GROUP
+     STATUS          current
+     DESCRIPTION
+         "This is a collection of objects which can be
+-        configured to control functional parameters 
++        configured to control functional parameters
+         of symmetric mobility tunneling feature."
+     ::= { ciscoLwappMobilityMIBGroups 4 }
+ 
+@@ -1096,7 +1097,7 @@ cLSymmetricTunnelingRev01StatusGroup OBJECT-GROUP
+     STATUS          current
+     DESCRIPTION
+         "This collection of objects represents the information
+-        about the general status attributes of symmetric 
++        about the general status attributes of symmetric
+         tunneling feature."
+     ::= { ciscoLwappMobilityMIBGroups 5 }
+ 

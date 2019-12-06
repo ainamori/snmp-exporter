@@ -1,0 +1,502 @@
+diff --git a/mibs/cisco/wlc/v2/CISCO-LWAPP-ACL-MIB.my b/mibs/cisco/wlc/v2/CISCO-LWAPP-ACL-MIB.my
+index d2c99e0..f5f1daf 100644
+--- a/mibs/cisco/wlc/v2/CISCO-LWAPP-ACL-MIB.my
++++ b/mibs/cisco/wlc/v2/CISCO-LWAPP-ACL-MIB.my
+@@ -1,8 +1,8 @@
+ 
+ -- *******************************************************************
+ -- CISCO-LWAPP-ACL-MIB.my
+--- August 2006, Sheeba Kamra 
+---   
++-- August 2006, Sheeba Kamra
++--
+ -- Copyright (c) 2005-2006, 2016, 2017 by Cisco Systems, Inc.
+ -- All rights reserved.
+ -- *******************************************************************
+@@ -19,7 +19,8 @@ IMPORTS
+     OBJECT-GROUP
+         FROM SNMPv2-CONF
+     TruthValue,
+-    RowStatus
++    RowStatus,
++    DisplayString
+         FROM SNMPv2-TC
+     InetAddressType,
+     InetAddress
+@@ -65,7 +66,7 @@ ciscoLwappAclMIB MODULE-IDENTITY
+         Processing Unit).
+ 
+         Using CPU ACLs, the user can place restrictions on type of
+-        traffic reaching the CPU of the controller from the NPU.      
++        traffic reaching the CPU of the controller from the NPU.
+ 
+         CPU ACLs introduce an ACL for the traffic to the CPU of
+         controller. With this ACL the type of packets reaching the
+@@ -82,31 +83,31 @@ ciscoLwappAclMIB MODULE-IDENTITY
+         NPU.
+ 
+ 
+-                                GLOSSARY                              
++                                GLOSSARY
+ 
+         Access Control List ( ACL )
+ 
+         A list of rules used to restrict the traffic reaching an
+         interface or the CPU.  Each ACL is an ordered set of rules
+-        and actions.  If a rule matches then the action for that 
++        and actions.  If a rule matches then the action for that
+         rule is applied to the packet.
+ 
+         Access Point ( AP )
+ 
+-        An entity that contains an 802.11 medium access control 
++        An entity that contains an 802.11 medium access control
+         ( MAC ) and physical layer ( PHY ) interface and provides
+         acess to the distribution services via the wireless medium
+         for associated clients.
+ 
+         CPU ACL ( CPU ACL )
+ 
+-        The ACL applied to the CPU.  This controls the type of 
++        The ACL applied to the CPU.  This controls the type of
+         traffic reaching the CPU of the controller.
+ 
+         Network Processing Unit ( NPU )
+ 
+         This entity is responsible for forwarding traffic to the
+-        CPU. The only exceptions are data coming through the 
++        CPU. The only exceptions are data coming through the
+         console port and the Service port i.e. these communicate
+         directly with the CPU and not via the NPU.
+ 
+@@ -157,14 +158,14 @@ claAclCounterEnable OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the ACL Counters status 
+-         if packets are hitting any of the ACLs that are 
+-         configured on the controller. 
+-         A value of 'true' indicates that ACL counter 
++        "This object specifies the ACL Counters status
++         if packets are hitting any of the ACLs that are
++         configured on the controller.
++         A value of 'true' indicates that ACL counter
+          is enabled.
+-         A value of 'false' indicates that ACL counter 
++         A value of 'false' indicates that ACL counter
+          is disabled."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { ciscoLwappControllerAclGeneral 1 }
+ 
+ claUrlAclExternalServerIpType OBJECT-TYPE
+@@ -172,7 +173,7 @@ claUrlAclExternalServerIpType OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the IP address type of External 
++        "This object specifies the IP address type of External
+          server to which the blocked URL will be redirected."
+     ::= { ciscoLwappControllerAclGeneral 2 }
+ 
+@@ -181,16 +182,16 @@ claUrlAclExternalServerIp OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the Ip address of External 
++        "This object specifies the Ip address of External
+          server to which the blocked URL will be redirected."
+     ::= { ciscoLwappControllerAclGeneral 3 }
+ 
+ claCpuAclTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF ClaCpuAclEntry 
++    SYNTAX          SEQUENCE OF ClaCpuAclEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This table represents the CPU ACL related parameters 
++        "This table represents the CPU ACL related parameters
+          of the controller."
+     ::= { ciscoLwappCpuAcl 1 }
+ 
+@@ -200,9 +201,9 @@ claCpuAclEntry OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Each entry represents a conceptual row in this table.
+-         For each CPU ACL of the controller, there will be a 
++         For each CPU ACL of the controller, there will be a
+          row."
+-    INDEX           { claCpuAclIndex } 
++    INDEX           { claCpuAclIndex }
+     ::= { claCpuAclTable 1 }
+ 
+ ClaCpuAclEntry ::= SEQUENCE {
+@@ -216,8 +217,8 @@ claCpuAclIndex OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This object represents unique instance of a 
+-         CPU ACL on the controller." 
++        "This object represents unique instance of a
++         CPU ACL on the controller."
+     ::= { claCpuAclEntry 1 }
+ 
+ claCpuAclName OBJECT-TYPE
+@@ -226,10 +227,10 @@ claCpuAclName OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies name of the ACL
+-         applied to the CPU. The access list to be 
+-         applied should already exist on the controller.  
++         applied to the CPU. The access list to be
++         applied should already exist on the controller.
+          If it is required to remove the ACL for the CPU,
+-         this field should be set to an empty string." 
++         this field should be set to an empty string."
+     ::= { claCpuAclEntry 2 }
+ 
+ claCpuAclPacketApplicability OBJECT-TYPE
+@@ -242,23 +243,23 @@ claCpuAclPacketApplicability OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies whether CPU ACL applied for 
+-         only wired packets, wireless packets or both. 
+-         From release 7.0 onwards, wired and wireless is 
++        "This object specifies whether CPU ACL applied for
++         only wired packets, wireless packets or both.
++         From release 7.0 onwards, wired and wireless is
+          not supported.
+-         A value of none(1) indicates that, no ACL applied 
++         A value of none(1) indicates that, no ACL applied
+          to CPU.
+-         A value of wired(2) indicates that, ACL applied to 
++         A value of wired(2) indicates that, ACL applied to
+          wired packets.
+-         A value of wireless(3) indicates that, ACL applied to 
++         A value of wireless(3) indicates that, ACL applied to
+          wireless packets.
+          A value of both(4) indicates that, the attribute
+          claCpuAclName got set."
+-    DEFVAL          { none } 
++    DEFVAL          { none }
+     ::= { claCpuAclEntry 3 }
+- 
++
+ claAclTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF ClaAclEntry 
++    SYNTAX          SEQUENCE OF ClaAclEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -277,16 +278,16 @@ claAclEntry OBJECT-TYPE
+       ::= { claAclTable 1 }
+ 
+ ClaAclEntry ::= SEQUENCE {
+-               claAclName          OCTET STRING,
++               claAclName          DisplayString,
+                claAclCounterClear  TruthValue
+            }
+ 
+ claAclName OBJECT-TYPE
+-      SYNTAX     OCTET STRING (SIZE(1..32))
+-      MAX-ACCESS not-accessible 
++      SYNTAX     DisplayString (SIZE(1..32))
++      MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-          "This object represents name of the Access 
++          "This object represents name of the Access
+            Control List."
+       ::= { claAclEntry 1 }
+ 
+@@ -296,8 +297,8 @@ claAclCounterClear OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+             "This object specifies the counter clear
+-             value of a unique ACL name. 
+-             A value of 'true' indicates that, ACL counter 
++             value of a unique ACL name.
++             A value of 'true' indicates that, ACL counter
+              will be cleared.
+              A value of 'false' indicates that, ACL counter
+              will not be cleared."
+@@ -309,7 +310,7 @@ claAclRuleTable OBJECT-TYPE
+       MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-          "This table represents the rules and number of hits under 
++          "This table represents the rules and number of hits under
+            ACL on the switch."
+       ::= { ciscoLwappControllerAcl 2 }
+ 
+@@ -320,35 +321,35 @@ claAclRuleEntry OBJECT-TYPE
+       STATUS     current
+       DESCRIPTION
+           "Each entry represents a conceptual row in this table.
+-           For each ACL rule of the controller, there will be a 
++           For each ACL rule of the controller, there will be a
+            row."
+-      INDEX      { claAclName, 
++      INDEX      { claAclName,
+                    claAclRuleIndex }
+       ::= { claAclRuleTable 1 }
+ 
+ ClaAclRuleEntry ::= SEQUENCE {
+                claAclRuleIndex  Unsigned32,
+-               claAclRuleHits   Counter32 
++               claAclRuleHits   Counter32
+            }
+ 
+ claAclRuleIndex OBJECT-TYPE
+       SYNTAX Unsigned32(1..64)
+-      MAX-ACCESS not-accessible 
++      MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-          "This object represents index of the ACL rule. 
+-           This can be updated to reset the sequence of the 
++          "This object represents index of the ACL rule.
++           This can be updated to reset the sequence of the
+            rules of an ACL."
+       ::= { claAclRuleEntry 2 }
+ 
+ claAclRuleHits OBJECT-TYPE
+-        SYNTAX      Counter32 
++        SYNTAX      Counter32
+         MAX-ACCESS  read-only
+         STATUS      current
+         DESCRIPTION
+-            "This object indicates number of hits in the particular 
+-             rule under the ACL. This object is cleared by setting the 
+-             claAclCounterClear object." 
++            "This object indicates number of hits in the particular
++             rule under the ACL. This object is cleared by setting the
++             claAclCounterClear object."
+         ::= { claAclRuleEntry 3 }
+ 
+ claAclUrlTable  OBJECT-TYPE
+@@ -356,17 +357,17 @@ claAclUrlTable  OBJECT-TYPE
+         MAX-ACCESS         not-accessible
+         STATUS             current
+         DESCRIPTION
+-            "This table represents the URL ACLs (Access Control 
++            "This table represents the URL ACLs (Access Control
+              Lists)."
+         ::= { ciscoLwappControllerAcl 3 }
+-    
++
+ claAclUrlEntry     OBJECT-TYPE
+         SYNTAX     ClaAclUrlEntry
+         MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+             "Each entry represents a conceptual row in this table.
+-             For each ACL rule  of the controller, there will be 
++             For each ACL rule  of the controller, there will be
+              a row. "
+         INDEX      { claAclName,
+                      claAclUrlIndex }
+@@ -374,20 +375,20 @@ claAclUrlEntry     OBJECT-TYPE
+ 
+ ClaAclUrlEntry ::= SEQUENCE {
+         claAclUrlIndex      Unsigned32,
+-        claAclUrlName       CiscoURLString, 
+-        claAclUrlRowStatus  RowStatus        
++        claAclUrlName       CiscoURLString,
++        claAclUrlRowStatus  RowStatus
+ }
+ 
+ claAclUrlIndex OBJECT-TYPE
+         SYNTAX     Unsigned32(1..10)
+-        MAX-ACCESS not-accessible 
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-            "This object represents index of the ACL URL. 
+-             This can be updated to reset the sequence of 
++            "This object represents index of the ACL URL.
++             This can be updated to reset the sequence of
+              the URL entries of an ACL."
+         ::= { claAclUrlEntry 1 }
+-      
++
+ claAclUrlName       OBJECT-TYPE
+         SYNTAX      CiscoURLString
+         MAX-ACCESS  read-create
+@@ -398,12 +399,12 @@ claAclUrlName       OBJECT-TYPE
+         ::= { claAclUrlEntry 2 }
+ 
+ claAclUrlRowStatus OBJECT-TYPE
+-        SYNTAX     RowStatus 
++        SYNTAX     RowStatus
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-            "This is the status column for this row and is used 
+-             to create and delete specific instances of rows in 
++            "This is the status column for this row and is used
++             to create and delete specific instances of rows in
+              this table."
+         ::= { claAclUrlEntry 3 }
+ 
+@@ -432,14 +433,14 @@ claUrlAclEntry OBJECT-TYPE
+         ::= { claUrlAclTable 1 }
+ 
+ ClaUrlAclEntry ::= SEQUENCE {
+-                claUrlAclName          OCTET STRING,
++                claUrlAclName          DisplayString,
+                 claUrlAclApplyMode     INTEGER,
+                 claUrlAclCounterClear  TruthValue,
+-                claUrlAclRowStatus     RowStatus, 
++                claUrlAclRowStatus     RowStatus,
+                 claUrlAclListType      INTEGER
+                 }
+ claUrlAclName OBJECT-TYPE
+-        SYNTAX     OCTET STRING (SIZE(1..32))
++        SYNTAX     DisplayString (SIZE(1..32))
+         MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+@@ -454,11 +455,11 @@ claUrlAclApplyMode OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-            "This object specifies the apply mode of the URL 
++            "This object specifies the apply mode of the URL
+              ACL on the switch.
+-             A value of  notapplied(1) indicates that, URL ACL 
+-             not applied. 
+-             A value of applied(2) indicates that, URL ACL has 
++             A value of  notapplied(1) indicates that, URL ACL
++             not applied.
++             A value of applied(2) indicates that, URL ACL has
+              been applied on the switch."
+         DEFVAL          { notapplied }
+         ::= { claUrlAclEntry 2 }
+@@ -469,7 +470,7 @@ claUrlAclCounterClear OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+             "This object specifies the URL ACL counter clear
+-             value. 
++             value.
+              A value of 'true' indicates that, URL ACL counters
+              will be cleared.
+              A value of 'false' indicates that, URL ACL counters
+@@ -483,7 +484,7 @@ claUrlAclRowStatus OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+             "This object specifies status column for this row
+-             and used to create and delete specific instances 
++             and used to create and delete specific instances
+              of rows in this table."
+         ::= { claUrlAclEntry 4 }
+ 
+@@ -494,11 +495,11 @@ claUrlAclListType OBJECT-TYPE
+                     }
+         MAX-ACCESS read-create
+         STATUS     current
+-        DESCRIPTION 
+-            "This object specifies the URL ACL list type. 
+-             A value of whitelist(1) indicates that, all the url 
+-             configured in acl will only be permitted. 
+-             A value of blacklist(2) indicates that, only rules 
++        DESCRIPTION
++            "This object specifies the URL ACL list type.
++             A value of whitelist(1) indicates that, all the url
++             configured in acl will only be permitted.
++             A value of blacklist(2) indicates that, only rules
+              specified in the acl will be denied"
+         DEFVAL { whitelist }
+         ::= { claUrlAclEntry 5 }
+@@ -517,9 +518,9 @@ claUrlAclRuleEntry OBJECT-TYPE
+         MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-            "Each entry represents the attributes for 
+-             claUrlAclRuleTable. An entry gets added to 
+-             the table on creating a rule on URL ACL.In a 
++            "Each entry represents the attributes for
++             claUrlAclRuleTable. An entry gets added to
++             the table on creating a rule on URL ACL.In a
+              given ACL there can only be 100 rules"
+         INDEX           {
+                         claUrlAclName,
+@@ -529,7 +530,7 @@ claUrlAclRuleEntry OBJECT-TYPE
+ 
+ ClaUrlAclRuleEntry ::= SEQUENCE {
+                     claUrlAclRuleIndex                    Unsigned32,
+-                    claUrlAclRuleUrl                      OCTET STRING,
++                    claUrlAclRuleUrl                      DisplayString,
+                     claUrlAclRuleAction                   INTEGER,
+                     claUrlAclRuleHits                     Counter32,
+                     claUrlAclRuleRowStatus                RowStatus
+@@ -539,19 +540,19 @@ claUrlAclRuleIndex OBJECT-TYPE
+         MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-            "This object represents the unique index of the 
+-             URL ACL rule. This can be updated to reset the 
++            "This object represents the unique index of the
++             URL ACL rule. This can be updated to reset the
+              sequence of the rules of an URL ACL."
+         ::= { claUrlAclRuleEntry 1 }
+ 
+ claUrlAclRuleUrl OBJECT-TYPE
+-        SYNTAX          OCTET STRING (SIZE(1..255))
++        SYNTAX          DisplayString (SIZE(1..255))
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+             "This object specifies the URL of a rule."
+         ::= { claUrlAclRuleEntry 2 }
+-      
++
+ claUrlAclRuleAction OBJECT-TYPE
+         SYNTAX          INTEGER  {
+                         deny(1),
+@@ -561,9 +562,9 @@ claUrlAclRuleAction OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+             "This object specifies the permission mode of a rule.
+-             A value of deny(0) indicates that, URL is to be 
++             A value of deny(0) indicates that, URL is to be
+              denied.
+-             A value of permit(1) indicates that, URL is to be 
++             A value of permit(1) indicates that, URL is to be
+              permitted."
+         DEFVAL { permit }
+         ::= { claUrlAclRuleEntry 3 }
+@@ -573,18 +574,18 @@ claUrlAclRuleHits OBJECT-TYPE
+         MAX-ACCESS read-only
+         STATUS     current
+         DESCRIPTION
+-            "This object indicates number of hits in the particular 
+-             rule under the URL ACL.This object is cleared by setting 
++            "This object indicates number of hits in the particular
++             rule under the URL ACL.This object is cleared by setting
+              the claUrlAclCounterClear object."
+         ::= { claUrlAclRuleEntry 4 }
+-      
++
+ claUrlAclRuleRowStatus OBJECT-TYPE
+         SYNTAX     RowStatus
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-            "This is the status column for this row and is used to 
+-             create and delete specific instances of rows in this 
++            "This is the status column for this row and is used to
++             create and delete specific instances of rows in this
+              table."
+         ::= { claUrlAclRuleEntry 5 }
+ 
+@@ -657,7 +658,7 @@ ciscoLwappAclGroup OBJECT-GROUP
+                         claUrlAclRuleRowStatus
+ 
+                     }
+-    STATUS          current 
++    STATUS          current
+     DESCRIPTION
+         "This collection of objects represents the information
+          about the general attributes of controller ACL."

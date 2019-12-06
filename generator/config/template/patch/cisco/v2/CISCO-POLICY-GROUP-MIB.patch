@@ -1,0 +1,432 @@
+diff --git a/mibs/cisco/cat3750/v2/CISCO-POLICY-GROUP-MIB.my b/mibs/cisco/cat3750/v2/CISCO-POLICY-GROUP-MIB.my
+index 1d29877..ef5cfff 100644
+--- a/mibs/cisco/cat3750/v2/CISCO-POLICY-GROUP-MIB.my
++++ b/mibs/cisco/cat3750/v2/CISCO-POLICY-GROUP-MIB.my
+@@ -10,8 +10,8 @@
+ CISCO-POLICY-GROUP-MIB DEFINITIONS ::= BEGIN
+ 
+ IMPORTS
+-    MODULE-IDENTITY, 
+-    OBJECT-TYPE, 
++    MODULE-IDENTITY,
++    OBJECT-TYPE,
+     Unsigned32
+         FROM SNMPv2-SMI
+ 
+@@ -20,7 +20,8 @@ IMPORTS
+         FROM SNMPv2-CONF
+ 
+     TEXTUAL-CONVENTION,
+-    RowStatus
++    RowStatus,
++    DisplayString
+         FROM SNMPv2-TC
+ 
+     InetAddressType,
+@@ -46,15 +47,15 @@ ciscoPolicyGroupMIB MODULE-IDENTITY
+          E-mail: cs-lan-switch-snmp@cisco.com"
+     DESCRIPTION
+         "The MIB module is for configuration of policy and
+-         policy group. A policy group can be described as a set 
++         policy group. A policy group can be described as a set
+          of entities identified by IP addresses or other means.
+          Members of a policy group will be subjected to the same policy.
+          In this MIB, user can apply a policy to policy group(s)
+-         as well as configure and retrieve the group membership." 
++         as well as configure and retrieve the group membership."
+     REVISION    "200601131600Z"
+     DESCRIPTION
+         "Initial revision of this MIB module."
+-    ::= { ciscoMgmt 507 } 
++    ::= { ciscoMgmt 507 }
+ 
+ --
+ --  Definitions of textual convention
+@@ -66,7 +67,7 @@ CpgPolicyName ::= TEXTUAL-CONVENTION
+     DESCRIPTION
+         "An octet string, preferably in human-readable form,
+         describes the name of a policy."
+-    SYNTAX  OCTET STRING (SIZE (1..128))
++    SYNTAX  DisplayString (SIZE (1..128))
+ 
+ CpgPolicyNameOrEmpty ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "128a"
+@@ -76,7 +77,7 @@ CpgPolicyNameOrEmpty ::= TEXTUAL-CONVENTION
+         CpgPolicyName convention. The latter defines a non-empty
+         policy name. This extension permits the additional value
+         of empty string."
+-    SYNTAX  OCTET STRING (SIZE (0..128))
++    SYNTAX  DisplayString (SIZE (0..128))
+ 
+ CpgGroupName ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "128a"
+@@ -84,7 +85,7 @@ CpgGroupName ::= TEXTUAL-CONVENTION
+     DESCRIPTION
+         "An octet string, preferably in human-readable form,
+         describes the name of a policy group."
+-    SYNTAX  OCTET STRING (SIZE (1..128))
++    SYNTAX  DisplayString (SIZE (1..128))
+ 
+ --
+ --     MIB object definitions
+@@ -114,9 +115,9 @@ cpgGroupTable OBJECT-TYPE
+         DESCRIPTION
+           "A table indicates the policy groups in the device."
+         ::= { cpgGroup 1 }
+- 
++
+ cpgGroupEntry OBJECT-TYPE
+-    SYNTAX       CpgGroupEntry 
++    SYNTAX       CpgGroupEntry
+     MAX-ACCESS   not-accessible
+     STATUS       current
+     DESCRIPTION
+@@ -125,31 +126,31 @@ cpgGroupEntry OBJECT-TYPE
+          of IP addresses contained in the group and the status
+          of this instance. A row instance can be created or removed
+          by the system or by setting the appropriate value
+-         of the RowStatus object." 
++         of the RowStatus object."
+     INDEX { IMPLIED cpgGroupName }
+     ::= { cpgGroupTable 1 }
+ 
+ CpgGroupEntry ::= SEQUENCE {
+-    cpgGroupName          CpgGroupName, 
++    cpgGroupName          CpgGroupName,
+     cpgGroupSourceType    INTEGER,
+     cpgGroupIpAddrCount   Unsigned32,
+     cpgGroupRowStatus     RowStatus
+ }
+- 
++
+ cpgGroupName OBJECT-TYPE
+-    SYNTAX      CpgGroupName 
+-    MAX-ACCESS  not-accessible 
++    SYNTAX      CpgGroupName
++    MAX-ACCESS  not-accessible
+     STATUS      current
+     DESCRIPTION
+         "Indicates the name of a policy group in the device."
+     ::= { cpgGroupEntry 1 }
+ 
+ cpgGroupSourceType OBJECT-TYPE
+-    SYNTAX      INTEGER { 
+-                    unknown(1), 
++    SYNTAX      INTEGER {
++                    unknown(1),
+                     accessList(2),
+                     configured(3)
+-                } 
++                }
+     MAX-ACCESS  read-only
+     STATUS      current
+     DESCRIPTION
+@@ -162,19 +163,19 @@ cpgGroupSourceType OBJECT-TYPE
+          accessList(2) indicates that this group is added via
+          the ACL (Access Control List) feature.
+ 
+-         configured(3) indicates that this group is added via 
++         configured(3) indicates that this group is added via
+          this policy group configuration."
+     ::= { cpgGroupEntry 2 }
+ 
+ cpgGroupIpAddrCount OBJECT-TYPE
+-    SYNTAX      Unsigned32 
++    SYNTAX      Unsigned32
+     MAX-ACCESS  read-only
+     STATUS      current
+     DESCRIPTION
+-        "Indicates the number of IP address(es) contained in 
++        "Indicates the number of IP address(es) contained in
+          this group. This is the number of entries for this group
+          in the cpgGroupIpTable. The initial value of this object
+-         in a row created via cpgGroupRowStatus object is zero." 
++         in a row created via cpgGroupRowStatus object is zero."
+     ::= { cpgGroupEntry 3 }
+ 
+ cpgGroupRowStatus OBJECT-TYPE
+@@ -198,9 +199,9 @@ cpgGroupIpTable OBJECT-TYPE
+         "A table provides management information for policy group
+         and its IP address(es) membership in the device."
+     ::= { cpgGroup 2 }
+- 
++
+ cpgGroupIpEntry OBJECT-TYPE
+-    SYNTAX       CpgGroupIpEntry 
++    SYNTAX       CpgGroupIpEntry
+     MAX-ACCESS   not-accessible
+     STATUS       current
+     DESCRIPTION
+@@ -216,34 +217,34 @@ cpgGroupIpEntry OBJECT-TYPE
+         automatically removed."
+     INDEX { cpgGroupIpGroupName,
+             cpgGroupIpAddrType,
+-            cpgGroupIpAddress 
++            cpgGroupIpAddress
+           }
+     ::= { cpgGroupIpTable 1 }
+ 
+ CpgGroupIpEntry ::= SEQUENCE {
+-    cpgGroupIpGroupName       CpgGroupName, 
++    cpgGroupIpGroupName       CpgGroupName,
+     cpgGroupIpAddrType        InetAddressType,
+     cpgGroupIpAddress         InetAddress,
+     cpgGroupIpMask            InetAddress,
+-    cpgGroupIpSourceType      INTEGER, 
++    cpgGroupIpSourceType      INTEGER,
+     cpgGroupIpRowStatus       RowStatus
+ }
+- 
++
+ cpgGroupIpGroupName OBJECT-TYPE
+-    SYNTAX      CpgGroupName 
+-    MAX-ACCESS  not-accessible 
++    SYNTAX      CpgGroupName
++    MAX-ACCESS  not-accessible
+     STATUS      current
+     DESCRIPTION
+         "Indicates the policy group name. This group should exist in
+-         cpgGroupTable." 
++         cpgGroupTable."
+     ::= { cpgGroupIpEntry 1 }
+ 
+ cpgGroupIpAddrType OBJECT-TYPE
+     SYNTAX      InetAddressType
+-    MAX-ACCESS  not-accessible 
++    MAX-ACCESS  not-accessible
+     STATUS      current
+     DESCRIPTION
+-        "The type of Internet address of a group member." 
++        "The type of Internet address of a group member."
+     ::= { cpgGroupIpEntry 2 }
+ 
+ cpgGroupIpAddress OBJECT-TYPE
+@@ -281,7 +282,7 @@ cpgGroupIpSourceType OBJECT-TYPE
+                     nac(4),
+                     webAuth(5),
+                     macAuth(6)
+-                } 
++                }
+     MAX-ACCESS  read-only
+     STATUS      current
+     DESCRIPTION
+@@ -290,30 +291,30 @@ cpgGroupIpSourceType OBJECT-TYPE
+          other(1) indicates the source of this IP address is
+          not one of the following types.
+ 
+-         configured(2) indicates this IP address is configured 
++         configured(2) indicates this IP address is configured
+          via this policy group and IP address configuration.
+ 
+-         dot1x(3) indicates this IP address is added by 
++         dot1x(3) indicates this IP address is added by
+          802.1x feature.
+ 
+-         nac(4) indicates this IP address is added by 
++         nac(4) indicates this IP address is added by
+          NAC (network admission control) feature.
+ 
+-         webAuth(5) indicates this IP address is added 
++         webAuth(5) indicates this IP address is added
+          by Web-Proxy Authentication feature.
+ 
+-         macAuth(6) indicatest this IP address is added 
++         macAuth(6) indicatest this IP address is added
+          by MAC Authentication Bypass feature."
+     ::= { cpgGroupIpEntry 5 }
+ 
+ cpgGroupIpRowStatus OBJECT-TYPE
+-    SYNTAX      RowStatus 
++    SYNTAX      RowStatus
+     MAX-ACCESS  read-create
+     STATUS      current
+     DESCRIPTION
+         "This object is used to manage the creation and deletion
+         of rows in this table. Once a row becomes active, values
+-        within this row cannot be modified, except by setting this 
++        within this row cannot be modified, except by setting this
+         object value to 'notInService' first, or deleting and
+         re-creating it.
+ 
+@@ -323,8 +324,8 @@ cpgGroupIpRowStatus OBJECT-TYPE
+     ::= { cpgGroupIpEntry 6 }
+ 
+ --
+--- Policy group  
+--- 
++-- Policy group
++--
+ 
+ cpgPolicyTable OBJECT-TYPE
+         SYNTAX       SEQUENCE OF CpgPolicyEntry
+@@ -333,41 +334,41 @@ cpgPolicyTable OBJECT-TYPE
+         DESCRIPTION
+           "A table describes the policies in the device."
+         ::= { cpgPolicy 1 }
+- 
++
+ cpgPolicyEntry OBJECT-TYPE
+-    SYNTAX       CpgPolicyEntry 
++    SYNTAX       CpgPolicyEntry
+     MAX-ACCESS   not-accessible
+     STATUS       current
+     DESCRIPTION
+         "A row instance contains the name of a policy
+-         in the device." 
++         in the device."
+     INDEX { IMPLIED cpgPolicyName }
+     ::= { cpgPolicyTable 1 }
+ 
+ CpgPolicyEntry ::= SEQUENCE {
+     cpgPolicyName        CpgPolicyName,
+-    cpgPolicyGroupCount  Unsigned32 
++    cpgPolicyGroupCount  Unsigned32
+ }
+- 
++
+ cpgPolicyName OBJECT-TYPE
+-    SYNTAX     CpgPolicyName 
+-    MAX-ACCESS  not-accessible 
++    SYNTAX     CpgPolicyName
++    MAX-ACCESS  not-accessible
+     STATUS      current
+     DESCRIPTION
+         "Indicates a policy name in the device."
+     ::= { cpgPolicyEntry 1 }
+ 
+ cpgPolicyGroupCount OBJECT-TYPE
+-    SYNTAX      Unsigned32 
++    SYNTAX      Unsigned32
+     MAX-ACCESS  read-only
+     STATUS      current
+     DESCRIPTION
+-        "Indicates the number of policy group(s) associated with 
+-         this policy. This is the number of entries for this policy 
++        "Indicates the number of policy group(s) associated with
++         this policy. This is the number of entries for this policy
+          in the cpgPolicyGroupTable."
+     ::= { cpgPolicyEntry 2 }
+ 
+--- 
++--
+ -- The Policy Group Table
+ --
+ 
+@@ -380,11 +381,11 @@ cpgPolicyGroupTable OBJECT-TYPE
+         between a policy and a policy group. When a policy associates
+         with a policy group, this policy is applied to all the
+         members of the group. A policy can associate with
+-        multiple groups and vice versa." 
++        multiple groups and vice versa."
+     ::= { cpgPolicy 2 }
+- 
++
+ cpgPolicyGroupEntry OBJECT-TYPE
+-    SYNTAX       CpgPolicyGroupEntry 
++    SYNTAX       CpgPolicyGroupEntry
+     MAX-ACCESS   not-accessible
+     STATUS       current
+     DESCRIPTION
+@@ -398,39 +399,39 @@ cpgPolicyGroupEntry OBJECT-TYPE
+         policy group name index must exist in cpgGroupTable. If a policy
+         group is removed from cpgGroupTable, entries in this table
+         using this group as an index will be automatically removed."
+-    INDEX { cpgPolicyGroupPolicyName, 
+-            IMPLIED cpgPolicyGroupGroupName } 
++    INDEX { cpgPolicyGroupPolicyName,
++            IMPLIED cpgPolicyGroupGroupName }
+     ::= { cpgPolicyGroupTable 1 }
+ 
+ CpgPolicyGroupEntry ::= SEQUENCE {
+-    cpgPolicyGroupPolicyName         CpgPolicyName, 
+-    cpgPolicyGroupGroupName          CpgGroupName, 
++    cpgPolicyGroupPolicyName         CpgPolicyName,
++    cpgPolicyGroupGroupName          CpgGroupName,
+     cpgPolicyGroupRowStatus          RowStatus
+ }
+- 
++
+ cpgPolicyGroupPolicyName OBJECT-TYPE
+-    SYNTAX      CpgPolicyName 
+-    MAX-ACCESS  not-accessible 
++    SYNTAX      CpgPolicyName
++    MAX-ACCESS  not-accessible
+     STATUS      current
+     DESCRIPTION
+         "This object indicates the policy name used to associate
+-        to the group denoted by cpgPolicyGroupGroupName. This policy 
+-        must exist in cpgPolicyTable." 
++        to the group denoted by cpgPolicyGroupGroupName. This policy
++        must exist in cpgPolicyTable."
+     ::= { cpgPolicyGroupEntry 1 }
+ 
+ cpgPolicyGroupGroupName OBJECT-TYPE
+-    SYNTAX      CpgGroupName 
+-    MAX-ACCESS  not-accessible 
++    SYNTAX      CpgGroupName
++    MAX-ACCESS  not-accessible
+     STATUS      current
+     DESCRIPTION
+         "This object indicates the group name used to associate
+         to the policy denoted by cpgPolicyGroupPolicyName. This
+-        group must exist in cpgGroupTable." 
++        group must exist in cpgGroupTable."
+     ::= { cpgPolicyGroupEntry 2 }
+ 
+ cpgPolicyGroupRowStatus OBJECT-TYPE
+-    SYNTAX      RowStatus 
+-    MAX-ACCESS  read-create 
++    SYNTAX      RowStatus
++    MAX-ACCESS  read-create
+     STATUS      current
+     DESCRIPTION
+         "This object is used to manage the creation and deletion
+@@ -452,7 +453,7 @@ ciscoPolicyGroupMIBCompliance MODULE-COMPLIANCE
+     DESCRIPTION
+         "The compliance statement for the CISCO-POLICY-GROUP-MIB"
+     MODULE
+-    MANDATORY-GROUPS { 
++    MANDATORY-GROUPS {
+             ciscoCpgPolicyInfoGroup,
+             ciscoCpgGroupInfoGroup,
+             ciscoCpgGroupIpInfoGroup,
+@@ -482,7 +483,7 @@ ciscoCpgGroupInfoGroup OBJECT-GROUP
+     STATUS current
+     DESCRIPTION
+         "A collection of objects which provides information on
+-         policy groups in the device." 
++         policy groups in the device."
+     ::= { ciscoPolicyGroupMIBGroups 1 }
+ 
+ ciscoCpgGroupIpInfoGroup OBJECT-GROUP
+@@ -494,17 +495,17 @@ ciscoCpgGroupIpInfoGroup OBJECT-GROUP
+     STATUS current
+     DESCRIPTION
+         "A collection of objects which provides information on
+-         policy group and IP addresses membership." 
++         policy group and IP addresses membership."
+     ::= { ciscoPolicyGroupMIBGroups 2 }
+ 
+ ciscoCpgPolicyInfoGroup OBJECT-GROUP
+     OBJECTS {
+         cpgPolicyGroupCount
+-    } 
++    }
+     STATUS current
+     DESCRIPTION
+-        "A collection of objects which provides the policies data 
+-         in the device." 
++        "A collection of objects which provides the policies data
++         in the device."
+     ::= { ciscoPolicyGroupMIBGroups 3 }
+ 
+ ciscoCpgPolicyGroupInfoGroup OBJECT-GROUP
+@@ -514,7 +515,7 @@ ciscoCpgPolicyGroupInfoGroup OBJECT-GROUP
+     STATUS current
+     DESCRIPTION
+         "A collection of object which provides information on
+-        group and policy association." 
++        group and policy association."
+     ::= { ciscoPolicyGroupMIBGroups 4 }
+ 
+ END

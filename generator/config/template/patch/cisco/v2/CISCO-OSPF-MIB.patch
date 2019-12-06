@@ -1,0 +1,400 @@
+diff --git a/mibs/cisco/cat3750/v2/CISCO-OSPF-MIB.my b/mibs/cisco/cat3750/v2/CISCO-OSPF-MIB.my
+index 5b53f53..6424e61 100644
+--- a/mibs/cisco/cat3750/v2/CISCO-OSPF-MIB.my
++++ b/mibs/cisco/cat3750/v2/CISCO-OSPF-MIB.my
+@@ -6,13 +6,13 @@
+ -- Copyright (c) 2003, 2005 by Cisco Systems, Inc.
+ -- All rights reserved.
+ --
+--- Most of MIB definitions in this MIB module is based on the 
++-- Most of MIB definitions in this MIB module is based on the
+ -- Internet Draft < draft-ietf-ospf-mib-update-05.txt >
+ -- In terms of object syntax and semantics of these MIB definitions,
+--- the content of this Cisco MIB is the same as the corresponding 
++-- the content of this Cisco MIB is the same as the corresponding
+ -- Internet Draft revision.   This Cisco MIB was created due to the
+--- "subject to change" nature of Internet Drafts. This Cisco MIB may 
+--- later be deprecated, and the stable RFC, which may replace the 
++-- "subject to change" nature of Internet Drafts. This Cisco MIB may
++-- later be deprecated, and the stable RFC, which may replace the
+ -- Internet Draft, may be implemented in its place.
+ -- *****************************************************************
+ 
+@@ -22,7 +22,7 @@ IMPORTS
+      MODULE-IDENTITY, OBJECT-TYPE, Counter32, Gauge32,
+      Integer32, Unsigned32, IpAddress
+                   FROM SNMPv2-SMI
+-     TruthValue
++     TruthValue, DisplayString
+                   FROM SNMPv2-TC
+      MODULE-COMPLIANCE, OBJECT-GROUP
+                   FROM SNMPv2-CONF
+@@ -54,10 +54,10 @@ cospf MODULE-IDENTITY
+                 E-mail: cs-ospf@cisco.com"
+         DESCRIPTION
+                "An extension to the MIB module defined in
+-                RFC 1850 for managing OSPF implimentation. 
++                RFC 1850 for managing OSPF implimentation.
+                 Most of the MIB definitions are based on
+-                the IETF draft 
+-                < draft-ietf-ospf-mib-update-05.txt > . 
++                the IETF draft
++                < draft-ietf-ospf-mib-update-05.txt > .
+                 Support for OSPF Sham link is also added"
+         REVISION        "200307180000Z"
+         DESCRIPTION
+@@ -119,7 +119,7 @@ cospfGeneralGroup OBJECT IDENTIFIER ::= { cospf 1 }
+            "The total number of Opaque AS link-state
+             advertisements in the link state database."
+         REFERENCE
+-           "The OSPF Opaque LSA Option (RFC 2370)" 
++           "The OSPF Opaque LSA Option (RFC 2370)"
+         ::= { cospfGeneralGroup 4 }
+ 
+    cospfOpaqueASLsaCksumSum OBJECT-TYPE
+@@ -127,11 +127,11 @@ cospfGeneralGroup OBJECT IDENTIFIER ::= { cospf 1 }
+         MAX-ACCESS   read-only
+         STATUS       current
+         DESCRIPTION
+-           "The 32-bit unsigned sum of the Opaque AS 
++           "The 32-bit unsigned sum of the Opaque AS
+            link-state advertisements' LS checksums contained
+            link state database."
+         REFERENCE
+-           "The OSPF Opaque LSA Option (RFC 2370)" 
++           "The OSPF Opaque LSA Option (RFC 2370)"
+         ::= { cospfGeneralGroup 5 }
+ 
+ --  OSPF Area Data Structure
+@@ -146,8 +146,8 @@ cospfGeneralGroup OBJECT IDENTIFIER ::= { cospf 1 }
+         MAX-ACCESS   not-accessible
+         STATUS       current
+         DESCRIPTION
+-           "Information describing the configured parameters 
+-           and cumulative statistics of the router's attached 
++           "Information describing the configured parameters
++           and cumulative statistics of the router's attached
+            areas."
+         REFERENCE
+            "OSPF Version 2, Section 6 The Area Data Structure"
+@@ -158,8 +158,8 @@ cospfGeneralGroup OBJECT IDENTIFIER ::= { cospf 1 }
+         MAX-ACCESS   not-accessible
+         STATUS       current
+         DESCRIPTION
+-           "Information describing the configured parameters and 
+-           cumulative statistics of one of the router's attached 
++           "Information describing the configured parameters and
++           cumulative statistics of one of the router's attached
+            areas."
+         AUGMENTS     { ospfAreaEntry }
+         ::= { cospfAreaTable 1 }
+@@ -183,11 +183,11 @@ cospfGeneralGroup OBJECT IDENTIFIER ::= { cospf 1 }
+         MAX-ACCESS   read-only
+         STATUS       current
+         DESCRIPTION
+-           "The total number of Opaque Area and AS link-state 
++           "The total number of Opaque Area and AS link-state
+             advertisements in the link state database of this
+             area."
+         REFERENCE
+-           "The OSPF Opaque LSA Option (RFC 2370)" 
++           "The OSPF Opaque LSA Option (RFC 2370)"
+         ::= { cospfAreaEntry 1 }
+ 
+    cospfOpaqueAreaLsaCksumSum OBJECT-TYPE
+@@ -195,14 +195,14 @@ cospfGeneralGroup OBJECT IDENTIFIER ::= { cospf 1 }
+         MAX-ACCESS   read-only
+         STATUS       current
+         DESCRIPTION
+-           "The 32-bit unsigned sum of the Opaque Area and AS 
+-           link-state advertisements' LS checksums contained 
+-           link state database of this area.  The sum can be 
+-           used to determine if there has been a change in the 
++           "The 32-bit unsigned sum of the Opaque Area and AS
++           link-state advertisements' LS checksums contained
++           link state database of this area.  The sum can be
++           used to determine if there has been a change in the
+            link state database for Opaque Area and AS link-state
+            advertisements"
+         REFERENCE
+-           "The OSPF Opaque LSA Option (RFC 2370)" 
++           "The OSPF Opaque LSA Option (RFC 2370)"
+         ::= { cospfAreaEntry 2 }
+ 
+    cospfAreaNssaTranslatorRole OBJECT-TYPE
+@@ -255,7 +255,7 @@ cospfGeneralGroup OBJECT IDENTIFIER ::= { cospf 1 }
+         MAX-ACCESS   not-accessible
+         STATUS       current
+         DESCRIPTION
+-           "The OSPF Process's Link State Database. This 
++           "The OSPF Process's Link State Database. This
+             table is meant for Opaque LSA's"
+         REFERENCE
+            "OSPF Version 2, Section 12 Link State Advertisements"
+@@ -283,7 +283,7 @@ cospfGeneralGroup OBJECT IDENTIFIER ::= { cospf 1 }
+            cospfLsdbChecksum
+               Integer32,
+            cospfLsdbAdvertisement
+-              OCTET STRING
++              DisplayString
+            }
+ 
+    cospfLsdbType OBJECT-TYPE
+@@ -356,7 +356,7 @@ cospfGeneralGroup OBJECT IDENTIFIER ::= { cospf 1 }
+ 
+ 
+     cospfLsdbAdvertisement OBJECT-TYPE
+-        SYNTAX   OCTET STRING (SIZE (1..65535))
++        SYNTAX   DisplayString (SIZE (1..65535))
+         MAX-ACCESS   read-only
+         STATUS   current
+         DESCRIPTION
+@@ -418,13 +418,13 @@ cospfGeneralGroup OBJECT IDENTIFIER ::= { cospf 1 }
+         STATUS       current
+         DESCRIPTION
+            "The 32-bit unsigned sum of the link-state advertisements'
+-           LS checksums contained in this interface's link-local link 
++           LS checksums contained in this interface's link-local link
+            state database. The sum can be used to determine if there has
+            been a change in the interface's link state database, and to
+-           compare the interface link-state database of routers 
++           compare the interface link-state database of routers
+            attached to the same subnet."
+         REFERENCE
+-           "The OSPF Opaque LSA Option (RFC 2370)" 
++           "The OSPF Opaque LSA Option (RFC 2370)"
+         ::= { cospfIfEntry 2 }
+ 
+ 
+@@ -471,7 +471,7 @@ cospfGeneralGroup OBJECT IDENTIFIER ::= { cospf 1 }
+            "The total number of link-local link state advertisements
+            in this virtual interface's link-local link state database."
+         REFERENCE
+-           "The OSPF Opaque LSA Option (RFC 2370)" 
++           "The OSPF Opaque LSA Option (RFC 2370)"
+         ::= { cospfVirtIfEntry 1 }
+ 
+    cospfVirtIfLsaCksumSum OBJECT-TYPE
+@@ -487,7 +487,7 @@ cospfGeneralGroup OBJECT IDENTIFIER ::= { cospf 1 }
+            and to compare the virtual interface link-state
+            database of the virtual neighbors."
+         REFERENCE
+-           "The OSPF Opaque LSA Option (RFC 2370)" 
++           "The OSPF Opaque LSA Option (RFC 2370)"
+         ::= { cospfVirtIfEntry 2 }
+ 
+ 
+@@ -552,7 +552,7 @@ CospfShamLinkEntry ::=
+ 
+    cospfShamLinkLocalIpAddress OBJECT-TYPE
+         SYNTAX   IpAddress
+-        MAX-ACCESS  not-accessible 
++        MAX-ACCESS  not-accessible
+         STATUS   deprecated
+         DESCRIPTION
+            "The Local IP address of the sham link."
+@@ -576,8 +576,8 @@ CospfShamLinkEntry ::=
+            "The number of seconds between  link-state  advertisement
+            retransmissions,  for  adjacencies
+            belonging to this  link.   This  value  is also
+-           used when retransmitting database description  
+-           and  link-state  request  packets. This value  
++           used when retransmitting database description
++           and  link-state  request  packets. This value
+            should  be well over the expected round trip
+            time."
+         DEFVAL { 5 }
+@@ -643,11 +643,11 @@ CospfShamLinkEntry ::=
+ --     This table describes sham links that this OSPF process is
+ --     configured for.
+ --     The OSPF sham link feature allows two VPN sites that wish
+---     to be in a same OSPF area to interconnect using MPLS/VPN. 
++--     to be in a same OSPF area to interconnect using MPLS/VPN.
+ --     Sham links achieve this by building a virtual connection
+---     on top of the MPLS/VPN tunnel between two PE routers and 
+---     propagating OSPF packets over this virtual connection. 
+---     This connection, referred as sham link, is between two 
++--     on top of the MPLS/VPN tunnel between two PE routers and
++--     propagating OSPF packets over this virtual connection.
++--     This connection, referred as sham link, is between two
+ --     PE routers.
+ 
+     cospfShamLinksTable OBJECT-TYPE
+@@ -710,7 +710,7 @@ CospfShamLinksEntry ::=
+ 
+    cospfShamLinksLocalIpAddrType OBJECT-TYPE
+         SYNTAX   InetAddressType
+-        MAX-ACCESS  not-accessible 
++        MAX-ACCESS  not-accessible
+         STATUS   current
+         DESCRIPTION
+            "The type of internet address of this sham link's local IP
+@@ -719,7 +719,7 @@ CospfShamLinksEntry ::=
+ 
+    cospfShamLinksLocalIpAddr OBJECT-TYPE
+         SYNTAX   InetAddress
+-        MAX-ACCESS  not-accessible 
++        MAX-ACCESS  not-accessible
+         STATUS   current
+         DESCRIPTION
+            "The Local IP address of the sham link."
+@@ -750,7 +750,7 @@ CospfShamLinksEntry ::=
+         DESCRIPTION
+            "The number of seconds between  link-state  advertisement
+            retransmissions, for adjacencies belonging to this link.
+-           This value is also used when retransmitting database 
++           This value is also used when retransmitting database
+            description and link-state request packets. This value
+            should be well over the expected round trip time."
+         DEFVAL { 5 }
+@@ -834,7 +834,7 @@ CospfShamLinksEntry ::=
+              "Sham link neighbor information."
+          INDEX { cospfShamLinksLocalIpAddrType,
+                  cospfShamLinksLocalIpAddr,
+-                 cospfShamLinkNbrArea, 
++                 cospfShamLinkNbrArea,
+                  cospfShamLinkNbrIpAddrType,
+                  cospfShamLinkNbrIpAddr}
+          ::= { cospfShamLinkNbrTable 1 }
+@@ -893,7 +893,7 @@ CospfShamLinksEntry ::=
+          STATUS   current
+          DESCRIPTION
+             "A 32-bit integer uniquely identifying the neighboring
+-            router." 
++            router."
+          ::= { cospfShamLinkNbrEntry 4 }
+ 
+      cospfShamLinkNbrOptions OBJECT-TYPE
+@@ -910,7 +910,7 @@ CospfShamLinksEntry ::=
+             metrics except the TOS 0 metric.
+ 
+             Bit 2, if set, indicates  that  the  system  is
+-            Network  Multicast  capable; ie, that it implements 
++            Network  Multicast  capable; ie, that it implements
+             OSPF Multicast Routing."
+ 
+          ::= { cospfShamLinkNbrEntry 5 }
+@@ -926,7 +926,7 @@ CospfShamLinksEntry ::=
+                      exchange (6),
+                      loading (7),
+                      full (8)
+-                  } 
++                  }
+          MAX-ACCESS   read-only
+          STATUS   current
+          DESCRIPTION
+@@ -990,7 +990,7 @@ CospfShamLinksEntry ::=
+            "The OSPF Process's Link-Local Link State Database
+            for non-virtual links."
+         REFERENCE
+-           "OSPF Version 2, Section 12 Link State Advertisements 
++           "OSPF Version 2, Section 12 Link State Advertisements
+            and The OSPF Opaque LSA Option"
+         ::= { cospf 7 }
+ 
+@@ -1001,7 +1001,7 @@ CospfShamLinksEntry ::=
+         DESCRIPTION
+            "A single Link State Advertisement."
+         INDEX { cospfLocalLsdbIpAddress, cospfLocalLsdbAddressLessIf,
+-           cospfLocalLsdbType, cospfLocalLsdbLsid, 
++           cospfLocalLsdbType, cospfLocalLsdbLsid,
+            cospfLocalLsdbRouterId
+            }
+         ::= { cospfLocalLsdbTable 1 }
+@@ -1025,7 +1025,7 @@ CospfShamLinksEntry ::=
+            cospfLocalLsdbChecksum
+               Unsigned32,
+            cospfLocalLsdbAdvertisement
+-              OCTET STRING
++              DisplayString
+            }
+ 
+    cospfLocalLsdbIpAddress OBJECT-TYPE
+@@ -1110,13 +1110,13 @@ CospfShamLinksEntry ::=
+         ::= { cospfLocalLsdbEntry 6 }
+ 
+    cospfLocalLsdbAge OBJECT-TYPE
+-        SYNTAX       Integer32 (0..3600) 
++        SYNTAX       Integer32 (0..3600)
+                           -- Should be 0..MaxAge, except when
+                           -- doNotAge bit is set
+         MAX-ACCESS   read-only
+         STATUS       current
+         DESCRIPTION
+-           "This field is the age of the link state advertisement 
++           "This field is the age of the link state advertisement
+            in seconds."
+         REFERENCE
+            "OSPF Version 2, Section 12.1.1 LS age"
+@@ -1140,7 +1140,7 @@ CospfShamLinksEntry ::=
+         ::= { cospfLocalLsdbEntry 8 }
+ 
+    cospfLocalLsdbAdvertisement OBJECT-TYPE
+-        SYNTAX       OCTET STRING (SIZE (1..65535))
++        SYNTAX       DisplayString (SIZE (1..65535))
+         MAX-ACCESS   read-only
+         STATUS       current
+         DESCRIPTION
+@@ -1168,7 +1168,7 @@ CospfShamLinksEntry ::=
+            "The OSPF Process's Link-Local Link State Database
+            for virtual links."
+         REFERENCE
+-           "OSPF Version 2, Section 12 Link State Advertisements 
++           "OSPF Version 2, Section 12 Link State Advertisements
+            and The OSPF Opaque LSA Option"
+         ::= { cospf 8 }
+ 
+@@ -1205,7 +1205,7 @@ CospfShamLinksEntry ::=
+            cospfVirtLocalLsdbChecksum
+               Unsigned32,
+            cospfVirtLocalLsdbAdvertisement
+-             OCTET STRING
++             DisplayString
+            }
+ 
+    cospfVirtLocalLsdbTransitArea OBJECT-TYPE
+@@ -1287,7 +1287,7 @@ CospfShamLinksEntry ::=
+         ::= { cospfVirtLocalLsdbEntry 6 }
+ 
+    cospfVirtLocalLsdbAge OBJECT-TYPE
+-        SYNTAX       Integer32 (0..3600) 
++        SYNTAX       Integer32 (0..3600)
+                            -- Should be 0..MaxAge, except when
+                            -- doNotAge bit is set
+         MAX-ACCESS   read-only
+@@ -1317,7 +1317,7 @@ CospfShamLinksEntry ::=
+         ::= { cospfVirtLocalLsdbEntry 8 }
+ 
+    cospfVirtLocalLsdbAdvertisement OBJECT-TYPE
+-        SYNTAX       OCTET STRING (SIZE (1..65535))
++        SYNTAX       DisplayString (SIZE (1..65535))
+         MAX-ACCESS   read-only
+         STATUS       current
+         DESCRIPTION
+@@ -1340,7 +1340,7 @@ cospfCompliances OBJECT IDENTIFIER ::= { cospfConformance 2 }
+    cospfCompliance MODULE-COMPLIANCE
+         STATUS       deprecated
+         DESCRIPTION
+-           "The compliance statements for agents that support the 
++           "The compliance statements for agents that support the
+            Cisco OSPF MIB. These compliance statements are deprecated
+            by cospfComplianceRev1."
+         MODULE        -- this module
+@@ -1369,7 +1369,7 @@ cospfCompliances OBJECT IDENTIFIER ::= { cospfConformance 2 }
+    cospfComplianceRev1 MODULE-COMPLIANCE
+         STATUS       current
+         DESCRIPTION
+-           "The compliance statements for agents that support the 
++           "The compliance statements for agents that support the
+            Cisco OSPF MIB."
+         MODULE        -- this module
+         MANDATORY-GROUPS {
+@@ -1486,7 +1486,7 @@ cospfCompliances OBJECT IDENTIFIER ::= { cospfConformance 2 }
+            "These objects are required for OSPF systems."
+         ::= { cospfGroups 7 }
+ 
+---  cospfShamLinkGroup is deprecated by cospfShamLinksGroup 
++--  cospfShamLinkGroup is deprecated by cospfShamLinksGroup
+    cospfShamLinkGroup    OBJECT-GROUP
+         OBJECTS {
+            cospfShamLinkRetransInterval,

@@ -1,0 +1,412 @@
+diff --git a/mibs/cisco/cat3750/v2/CISCO-STACK-MIB.my b/mibs/cisco/cat3750/v2/CISCO-STACK-MIB.my
+index 42450b7..09ca9be 100644
+--- a/mibs/cisco/cat3750/v2/CISCO-STACK-MIB.my
++++ b/mibs/cisco/cat3750/v2/CISCO-STACK-MIB.my
+@@ -55,10 +55,10 @@ ciscoStackMIB MODULE-IDENTITY
+         DESCRIPTION
+                  "Modified chassisSysType for new hardwares:
+                  'c6880xle', 'c6807xl', 'c6880x'.
+- 
++
+                  Modified chassisComponentType for new hardwares:
+                  'c6880xFan', 'c6807xlFan', 'c6800xl33vcon'.
+-                 
++
+                  Modified chassisPs1Type and chassisPs2Type to include:
+                  'c6880x3kwac', 'c6880x3kwdc', 'c6800xl3kwac'.
+ 
+@@ -73,13 +73,13 @@ ciscoStackMIB MODULE-IDENTITY
+                  'e10GBaseDwdm3347', 'e10GBaseDwdm3740',
+                  'e10GBaseDwdm4135', 'e10GBaseDwdm4532',
+                  'e10GBaseDwdm4932', 'e10GBaseDwdm5333',
+-                 'e10GBaseDwdm5736', 'e10GBaseDwdm6141', 
++                 'e10GBaseDwdm5736', 'e10GBaseDwdm6141',
+                  'e10GBaseACU7M', 'e10GBaseACU10M',
+                  'e1000BaseEXSMD', 'e1000BaseZXSMD',
+                  'e1000BaseTE', 'e1000BaseSXMMD',
+                  'e1000BaseLHSMD', 'e100BaseFXGE'."
+ 
+-                
++
+ 
+         REVISION "201206160000Z"
+         DESCRIPTION
+@@ -164,7 +164,7 @@ ciscoStackMIB MODULE-IDENTITY
+                  Modified moduleType to include:
+                  'osm12t3e3', 'osm4GeWanGbicPlus', 'm7600Sip600',
+                  'm7600Sip200', 'm7600Sip400', 'c7600ssc400',
+-                 'c7600ssc600', 'esm2x10ge', 'rsp720', 'rsp720base', 
++                 'c7600ssc600', 'esm2x10ge', 'rsp720', 'rsp720base',
+                  'c7600msfc4'.
+ 
+                  Updated moduleSubType to include new hardwares:
+@@ -212,7 +212,7 @@ ciscoStackMIB MODULE-IDENTITY
+                  'wscac8700we'.
+ 
+                  Modified moduleType to include:
+-                 'osm4oc3PosMM', 'wsx6196rj21', 
++                 'osm4oc3PosMM', 'wsx6196rj21',
+                  'wssup32ge3b', 'wsSvcIpSec1',
+                  'wsx6148arj45', 'wsSvcWebVpnk9',
+                  'ace106500k9', 'ace046500k9',
+@@ -646,7 +646,7 @@ configGrp           OBJECT IDENTIFIER ::= { ciscoStackMIB 29 }
+ VendorIdType ::= TEXTUAL-CONVENTION
+        STATUS          current
+        DESCRIPTION     "Vendor ID Type"
+-       SYNTAX          OCTET STRING (SIZE (3))
++       SYNTAX          DisplayString (SIZE (3))
+ 
+ -- the system group
+ 
+@@ -979,14 +979,14 @@ sysFddiRingSMTIndex OBJECT-TYPE
+         ::= { sysFddiRingEntry 1 }
+ 
+ sysFddiRingAddress OBJECT-TYPE
+-        SYNTAX        MacAddress -- OCTET STRING (SIZE (6))
++        SYNTAX        MacAddress -- DisplayString (SIZE (6))
+         MAX-ACCESS    read-only
+         STATUS        current
+         DESCRIPTION   "The MAC address of this node in the FDDI ring."
+         ::= { sysFddiRingEntry 2 }
+ 
+ sysFddiRingNext OBJECT-TYPE
+-        SYNTAX        MacAddress -- OCTET STRING (SIZE (6))
++        SYNTAX        MacAddress -- DisplayString (SIZE (6))
+         MAX-ACCESS    read-only
+         STATUS        current
+         DESCRIPTION   "The MAC address of the next node in the FDDI
+@@ -1287,7 +1287,7 @@ sysEnableConfigTraps OBJECT-TYPE
+         ::= { systemGrp 35 }
+ 
+ sysConfigRegister OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE (2))
++        SYNTAX        DisplayString (SIZE (2))
+         MAX-ACCESS    read-write
+         STATUS        current
+         DESCRIPTION   "The value of configuration register that will be
+@@ -2571,7 +2571,7 @@ ModuleEntry ::=
+                 moduleNumPorts
+                         INTEGER,
+                 modulePortStatus
+-                        OCTET STRING,
++                        DisplayString,
+                 moduleSubType
+                         INTEGER,
+                 moduleModel
+@@ -3182,7 +3182,7 @@ moduleNumPorts OBJECT-TYPE
+         ::= { moduleEntry 14 }
+ 
+ modulePortStatus OBJECT-TYPE
+-        SYNTAX        OCTET STRING
++        SYNTAX        DisplayString
+         MAX-ACCESS    read-only
+         STATUS        current
+         DESCRIPTION   "A series of bytes containing status information
+@@ -4587,7 +4587,7 @@ BrouterPortEntry ::=
+                 brouterPortBridgeVlan
+                         INTEGER,
+                 brouterPortIpHelpers
+-                        OCTET STRING
++                        DisplayString
+         }
+ 
+ brouterPortModule OBJECT-TYPE
+@@ -4643,7 +4643,7 @@ brouterPortBridgeVlan OBJECT-TYPE
+         ::= { brouterPortEntry 7 }
+ 
+ brouterPortIpHelpers OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE (0..128))
++        SYNTAX        DisplayString (SIZE (0..128))
+         MAX-ACCESS    read-write
+         STATUS        current
+         DESCRIPTION   "An indication of which other Virtual LANs UDP/IP
+@@ -4771,7 +4771,7 @@ filterMacPort OBJECT-TYPE
+         ::= { filterMacEntry 2 }
+ 
+ filterMacAddress OBJECT-TYPE
+-        SYNTAX        MacAddress -- OCTET STRING (SIZE (6))
++        SYNTAX        MacAddress -- DisplayString (SIZE (6))
+         MAX-ACCESS    read-only
+         STATUS        current
+         DESCRIPTION   "A MAC address. If the source or destination MAC
+@@ -4851,7 +4851,7 @@ filterVendorPort OBJECT-TYPE
+         ::= { filterVendorEntry 2 }
+ 
+ filterVendorId OBJECT-TYPE
+-        SYNTAX        VendorIdType -- OCTET STRING (SIZE (3))
++        SYNTAX        VendorIdType -- DisplayString (SIZE (3))
+         MAX-ACCESS    read-only
+         STATUS        current
+         DESCRIPTION   "The vendor ID portion of a MAC address. If the
+@@ -5241,7 +5241,7 @@ filterPortBroadcastThresholdFraction OBJECT-TYPE
+         ::= { filterPortEntry 7 }
+ 
+ filterPortSuppressionOption OBJECT-TYPE
+---      SYNTAX        OCTET STRING
++--      SYNTAX        DisplayString
+         SYNTAX        BITS {
+                               multicast(0),
+                               unicast(1),
+@@ -5356,7 +5356,7 @@ monitorEnable OBJECT-TYPE
+         ::= { monitorGrp 6 }
+ 
+ monitorAdminSourcePorts OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE (0..128))
++        SYNTAX        DisplayString (SIZE (0..128))
+         MAX-ACCESS    read-write
+         STATUS        deprecated
+         DESCRIPTION   "Indicates the administrative status of which
+@@ -5376,7 +5376,7 @@ monitorAdminSourcePorts OBJECT-TYPE
+ 
+ 
+ monitorOperSourcePorts OBJECT-TYPE
+-        SYNTAX        OCTET STRING  (SIZE (0..128))
++        SYNTAX        DisplayString  (SIZE (0..128))
+         MAX-ACCESS    read-only
+         STATUS        deprecated
+         DESCRIPTION   "Indicates which ports are actually being
+@@ -5499,7 +5499,7 @@ VlanPortEntry ::=
+                 vlanPortVlan
+                         VlanIndex,
+                 vlanPortIslVlansAllowed
+-                        OCTET STRING,
++                        DisplayString,
+                 vlanPortSwitchLevel
+                         INTEGER,
+                 vlanPortIslAdminStatus
+@@ -5507,7 +5507,7 @@ VlanPortEntry ::=
+                 vlanPortIslOperStatus
+                         INTEGER,
+                 vlanPortIslPriorityVlans
+-                        OCTET STRING,
++                        DisplayString,
+                 vlanPortAdminStatus
+                         INTEGER,
+                 vlanPortOperStatus
+@@ -5543,7 +5543,7 @@ vlanPortVlan OBJECT-TYPE
+ -- vlanPortEntry 4 is not used
+ 
+ vlanPortIslVlansAllowed OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE (0..128))
++        SYNTAX        DisplayString (SIZE (0..128))
+         MAX-ACCESS    read-write
+         STATUS        current
+         DESCRIPTION   "An indication of which Virtual LANs are allowed
+@@ -5605,7 +5605,7 @@ vlanPortIslOperStatus OBJECT-TYPE
+         ::= { vlanPortEntry 8 }
+ 
+ vlanPortIslPriorityVlans OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE (0..128))
++        SYNTAX        DisplayString (SIZE (0..128))
+         MAX-ACCESS    read-write
+         STATUS        current
+         DESCRIPTION   "An indication of which Virtual LANs have a better
+@@ -5980,9 +5980,9 @@ PortSecurityEntry ::=
+                 portSecurityOperStatus
+                         INTEGER,
+                 portSecurityLastSrcAddr
+-                        OCTET STRING,
++                        DisplayString,
+                 portSecuritySecureSrcAddr
+-                        OCTET STRING,
++                        DisplayString,
+                 portSecurityMaxSrcAddr
+                         INTEGER,
+                 portSecurityAgingTime
+@@ -6043,7 +6043,7 @@ portSecurityOperStatus OBJECT-TYPE
+         ::= { portSecurityEntry 4 }
+ 
+ portSecurityLastSrcAddr OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE (6))
++        SYNTAX        DisplayString (SIZE (6))
+         MAX-ACCESS    read-only
+         STATUS        current
+         DESCRIPTION   "The last source MAC address in a receive packet
+@@ -6051,7 +6051,7 @@ portSecurityLastSrcAddr OBJECT-TYPE
+         ::= { portSecurityEntry 5 }
+ 
+ portSecuritySecureSrcAddr OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE (6))
++        SYNTAX        DisplayString (SIZE (6))
+         MAX-ACCESS    read-write
+         STATUS        current
+         DESCRIPTION   "The address to be compared with source MAC
+@@ -6159,7 +6159,7 @@ PortSecurityExtEntry ::=
+                 portSecurityExtPortIndex
+                         INTEGER,
+                 portSecurityExtSecureSrcAddr
+-                        OCTET STRING,
++                        DisplayString,
+                 portSecurityExtControlStatus
+                         INTEGER
+                 }
+@@ -6181,7 +6181,7 @@ portSecurityExtPortIndex OBJECT-TYPE
+         ::= { portSecurityExtEntry 2 }
+ 
+ portSecurityExtSecureSrcAddr OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE (6))
++        SYNTAX        DisplayString (SIZE (6))
+         MAX-ACCESS    read-only
+         STATUS        current
+         DESCRIPTION   "An index value that uniquely identifies the  MAC
+@@ -6401,7 +6401,7 @@ tokenRingDripAreReductionMode OBJECT-TYPE
+         ::= { tokenRingGrp 3 }
+ 
+ tokenRingDripLocalNodeID OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE(6))
++        SYNTAX        DisplayString (SIZE(6))
+         MAX-ACCESS    read-only
+         STATUS        current
+         DESCRIPTION   "The unique system identifier that will be sent
+@@ -6501,7 +6501,7 @@ TokenRingDripLocalVlanStatusEntry ::=
+                 tokenRingDripBackupCrf
+                         INTEGER,
+                 tokenRingDripOwnerNodeID
+-                        OCTET STRING
++                        DisplayString
+         }
+ 
+ tokenRingDripVlan OBJECT-TYPE
+@@ -6578,7 +6578,7 @@ tokenRingDripBackupCrf OBJECT-TYPE
+         ::= { tokenRingDripLocalVlanStatusEntry 6 }
+ 
+ tokenRingDripOwnerNodeID OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE(6))
++        SYNTAX        DisplayString (SIZE(6))
+         MAX-ACCESS    read-only
+         STATUS        current
+         DESCRIPTION   "The unique identifier  of the system that has
+@@ -7680,33 +7680,33 @@ ipPermitTelnetConnectLimit OBJECT-TYPE
+         SYNTAX          Unsigned32
+         MAX-ACCESS      read-create
+         STATUS          current
+-        DESCRIPTION     "Indicates the telnet connection limit that 
+-                        will be applied when accepting new telnet 
+-                        connections for a specific host. A value of 
+-                        zero means no limit will be applied for telnet 
++        DESCRIPTION     "Indicates the telnet connection limit that
++                        will be applied when accepting new telnet
++                        connections for a specific host. A value of
++                        zero means no limit will be applied for telnet
+                         connections.
+- 
++
+                         Setting this object to a non-zero value will
+-                        turn on the 'telnet' bit in the corresponding 
+-                        ipPermitAccessType. Turnning off the 'telnet' 
++                        turn on the 'telnet' bit in the corresponding
++                        ipPermitAccessType. Turnning off the 'telnet'
+                         bit in the corresponding ipPermitAccessType will
+                         reset this ipPermitTelnetConnectLimit value to
+                         zero."
+         DEFVAL          { 0 }
+         ::= { ipPermitListEntry 5 }
+-        
++
+ ipPermitSshConnectLimit OBJECT-TYPE
+         SYNTAX          Unsigned32
+         MAX-ACCESS      read-create
+         STATUS          current
+-        DESCRIPTION     "Indicates the ssh connection limit that will 
+-                        be applied when accepting new ssh connections 
+-                        for a specific host. A value of zero means no 
++        DESCRIPTION     "Indicates the ssh connection limit that will
++                        be applied when accepting new ssh connections
++                        for a specific host. A value of zero means no
+                         limit will be applied for ssh connections.
+- 
++
+                         Setting this object to a non-zero value will
+-                        turn on the 'ssh' bit in the corresponding 
+-                        ipPermitAccessType. Turnning off the 'ssh' bit 
++                        turn on the 'ssh' bit in the corresponding
++                        ipPermitAccessType. Turnning off the 'ssh' bit
+                         in the corresponding ipPermitAccessType will
+                         reset this ipPermitSshConnectLimit value to
+                         zero."
+@@ -7816,13 +7816,13 @@ PortChannelEntry ::=
+                 portChannelPortIndex
+                         INTEGER,
+                 portChannelPorts
+-                        OCTET STRING,
++                        DisplayString,
+                 portChannelAdminStatus
+                         INTEGER,
+                 portChannelOperStatus
+                         INTEGER,
+                 portChannelNeighbourDeviceId
+-                        OCTET STRING,
++                        DisplayString,
+                 portChannelNeighbourPortId
+                         INTEGER,
+                 portChannelProtInPackets
+@@ -7850,7 +7850,7 @@ portChannelPortIndex OBJECT-TYPE
+         ::= { portChannelEntry 2 }
+ 
+ portChannelPorts OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE (0..8))
++        SYNTAX        DisplayString (SIZE (0..8))
+         MAX-ACCESS    read-write
+         STATUS        deprecated
+         DESCRIPTION   "The set of ports on a module channelling
+@@ -7914,7 +7914,7 @@ portChannelOperStatus OBJECT-TYPE
+         ::= { portChannelEntry 5 }
+ 
+ portChannelNeighbourDeviceId OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE (6))
++        SYNTAX        DisplayString (SIZE (6))
+         MAX-ACCESS    read-only
+         STATUS        deprecated
+         DESCRIPTION   "Indicates the neighbors device id."
+@@ -8019,7 +8019,7 @@ PortCpbEntry ::=
+                 portCpbTosRewrite
+                         BITS,
+                 portCpbCopsGrouping
+-                        OCTET STRING,
++                        DisplayString,
+                 portCpbDot1x
+                         INTEGER,
+                 portCpbIgmpFilter
+@@ -8233,7 +8233,7 @@ portCpbTosRewrite OBJECT-TYPE
+         ::= { portCpbEntry 18 }
+ 
+ portCpbCopsGrouping OBJECT-TYPE
+-        SYNTAX        OCTET STRING (SIZE (0..8))
++        SYNTAX        DisplayString (SIZE (0..8))
+         MAX-ACCESS    read-only
+         STATUS        current
+         DESCRIPTION   "The set of ports on a module that are configured
+@@ -11901,10 +11901,10 @@ ciscoStackgMIBCompliance8 MODULE-COMPLIANCE
+         DESCRIPTION   "The notificationGroup is an optional group
+                       containing notifications supported on the device."
+         GROUP ipPermitGroup3
+-        DESCRIPTION   "The ipPermitGroup3 is an optional group containing 
+-                      objects providing information about the ip permit 
++        DESCRIPTION   "The ipPermitGroup3 is an optional group containing
++                      objects providing information about the ip permit
+                       connection limit for a specific host."
+-        
++
+         ::= { ciscoStackMIBCompliances 8 }
+ 
+ -- units of conformance
+@@ -13292,15 +13292,15 @@ notificationGroup NOTIFICATION-GROUP
+         ::= { ciscoStackMIBGroups 77 }
+ 
+ ipPermitGroup3 OBJECT-GROUP
+-        OBJECTS { 
++        OBJECTS {
+                 ipPermitTelnetConnectLimit,
+                 ipPermitSshConnectLimit
+         }
+         STATUS          current
+-        DESCRIPTION     "A collection of objects providing configuration 
+-                        information on ip permit connection limit for a 
++        DESCRIPTION     "A collection of objects providing configuration
++                        information on ip permit connection limit for a
+                         specific host."
+-        ::= { ciscoStackMIBGroups 78 }         
++        ::= { ciscoStackMIBGroups 78 }
+ END
+ 
+ 

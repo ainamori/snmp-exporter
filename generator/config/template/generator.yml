@@ -1,0 +1,19 @@
+---
+# ------------------------------------------------
+# 
+# ------------------------------------------------
+modules:
+  hpe3par:
+    version: 2
+    retries: 3
+    timeout: '10s'
+    auth:
+      community: 'public'
+    walk: 
+      - sysUpTime
+      - sysObjectID
+      - interfaces
+      - mib-2
+      - threepar
+    #lookups:
+

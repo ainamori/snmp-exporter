@@ -1,0 +1,258 @@
+diff --git a/mibs/cisco/cat3750/v2/RMON2-MIB.my b/mibs/cisco/cat3750/v2/RMON2-MIB.my
+index fb238d5..53c7596 100644
+--- a/mibs/cisco/cat3750/v2/RMON2-MIB.my
++++ b/mibs/cisco/cat3750/v2/RMON2-MIB.my
+@@ -237,11 +237,11 @@ protocolDirEntry OBJECT-TYPE
+     ::= { protocolDirTable  1 }
+ 
+ ProtocolDirEntry ::= SEQUENCE {
+-    protocolDirID                   OCTET STRING,
+-    protocolDirParameters           OCTET STRING,
++    protocolDirID                   DisplayString,
++    protocolDirParameters           DisplayString,
+     protocolDirLocalIndex           Integer32,
+     protocolDirDescr                DisplayString,
+-    protocolDirType                 OCTET STRING,
++    protocolDirType                 DisplayString,
+ --    protocolDirType                 BITS,
+     protocolDirAddressMapConfig     INTEGER,
+     protocolDirHostConfig           INTEGER,
+@@ -251,7 +251,7 @@ ProtocolDirEntry ::= SEQUENCE {
+ }
+ 
+ protocolDirID OBJECT-TYPE
+-    SYNTAX      OCTET STRING
++    SYNTAX      DisplayString
+     MAX-ACCESS  not-accessible
+ 
+ 
+@@ -283,7 +283,7 @@ protocolDirID OBJECT-TYPE
+     ::= { protocolDirEntry 1 }
+ 
+ protocolDirParameters OBJECT-TYPE
+-    SYNTAX      OCTET STRING
++    SYNTAX      DisplayString
+     MAX-ACCESS  not-accessible
+     STATUS      current
+     DESCRIPTION
+@@ -347,7 +347,7 @@ protocolDirDescr OBJECT-TYPE
+     ::= { protocolDirEntry 4 }
+ 
+ protocolDirType OBJECT-TYPE
+-    SYNTAX      OCTET STRING (SIZE(1))
++    SYNTAX      DisplayString (SIZE(1))
+ --    SYNTAX      BITS {
+ --                    extensible(0),
+ --                    addressRecognitionCapable(1)
+@@ -1009,9 +1009,9 @@ addressMapEntry OBJECT-TYPE
+ 
+ AddressMapEntry ::= SEQUENCE {
+     addressMapTimeMark                 TimeFilter,
+-    addressMapNetworkAddress           OCTET STRING,
++    addressMapNetworkAddress           DisplayString,
+     addressMapSource                   OBJECT IDENTIFIER,
+-    addressMapPhysicalAddress          OCTET STRING,
++    addressMapPhysicalAddress          DisplayString,
+     addressMapLastChange               TimeStamp
+ }
+ 
+@@ -1025,7 +1025,7 @@ addressMapTimeMark OBJECT-TYPE
+     ::= { addressMapEntry 1 }
+ 
+ addressMapNetworkAddress OBJECT-TYPE
+-    SYNTAX      OCTET STRING
++    SYNTAX      DisplayString
+     MAX-ACCESS  not-accessible
+     STATUS      current
+     DESCRIPTION
+@@ -1076,7 +1076,7 @@ addressMapSource OBJECT-TYPE
+     ::= { addressMapEntry 3 }
+ 
+ addressMapPhysicalAddress OBJECT-TYPE
+-    SYNTAX      OCTET STRING
++    SYNTAX      DisplayString
+     MAX-ACCESS  read-only
+     STATUS      current
+     DESCRIPTION
+@@ -1468,7 +1468,7 @@ nlHostEntry OBJECT-TYPE
+ 
+ NlHostEntry ::= SEQUENCE {
+     nlHostTimeMark              TimeFilter,
+-    nlHostAddress               OCTET STRING,
++    nlHostAddress               DisplayString,
+     nlHostInPkts                ZeroBasedCounter32,
+     nlHostOutPkts               ZeroBasedCounter32,
+     nlHostInOctets              ZeroBasedCounter32,
+@@ -1492,7 +1492,7 @@ nlHostTimeMark OBJECT-TYPE
+     ::= { nlHostEntry 1 }
+ 
+ nlHostAddress OBJECT-TYPE
+-    SYNTAX      OCTET STRING
++    SYNTAX      DisplayString
+     MAX-ACCESS  not-accessible
+     STATUS      current
+     DESCRIPTION
+@@ -1987,8 +1987,8 @@ nlMatrixSDEntry OBJECT-TYPE
+ 
+ NlMatrixSDEntry ::= SEQUENCE {
+     nlMatrixSDTimeMark              TimeFilter,
+-    nlMatrixSDSourceAddress         OCTET STRING,
+-    nlMatrixSDDestAddress           OCTET STRING,
++    nlMatrixSDSourceAddress         DisplayString,
++    nlMatrixSDDestAddress           DisplayString,
+     nlMatrixSDPkts                  ZeroBasedCounter32,
+     nlMatrixSDOctets                ZeroBasedCounter32,
+     nlMatrixSDCreateTime            LastCreateTime
+@@ -2009,7 +2009,7 @@ nlMatrixSDTimeMark OBJECT-TYPE
+ 
+ 
+ nlMatrixSDSourceAddress OBJECT-TYPE
+-    SYNTAX      OCTET STRING
++    SYNTAX      DisplayString
+     MAX-ACCESS  not-accessible
+     STATUS      current
+     DESCRIPTION
+@@ -2026,7 +2026,7 @@ nlMatrixSDSourceAddress OBJECT-TYPE
+     ::= { nlMatrixSDEntry 2 }
+ 
+ nlMatrixSDDestAddress OBJECT-TYPE
+-    SYNTAX      OCTET STRING
++    SYNTAX      DisplayString
+     MAX-ACCESS  not-accessible
+     STATUS      current
+     DESCRIPTION
+@@ -2144,8 +2144,8 @@ nlMatrixDSEntry OBJECT-TYPE
+ 
+ NlMatrixDSEntry ::= SEQUENCE {
+     nlMatrixDSTimeMark                 TimeFilter,
+-    nlMatrixDSSourceAddress            OCTET STRING,
+-    nlMatrixDSDestAddress              OCTET STRING,
++    nlMatrixDSSourceAddress            DisplayString,
++    nlMatrixDSDestAddress              DisplayString,
+     nlMatrixDSPkts                     ZeroBasedCounter32,
+     nlMatrixDSOctets                   ZeroBasedCounter32,
+     nlMatrixDSCreateTime               LastCreateTime
+@@ -2161,7 +2161,7 @@ nlMatrixDSTimeMark OBJECT-TYPE
+     ::= { nlMatrixDSEntry 1 }
+ 
+ nlMatrixDSSourceAddress OBJECT-TYPE
+-    SYNTAX      OCTET STRING
++    SYNTAX      DisplayString
+ 
+ 
+ 
+@@ -2183,7 +2183,7 @@ nlMatrixDSSourceAddress OBJECT-TYPE
+     ::= { nlMatrixDSEntry 2 }
+ 
+ nlMatrixDSDestAddress OBJECT-TYPE
+-    SYNTAX      OCTET STRING
++    SYNTAX      DisplayString
+     MAX-ACCESS  not-accessible
+     STATUS      current
+     DESCRIPTION
+@@ -2518,8 +2518,8 @@ nlMatrixTopNEntry OBJECT-TYPE
+ NlMatrixTopNEntry ::= SEQUENCE {
+     nlMatrixTopNIndex                 Integer32,
+     nlMatrixTopNProtocolDirLocalIndex Integer32,
+-    nlMatrixTopNSourceAddress         OCTET STRING,
+-    nlMatrixTopNDestAddress           OCTET STRING,
++    nlMatrixTopNSourceAddress         DisplayString,
++    nlMatrixTopNDestAddress           DisplayString,
+     nlMatrixTopNPktRate               Gauge32,
+     nlMatrixTopNReversePktRate        Gauge32,
+     nlMatrixTopNOctetRate             Gauge32,
+@@ -2564,7 +2564,7 @@ nlMatrixTopNProtocolDirLocalIndex OBJECT-TYPE
+     ::= { nlMatrixTopNEntry 2 }
+ 
+ nlMatrixTopNSourceAddress OBJECT-TYPE
+-    SYNTAX     OCTET STRING
++    SYNTAX     DisplayString
+     MAX-ACCESS read-only
+     STATUS     current
+     DESCRIPTION
+@@ -2582,7 +2582,7 @@ nlMatrixTopNSourceAddress OBJECT-TYPE
+     ::= { nlMatrixTopNEntry 3 }
+ 
+ nlMatrixTopNDestAddress OBJECT-TYPE
+-    SYNTAX     OCTET STRING
++    SYNTAX     DisplayString
+     MAX-ACCESS read-only
+     STATUS     current
+     DESCRIPTION
+@@ -3379,8 +3379,8 @@ alMatrixTopNEntry OBJECT-TYPE
+ AlMatrixTopNEntry ::= SEQUENCE {
+     alMatrixTopNIndex                      Integer32,
+     alMatrixTopNProtocolDirLocalIndex      Integer32,
+-    alMatrixTopNSourceAddress              OCTET STRING,
+-    alMatrixTopNDestAddress                OCTET STRING,
++    alMatrixTopNSourceAddress              DisplayString,
++    alMatrixTopNDestAddress                DisplayString,
+ 
+ 
+ 
+@@ -3426,7 +3426,7 @@ alMatrixTopNProtocolDirLocalIndex OBJECT-TYPE
+     ::= { alMatrixTopNEntry 2 }
+ 
+ alMatrixTopNSourceAddress OBJECT-TYPE
+-    SYNTAX     OCTET STRING
++    SYNTAX     DisplayString
+     MAX-ACCESS read-only
+     STATUS     current
+     DESCRIPTION
+@@ -3448,7 +3448,7 @@ alMatrixTopNSourceAddress OBJECT-TYPE
+     ::= { alMatrixTopNEntry 3 }
+ 
+ alMatrixTopNDestAddress OBJECT-TYPE
+-    SYNTAX     OCTET STRING
++    SYNTAX     DisplayString
+     MAX-ACCESS read-only
+     STATUS     current
+     DESCRIPTION
+@@ -4114,7 +4114,7 @@ ControlString ::= TEXTUAL-CONVENTION
+     SYNTAX DisplayString
+ 
+ probeCapabilities OBJECT-TYPE
+-    SYNTAX OCTET STRING (SIZE(1))
++    SYNTAX DisplayString (SIZE(1))
+ --    SYNTAX BITS {
+ --        etherStats(0),
+ --        historyControl(1),
+@@ -4170,7 +4170,7 @@ probeHardwareRev  OBJECT-TYPE
+     ::= { probeConfig 3 }
+ 
+ probeDateTime  OBJECT-TYPE
+-    SYNTAX     OCTET STRING (SIZE (0 | 8 | 11))
++    SYNTAX     DisplayString (SIZE (0 | 8 | 11))
+     MAX-ACCESS read-write
+ 
+ 
+@@ -4627,9 +4627,9 @@ trapDestEntry  OBJECT-TYPE
+ 
+ TrapDestEntry ::= SEQUENCE {
+     trapDestIndex               Integer32,
+-    trapDestCommunity           OCTET STRING,
++    trapDestCommunity           DisplayString,
+     trapDestProtocol            INTEGER,
+-    trapDestAddress             OCTET STRING,
++    trapDestAddress             DisplayString,
+     trapDestOwner               OwnerString,
+     trapDestStatus              RowStatus
+ }
+@@ -4643,7 +4643,7 @@ trapDestIndex  OBJECT-TYPE
+     ::= { trapDestEntry 1 }
+ 
+ trapDestCommunity  OBJECT-TYPE
+-    SYNTAX     OCTET STRING (SIZE(0..127))
++    SYNTAX     DisplayString (SIZE(0..127))
+     MAX-ACCESS read-create
+     STATUS     current
+     DESCRIPTION
+@@ -4676,7 +4676,7 @@ trapDestProtocol OBJECT-TYPE
+     ::= { trapDestEntry 3 }
+ 
+ trapDestAddress  OBJECT-TYPE
+-    SYNTAX     OCTET STRING
++    SYNTAX     DisplayString
+     MAX-ACCESS read-create
+     STATUS     current
+     DESCRIPTION

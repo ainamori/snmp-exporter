@@ -1,0 +1,93 @@
+diff --git a/mibs/netgate/pfsense/v2/BEGEMOT-BRIDGE-MIB.txt b/mibs/netgate/pfsense/v2/BEGEMOT-BRIDGE-MIB.txt
+index 00a3f61..28b30f8 100644
+--- a/mibs/netgate/pfsense/v2/BEGEMOT-BRIDGE-MIB.txt
++++ b/mibs/netgate/pfsense/v2/BEGEMOT-BRIDGE-MIB.txt
+@@ -32,7 +32,7 @@ IMPORTS
+     MODULE-IDENTITY, OBJECT-TYPE, NOTIFICATION-TYPE,
+     Counter32, Integer32, TimeTicks, mib-2
+ 	FROM SNMPv2-SMI
+-    TEXTUAL-CONVENTION, MacAddress, TruthValue, RowStatus
++    TEXTUAL-CONVENTION, MacAddress, TruthValue, RowStatus, DisplayString
+ 	FROM SNMPv2-TC
+     BridgeId, Timeout
+ 	FROM BRIDGE-MIB
+@@ -75,14 +75,14 @@ BridgeIfName ::= TEXTUAL-CONVENTION
+     STATUS	current
+     DESCRIPTION
+ 	"Name of a bridge interface."
+-    SYNTAX	OCTET STRING (SIZE(1..16))
++    SYNTAX	DisplayString (SIZE(1..16))
+ 
+ BridgeIfNameOrEmpty ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "16a"
+     STATUS	current
+     DESCRIPTION
+ 	"Name of a bridge interface."
+-    SYNTAX	OCTET STRING (SIZE(0..16))
++    SYNTAX	DisplayString (SIZE(0..16))
+ 
+ BridgePortId ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "1x.1x"
+@@ -90,7 +90,7 @@ BridgePortId ::= TEXTUAL-CONVENTION
+     DESCRIPTION
+ 	"A port identifier that contains a bridge port's STP priority
+ 	in the first octet and the port number in the second octet."
+-    SYNTAX	OCTET STRING (SIZE(2))
++    SYNTAX	DisplayString (SIZE(2))
+ 
+ -- ---------------------------------------------------------- --
+ -- subtrees in the Begemot Bridge MIB
+@@ -108,7 +108,7 @@ begemotBridgePf			OBJECT IDENTIFIER ::= { begemotBridge 4 }
+ begemotBridgeConfigObjects	OBJECT IDENTIFIER ::= { begemotBridge 5 }
+ 
+ -- ---------------------------------------------------------- --
+--- the base Bridge interface table 
++-- the base Bridge interface table
+ -- ---------------------------------------------------------- --
+ 
+ begemotBridgeBaseTable OBJECT-TYPE
+@@ -177,7 +177,7 @@ begemotBridgeBaseType OBJECT-TYPE
+ 	perform."
+     ::= { begemotBridgeBaseEntry 4 }
+ 
+-begemotBridgeBaseStatus OBJECT-TYPE 
++begemotBridgeBaseStatus OBJECT-TYPE
+     SYNTAX	RowStatus
+     MAX-ACCESS	read-create
+     STATUS	current
+@@ -187,7 +187,7 @@ begemotBridgeBaseStatus OBJECT-TYPE
+     ::= { begemotBridgeBaseEntry 5 }
+ 
+ -- ---------------------------------------------------------- --
+--- the base Bridge ports table 
++-- the base Bridge ports table
+ -- ---------------------------------------------------------- --
+ 
+ begemotBridgeBasePortTable OBJECT-TYPE
+@@ -289,7 +289,7 @@ begemotBridgeBasePortPrivate OBJECT-TYPE
+     ::= { begemotBridgeBasePortEntry 7 }
+ 
+ -- ---------------------------------------------------------- --
+--- the Bridge interface STP table 
++-- the Bridge interface STP table
+ -- ---------------------------------------------------------- --
+ 
+ begemotBridgeStpTable OBJECT-TYPE
+@@ -526,7 +526,7 @@ begemotBridgeStpTxHoldCount OBJECT-TYPE
+     ::= { begemotBridgeStpEntry 16 }
+ 
+ -- ---------------------------------------------------------- --
+--- the Bridge STP ports table 
++-- the Bridge STP ports table
+ -- ---------------------------------------------------------- --
+ 
+ begemotBridgeStpPortTable OBJECT-TYPE
+@@ -821,7 +821,7 @@ begemotBridgeStpPortAdminPathCost OBJECT-TYPE
+     ::= { begemotBridgeStpExtPortEntry 6 }
+ 
+ -- ---------------------------------------------------------- --
+--- the Bridge interface Transparent bridging table 
++-- the Bridge interface Transparent bridging table
+ -- ---------------------------------------------------------- --
+ 
+ begemotBridgeTpTable OBJECT-TYPE

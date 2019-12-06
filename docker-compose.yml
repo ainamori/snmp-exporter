@@ -1,0 +1,10 @@
+version: '3'
+services:
+  snmp-exporter:
+    build: .
+    container_name: snmp-exporter
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./snmp.yml:/etc/snmp_exporter/snmp.yml
+    ports:
+      - 9116:9116

@@ -1,0 +1,365 @@
+diff --git a/mibs/cisco/cat3750/v2/CISCO-RTTMON-TC-MIB.my b/mibs/cisco/cat3750/v2/CISCO-RTTMON-TC-MIB.my
+index 817b1d2..f2b6d73 100644
+--- a/mibs/cisco/cat3750/v2/CISCO-RTTMON-TC-MIB.my
++++ b/mibs/cisco/cat3750/v2/CISCO-RTTMON-TC-MIB.my
+@@ -1,11 +1,11 @@
+ -- *****************************************************************
+ -- CISCO-RTTMON-TC-MIB.my:  IP SLA Textual Conventions MIB file
+---   
++--
+ -- August 2005, Katherine Yang
+---   
++--
+ -- Copyright (c) 2005-2014, 2017 by Cisco Systems Inc.
+ -- All rights reserved.
+---   
++--
+ -- *****************************************************************
+ 
+ CISCO-RTTMON-TC-MIB DEFINITIONS ::= BEGIN
+@@ -15,7 +15,7 @@ IMPORTS
+     Unsigned32,
+     Integer32
+         FROM SNMPv2-SMI
+-    TEXTUAL-CONVENTION
++    TEXTUAL-CONVENTION, DisplayString
+         FROM SNMPv2-TC
+     ciscoMgmt
+         FROM CISCO-SMI;
+@@ -26,7 +26,7 @@ ciscoRttMonTCMIB MODULE-IDENTITY
+     ORGANIZATION    "Cisco Systems, Inc."
+     CONTACT-INFO
+             "Cisco Systems, Inc.
+-            Customer Service 
++            Customer Service
+ 
+             Postal: 170 W Tasman Drive
+             San Jose, CA 95134
+@@ -35,10 +35,10 @@ ciscoRttMonTCMIB MODULE-IDENTITY
+             Email: cs-ipsla@cisco.com"
+     DESCRIPTION
+         "This MIB contains textual conventions used by
+-        CISCO-RTTMON-MIB, CISCO-RTTMON-RTP-MIB and 
+-        CISCO-RTTMON-ICMP-MIB, but they are not limited 
+-        to only these MIBs. 
+-        These textual conventions were originally defined in 
++        CISCO-RTTMON-MIB, CISCO-RTTMON-RTP-MIB and
++        CISCO-RTTMON-ICMP-MIB, but they are not limited
++        to only these MIBs.
++        These textual conventions were originally defined in
+         CISCO-RTTMON-MIB.
+ 
+         Acronyms:
+@@ -78,7 +78,7 @@ ciscoRttMonTCMIB MODULE-IDENTITY
+         "Added enumeration y1731slm to RttMonProtocol
+ 
+         Added the following to RttResopnseSense.
+-         statsRetrieveOk, statsRetrieveNoConnect,  
++         statsRetrieveOk, statsRetrieveNoConnect,
+          statsRetrieveVersionFail, statsRetrieveInternalError,
+          statsRetrieveAbort, statsRetrieveFail,
+          statsRetrieveAuthFail, statsRetrieveFormatError,
+@@ -103,7 +103,7 @@ ciscoRttMonTCMIB MODULE-IDENTITY
+     REVISION        "200603020000Z"
+     DESCRIPTION
+         "Added ethernetPing and ethernetJitter in RttMonRttType.
+-        Added ethernetPingAppl and ethernetJitterAppl 
++        Added ethernetPingAppl and ethernetJitterAppl
+         in RttMonProtocol"
+     REVISION        "200508090000Z"
+     DESCRIPTION
+@@ -123,7 +123,7 @@ RttMonScheduleStartType ::= TEXTUAL-CONVENTION
+         pending(1)    - Pending state
+         now(2)        - Schedule the start time of probe to current time
+                         and probe is immediately started
+-        random(3)     - Schedule the start time of probe at a random 
++        random(3)     - Schedule the start time of probe at a random
+                         time over a range.
+         after(4)      - Schedule the start time of probe after a certain
+                         amount of time from now.
+@@ -182,11 +182,11 @@ RttResponseSense ::= TEXTUAL-CONVENTION
+     STATUS          current
+     DESCRIPTION
+         "These are the defined values for a completion status
+-        of a RTT operation.  
++        of a RTT operation.
+ 
+         other(0)         - the operation is not started or completed
+                             or this object is not applicable for
+-                            the probe type.  
++                            the probe type.
+         ok(1)            - a valid completion occurred and
+                             timed successfully
+         disconnected(2)  - the operation did not occur because
+@@ -205,32 +205,32 @@ RttResponseSense ::= TEXTUAL-CONVENTION
+                             target
+         dropped(7)       - the operation did not occur due to lack
+                             of internal resource
+-        sequenceError(8) - a completed operation did not contain 
++        sequenceError(8) - a completed operation did not contain
+                             the correct sequence id; no completion
+                             time recorded
+         verifyError(9)   - a completed operation was received, but
+                             the data it contained did not match
+-                            the expected data; no completion time 
++                            the expected data; no completion time
+                             recorded
+-        applicationSpecific(10) 
++        applicationSpecific(10)
+                          - the application generating the operation
+                             had a specific error
+-        dnsServerTimeout(11) 
++        dnsServerTimeout(11)
+                          - DNS Server Timeout
+         tcpConnectTimeout(12)
+                          - TCP Connect Timeout
+         httpTransactionTimeout(13)
+                          - HTTP Transaction Timeout
+         dnsQueryError(14)
+-                         - DNS Query error (because of unknown address 
++                         - DNS Query error (because of unknown address
+                            etc.,)
+         httpError(15)
+                          - HTTP Response StatusCode is not OK (200),
+                            or permenent redirect(301), temporary redirect
+                            (302) then HTTP error is set.
+         error(16)
+-                         - if there are socket failures or some other 
+-                           errors not relavant to the actual probe, they 
++                         - if there are socket failures or some other
++                           errors not relavant to the actual probe, they
+                            are recorded under this error
+         mplsLspEchoTxError(17)
+                          - MPLS echo request transmission failure.
+@@ -243,7 +243,7 @@ RttResponseSense ::= TEXTUAL-CONVENTION
+         mplsLspReachButNotFEC(20)
+                          - MPLS echo request processed by the downstream
+                            router but not the target.
+-        enableOk(21) 
++        enableOk(21)
+                          - Control enable request OK
+         enableNoConnect(22)
+                          - Control enable request fail due to no connection to
+@@ -266,7 +266,7 @@ RttResponseSense ::= TEXTUAL-CONVENTION
+         statsRetrieveOk(30)
+                          - Stats retrieve request OK
+         statsRetrieveNoConnect(31)
+-                         - Stats retrieve request fail due to no connection 
++                         - Stats retrieve request fail due to no connection
+                            to the target.
+         statsRetrieveVersionFail(32)
+                          - Stats retrieve request version fail.
+@@ -336,10 +336,10 @@ RttMonRttType ::= TEXTUAL-CONVENTION
+         at the 'RttMonTargetAddress'.
+ 
+         The value 'pathEcho' will cause the RTT application
+-        to perform path discovery to the 'RttMonTargetAddress', 
+-        then it will perform a timed echo request/response 
+-        operation directed at the each hop along the path.  
+-        This operation will provide two types of information, 
++        to perform path discovery to the 'RttMonTargetAddress',
++        then it will perform a timed echo request/response
++        operation directed at the each hop along the path.
++        This operation will provide two types of information,
+         first the path and second the time delay along the path.
+ 
+         NOTE:  The 'pathEcho' time delay operation is a heuristic
+@@ -347,21 +347,21 @@ RttMonRttType ::= TEXTUAL-CONVENTION
+                the different echo request/response at different
+                rates.  Thus the time delay difference between two
+                hops along a path may contain very little 'true'
+-               statistical meaning. 
++               statistical meaning.
+ 
+-        The value 'fileIO' will cause the RTT application to 
+-        write, read, or write/read a file to a preconfigured 
++        The value 'fileIO' will cause the RTT application to
++        write, read, or write/read a file to a preconfigured
+         file server.
+ 
+         The value 'script' will cause the RTT application to
+         execute a preconfigured script.
+ 
+         The value 'udpEcho' will cause the RTT application
+-        to perform a timed udp packet send/receive operation 
++        to perform a timed udp packet send/receive operation
+         directed at the 'RttMonTargetAddress'.
+ 
+         The value 'tcpConnect' will cause the RTT application
+-        to perform a timed tcp connect operation directed at the 
++        to perform a timed tcp connect operation directed at the
+         'RttMonTargetAddress'.
+ 
+         The value 'http' will cause the RTT application
+@@ -374,7 +374,7 @@ RttMonRttType ::= TEXTUAL-CONVENTION
+         to perform delay variance analysis.
+ 
+         The value 'dlsw' will cause the RTT application
+-        to perform a keepalive operation to measure the response 
++        to perform a keepalive operation to measure the response
+         time of a DLSw peer.
+ 
+         The value 'dhcp' will cause the RTT application
+@@ -493,7 +493,7 @@ RttMplsVpnMonLpdFailureSense ::= TEXTUAL-CONVENTION
+         unknown(1)                      - The cause of failure for the
+                                           LSP Path Discovery cannot be
+                                           determined. The discovery for
+-                                          the target PE may not have 
++                                          the target PE may not have
+                                           started.
+         noPath(2)                       - No paths were found to the
+                                           target FEC while doing the
+@@ -564,9 +564,9 @@ RttMonProtocol ::= TEXTUAL-CONVENTION
+         defined:
+ 
+         NOTE: All protocols that end in 'Appl' will support
+-              the asymetric request/response (ARR) protocol.  
++              the asymetric request/response (ARR) protocol.
+               See the DESCRIPTION for ciscoRttMonMIB for a
+-              complete description of the asymetric 
++              complete description of the asymetric
+               request/response protocol.
+ 
+         notApplicable     - no protocol is defined
+@@ -577,11 +577,11 @@ RttMonProtocol ::= TEXTUAL-CONVENTION
+         snaRUEcho         - uses the REQECHO and ECHOTEST RU's
+                              to an SSCP over an SNA LU-SSCP
+                              session
+-        snaLU0EchoAppl    - uses test RU's sent to the Echo 
++        snaLU0EchoAppl    - uses test RU's sent to the Echo
+                              Server over an SNA LU0-LU0 session
+-        snaLU2EchoAppl    - uses test RU's sent to the Echo 
++        snaLU2EchoAppl    - uses test RU's sent to the Echo
+                              Server over an SNA LU2-LU2 session
+-        snaLU62Echo       - uses the native appn ping ie. aping 
++        snaLU62Echo       - uses the native appn ping ie. aping
+         snaLU62EchoAppl   - uses test RU's sent to the ARR
+                              Echo Server over an SNA LU6.2-LU6.2
+                              session
+@@ -613,7 +613,7 @@ RttMonProtocol ::= TEXTUAL-CONVENTION
+         netbiosEchoAppl   - uses the netbios based echo
+                              server
+         ipTcpConn         - uses the tcp's connect mechanism
+-        httpAppl          - uses udp for name resolution, 
++        httpAppl          - uses udp for name resolution,
+                             tcp connect and tcp data transfer
+                             mechanisms for HTTP data download
+                             from a particular HTTP Server
+@@ -629,11 +629,11 @@ RttMonProtocol ::= TEXTUAL-CONVENTION
+                             H.323/SIP call set up time
+         rtpAppl           - uses Symphony infrastructure to measure
+                             rtp packets delay variance.
+-        icmpJitterAppl    - uses ICMP Timestamp for packet transfer 
++        icmpJitterAppl    - uses ICMP Timestamp for packet transfer
+                             to measure jitter.
+         ethernetPingAppl    - uses regular 802.1ag loopback frame
+         ethernetJitterAppl  - uses CFM frames .
+-        videoAppl           - uses synthetic traffic depending on video 
++        videoAppl           - uses synthetic traffic depending on video
+                                profile
+         y1731dmm            - used to measure Y1731 delay
+         y17311dm            - used to measure Y1731 1DM
+@@ -718,7 +718,7 @@ RttMonLSPPingReplyMode ::= TEXTUAL-CONVENTION
+         replyIpv4Udp(1)         - an mpls echo request will normally
+                                  have reply via IPv4 UDP packets.
+         replyIpv4UdpRA(2)       - reply via IPv4 UDP Router Alert. Used
+-                                 when IPv4 return path is deemed 
++                                 when IPv4 return path is deemed
+                                  unreliable."
+     SYNTAX          INTEGER  {
+                         replyIpv4Udp(1),
+@@ -733,9 +733,9 @@ RttMonTargetAddress ::= TEXTUAL-CONVENTION
+         which corresponds to a 'broadcast' address is disallowed.
+ 
+         The interpretation of this string depends on the type of
+-        RTT operation selected, as specified by RttMonProtocol; 
+-        consequently, this object cannot be created until 
+-        RttMonProtocol has been created (or must be in the same 
++        RTT operation selected, as specified by RttMonProtocol;
++        consequently, this object cannot be created until
++        RttMonProtocol has been created (or must be in the same
+         PDU).
+ 
+         SNA addresses will be provided in ASCII, but will be
+@@ -755,24 +755,24 @@ RttMonTargetAddress ::= TEXTUAL-CONVENTION
+                 can be empty, and the system will use the
+                 implied SSCP LU.  For example 'NSPECHO'.
+ 
+-        snaLU0EchoAppl and snaLU2EchoAppl 
++        snaLU0EchoAppl and snaLU2EchoAppl
+              - N octets, the first x octets are the HOSTNAME
+                 (Alternatively, this could be a PU name defined
+                 to transport to the desired HOST), the second
+-                y octets are the APPLID, and the last z octets 
+-                are the MODENAME of the Echo Server (blank 
+-                for a MODENAME default). The address will be 
+-                encoded with a size byte preceding each of 
+-                the x y and z called s. For example sxsysz 
+-                as in '0x06CWBC060x07NSPECHO0x00' where 
+-                HOSTNAME = CWBC06, APPLID = NSPECHO, and 
+-                MODENAME is defaulted to 8 blanks.  
++                y octets are the APPLID, and the last z octets
++                are the MODENAME of the Echo Server (blank
++                for a MODENAME default). The address will be
++                encoded with a size byte preceding each of
++                the x y and z called s. For example sxsysz
++                as in '0x06CWBC060x07NSPECHO0x00' where
++                HOSTNAME = CWBC06, APPLID = NSPECHO, and
++                MODENAME is defaulted to 8 blanks.
+                 NOTE: MODENAME is either size 0 or 8.
+ 
+         snaLU62Echo and snaLU62EchoAppl
+              - N octets, the first x octets are the LU-NAME,
+-                the second y octets are the TP-NAME, and the 
+-                last z octets are the MODENAME of the Echo 
++                the second y octets are the TP-NAME, and the
++                last z octets are the MODENAME of the Echo
+                 Server.  The address will be encoded with a size
+                 byte preceding each of the x y and z called s.
+                 For example sxsysz (zero size before z for a
+@@ -800,7 +800,7 @@ RttMonTargetAddress ::= TEXTUAL-CONVENTION
+         mplsLspPingAppl
+                 - 8 octets, the first 4 octets are the FEC address
+                 and the next 4 octets are the FEC address mask."
+-    SYNTAX          OCTET STRING
++    SYNTAX          DisplayString
+ 
+ RttMonReactVar ::= TEXTUAL-CONVENTION
+     STATUS          current
+@@ -837,18 +837,18 @@ RttMonReactVar ::= TEXTUAL-CONVENTION
+          mosCQDS(22)             - Conversational quality MOS at source
+          rFactorDS(23)           - R-Factor value at Destination.
+          successivePacketLoss(24)- Successive Dropped Packet
+-         maxOfLatencyDS(25)      - Maximum Latency from Destination 
++         maxOfLatencyDS(25)      - Maximum Latency from Destination
+                                    to Source
+-         maxOfLatencySD(26)      - Maximum Latency from Source 
++         maxOfLatencySD(26)      - Maximum Latency from Source
+                                    to Destination
+-         latencyDSAvg(27)        - Latency average from Destination 
++         latencyDSAvg(27)        - Latency average from Destination
+                                    to Source
+-         latencySDAvg(28)        - Latency average from Source 
++         latencySDAvg(28)        - Latency average from Source
+                                    to Destination
+          packetLoss(29)          - Packets loss in both directions
+          iaJitterSD(30)          - Inter arrival jitter from
+                                    Source to Destination
+-         mosCQSD(31)             - Conversational quality MOS at 
++         mosCQSD(31)             - Conversational quality MOS at
+                                    Destination
+          rFactorSD(32)           - R-Factor value at Destination.
+          lpdGroup(33)            - Label Path Discovery (LPD) group
+@@ -942,10 +942,10 @@ RttMonIdLst ::= TEXTUAL-CONVENTION
+         The identifiers will be specified in the following form.
+         (a) Individual identifiers with comma separated as 1,5,3.
+         (b) Range form including hyphens with multiple ranges
+-        being 
++        being
+            separated by comma as 1-10,12-34.
+         (c) Mix of the above two forms as 1,2,4-10,12,15,19-25."
+-    SYNTAX          OCTET STRING (SIZE (0..255))
++    SYNTAX          DisplayString (SIZE (0..255))
+ 
+ RttMonCtrlIndex ::= TEXTUAL-CONVENTION
+     STATUS          current

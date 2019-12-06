@@ -1,0 +1,40 @@
+diff --git a/mibs/cisco/cat3750/v2/SNMP-USM-MIB.my b/mibs/cisco/cat3750/v2/SNMP-USM-MIB.my
+index b579e6d..5ff3549 100644
+--- a/mibs/cisco/cat3750/v2/SNMP-USM-MIB.my
++++ b/mibs/cisco/cat3750/v2/SNMP-USM-MIB.my
+@@ -6,7 +6,7 @@ IMPORTS
+     snmpModules, Counter32                FROM SNMPv2-SMI
+     TEXTUAL-CONVENTION, TestAndIncr,
+     RowStatus, RowPointer,
+-    StorageType, AutonomousType           FROM SNMPv2-TC
++    StorageType, AutonomousType, DisplayString  FROM SNMPv2-TC
+     MODULE-COMPLIANCE, OBJECT-GROUP       FROM SNMPv2-CONF
+     SnmpAdminString, SnmpEngineID,
+     snmpAuthProtocols, snmpPrivProtocols  FROM SNMP-FRAMEWORK-MIB;
+@@ -268,7 +268,7 @@ KeyChange ::=     TEXTUAL-CONVENTION
+           key until it has confirmed that the key change actually
+           succeeded.
+          "
+-    SYNTAX       OCTET STRING
++    SYNTAX       DisplayString
+ 
+ 
+ -- Statistics for the User-based Security Model **********************
+@@ -467,7 +467,7 @@ UsmUserEntry ::= SEQUENCE
+         usmUserPrivProtocol     AutonomousType,
+         usmUserPrivKeyChange    KeyChange,
+         usmUserOwnPrivKeyChange KeyChange,
+-        usmUserPublic           OCTET STRING,
++        usmUserPublic           DisplayString,
+         usmUserStorageType      StorageType,
+         usmUserStatus           RowStatus
+     }
+@@ -828,7 +828,7 @@ usmUserOwnPrivKeyChange OBJECT-TYPE
+ 
+ 
+ usmUserPublic    OBJECT-TYPE
+-    SYNTAX       OCTET STRING (SIZE(0..32))
++    SYNTAX       DisplayString (SIZE(0..32))
+     MAX-ACCESS   read-create
+     STATUS       current
+     DESCRIPTION "A publicly-readable value which can be written as part

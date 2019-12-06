@@ -1,0 +1,21 @@
+---
+# ------------------------------------------------
+# 
+# ------------------------------------------------
+modules:
+  seil:
+    version: 2
+    retries: 3
+    timeout: '10s'
+    auth:
+      community: 'public'
+    walk: 
+      - sysUpTime
+      - memory
+      - hrStorage
+      - interfaces
+      - ifXTable
+      - mib-2
+      - seilProducts
+    #lookups:
+

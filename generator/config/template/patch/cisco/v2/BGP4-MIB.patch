@@ -1,0 +1,122 @@
+diff --git a/mibs/cisco/cat3750/v2/BGP4-MIB.my b/mibs/cisco/cat3750/v2/BGP4-MIB.my
+index 11e2ea8..4bd8f88 100644
+--- a/mibs/cisco/cat3750/v2/BGP4-MIB.my
++++ b/mibs/cisco/cat3750/v2/BGP4-MIB.my
+@@ -5,7 +5,7 @@
+ --
+ -- Copyright (c) 1994-1995 by cisco Systems, Inc.
+ -- All rights reserved.
+--- 
++--
+ -- *****************************************************************
+ --
+ -- This mib was extracted from RFC1657
+@@ -17,7 +17,9 @@ BGP4-MIB DEFINITIONS ::= BEGIN
+                     IpAddress, Integer32, Counter32, Gauge32
+                         FROM SNMPv2-SMI
+                     mib-2
+-                        FROM RFC1213-MIB;
++                        FROM RFC1213-MIB
++                    DisplayString
++                        FROM SNMPv2-TC;
+ 
+                 bgp MODULE-IDENTITY
+                     LAST-UPDATED "9405050000Z"
+@@ -37,7 +39,7 @@ BGP4-MIB DEFINITIONS ::= BEGIN
+                     ::= { mib-2 15 }
+ 
+                 bgpVersion OBJECT-TYPE
+-                    SYNTAX     OCTET STRING (SIZE (1..255))
++                    SYNTAX     DisplayString (SIZE (1..255))
+                     MAX-ACCESS read-only
+                     STATUS     current
+                     DESCRIPTION
+@@ -116,7 +118,7 @@ BGP4-MIB DEFINITIONS ::= BEGIN
+                         bgpPeerOutTotalMessages
+                             Counter32,
+                         bgpPeerLastError
+-                            OCTET STRING,
++                            DisplayString,
+                         bgpPeerFsmEstablishedTransitions
+                             Counter32,
+                         bgpPeerFsmEstablishedTime
+@@ -285,14 +287,14 @@ BGP4-MIB DEFINITIONS ::= BEGIN
+                     ::= { bgpPeerEntry 13 }
+ 
+                 bgpPeerLastError OBJECT-TYPE
+-                    SYNTAX     OCTET STRING (SIZE (2))
++                    SYNTAX     DisplayString (SIZE (2))
+                     MAX-ACCESS read-only
+                     STATUS     current
+                     DESCRIPTION
+                             "The last error code and subcode seen by this
+                             peer on this connection.  If no error has
+                             occurred, this field is zero.  Otherwise, the
+-                            first byte of this two byte OCTET STRING
++                            first byte of this two byte DisplayString
+                             contains the error code, and the second byte
+                             contains the subcode."
+                     ::= { bgpPeerEntry 14 }
+@@ -493,7 +495,7 @@ BGP4-MIB DEFINITIONS ::= BEGIN
+                     bgpPathAttrOrigin
+                          INTEGER,
+                     bgpPathAttrASPath
+-                         OCTET STRING,
++                         DisplayString,
+                     bgpPathAttrNextHop
+                          IpAddress,
+                     bgpPathAttrInterASMetric
+@@ -530,7 +532,7 @@ BGP4-MIB DEFINITIONS ::= BEGIN
+                     ::= { bgpPathAttrEntry 3 }
+ 
+                 bgpPathAttrASPath OBJECT-TYPE
+-                    SYNTAX     OCTET STRING (SIZE (2..255))
++                    SYNTAX     DisplayString (SIZE (2..255))
+                     MAX-ACCESS read-only
+                     STATUS     obsolete
+                     DESCRIPTION
+@@ -538,7 +540,7 @@ BGP4-MIB DEFINITIONS ::= BEGIN
+                             reach the network.  This object is
+                             probably best represented as SEQUENCE OF
+                             INTEGER.  For SMI compatibility, though,
+-                            it is represented as OCTET STRING.  Each
++                            it is represented as DisplayString.  Each
+                             AS is represented as a pair of octets
+                             according to the following algorithm:
+ 
+@@ -604,7 +606,7 @@ BGP4-MIB DEFINITIONS ::= BEGIN
+                     bgp4PathAttrOrigin
+                          INTEGER,
+                     bgp4PathAttrASPathSegment
+-                         OCTET STRING,
++                         DisplayString,
+                     bgp4PathAttrNextHop
+                          IpAddress,
+                     bgp4PathAttrMultiExitDisc
+@@ -622,7 +624,7 @@ BGP4-MIB DEFINITIONS ::= BEGIN
+                     bgp4PathAttrBest
+                          INTEGER,
+                     bgp4PathAttrUnknown
+-                         OCTET STRING
++                         DisplayString
+ 
+                 }
+ 
+@@ -674,7 +676,7 @@ BGP4-MIB DEFINITIONS ::= BEGIN
+                     ::= { bgp4PathAttrEntry 4 }
+ 
+                 bgp4PathAttrASPathSegment OBJECT-TYPE
+-                    SYNTAX     OCTET STRING (SIZE (2..255))
++                    SYNTAX     DisplayString (SIZE (2..255))
+                     MAX-ACCESS read-only
+                     STATUS     current
+                     DESCRIPTION
+@@ -794,7 +796,7 @@ BGP4-MIB DEFINITIONS ::= BEGIN
+                     ::= { bgp4PathAttrEntry 13 }
+ 
+                bgp4PathAttrUnknown OBJECT-TYPE
+-                    SYNTAX     OCTET STRING (SIZE(0..255))
++                    SYNTAX     DisplayString (SIZE(0..255))
+                     MAX-ACCESS read-only
+                     STATUS     current
+                     DESCRIPTION

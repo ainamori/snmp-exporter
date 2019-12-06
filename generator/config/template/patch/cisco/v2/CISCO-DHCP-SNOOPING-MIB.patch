@@ -1,0 +1,1010 @@
+diff --git a/mibs/cisco/cat3750/v2/CISCO-DHCP-SNOOPING-MIB.my b/mibs/cisco/cat3750/v2/CISCO-DHCP-SNOOPING-MIB.my
+index b1a3c20..0fb2132 100644
+--- a/mibs/cisco/cat3750/v2/CISCO-DHCP-SNOOPING-MIB.my
++++ b/mibs/cisco/cat3750/v2/CISCO-DHCP-SNOOPING-MIB.my
+@@ -1,8 +1,8 @@
+ -- *****************************************************************
+ -- CISCO-DHCP-SNOOPING-MIB
+---   
++--
+ -- March 2004, Edward Pham
+---   
++--
+ -- Copyright (c) 2004-2007, 2009-2010 by cisco Systems, Inc.
+ -- All rights reserved.
+ -- *****************************************************************
+@@ -37,7 +37,9 @@ IMPORTS
+     VlanIndex
+         FROM Q-BRIDGE-MIB
+     ciscoMgmt
+-        FROM CISCO-SMI;
++        FROM CISCO-SMI
++    DisplayString
++        FROM SNMPv2-TC;
+ 
+ 
+ ciscoDhcpSnoopingMIB MODULE-IDENTITY
+@@ -75,8 +77,8 @@ ciscoDhcpSnoopingMIB MODULE-IDENTITY
+     REVISION        "200707120000Z"
+     DESCRIPTION
+         "Add cdsIfVlanRelayInfoOptCircuitIdGroup,
+-        cdsStatisticsExtGroup 
+-        and deprecate cdsRelayAgentRemoteIdGroup with 
++        cdsStatisticsExtGroup
++        and deprecate cdsRelayAgentRemoteIdGroup with
+         cdsRelayAgentInfoOptRemoteIdSubGroup."
+     REVISION        "200705300000Z"
+     DESCRIPTION
+@@ -87,7 +89,7 @@ ciscoDhcpSnoopingMIB MODULE-IDENTITY
+         cdsStaticBindingsGroup,
+         cdsIfSrcGuardIpFilterGroup,
+         cdsIfSrcGuardTrafficFilterGroup,
+-        cdsIfSrcGuardExtGroup 
++        cdsIfSrcGuardExtGroup
+         and deprecate cdsIfSrcGuardGroup with cdsIfSrcGuardGroupRev1."
+     REVISION        "200510260000Z"
+     DESCRIPTION
+@@ -136,13 +138,13 @@ cdsFeatureEnable OBJECT-TYPE
+         "This object indicates whether the DHCP Snooping feature is
+         enabled at the device level.
+ 
+-        Setting this object to 'false' disables the DHCP Snooping 
++        Setting this object to 'false' disables the DHCP Snooping
+         feature globally thus disabling the feature at each VLAN.
+ 
+-        Setting this object to 'true' will start the DHCP Snooping 
+-        feature running in the device. Once the DHCP Snooping is 
+-        enabled, whether the feature is running at each VLAN is 
+-        controlled by the cdsVlanConfigTable." 
++        Setting this object to 'true' will start the DHCP Snooping
++        feature running in the device. Once the DHCP Snooping is
++        enabled, whether the feature is running at each VLAN is
++        controlled by the cdsVlanConfigTable."
+     ::= { cdsGlobal 1 }
+ 
+ cdsDatabaseFile OBJECT-TYPE
+@@ -151,7 +153,7 @@ cdsDatabaseFile OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the name of the database file used
+-        to store DHCP bindings information." 
++        to store DHCP bindings information."
+     ::= { cdsGlobal 2 }
+ 
+ cdsDatabaseUpdateInterval OBJECT-TYPE
+@@ -163,7 +165,7 @@ cdsDatabaseUpdateInterval OBJECT-TYPE
+         "This object indicates the time interval at which DHCP
+         bindings information will be written to the database file
+         denoted by cdsDatabaseFile object. Setting this object
+-        to zero will disable the storage of DHCP bindings." 
++        to zero will disable the storage of DHCP bindings."
+     ::= { cdsGlobal 3 }
+ 
+ cdsRelayAgentInfoOptEnable OBJECT-TYPE
+@@ -180,7 +182,7 @@ cdsRelayAgentInfoOptEnable OBJECT-TYPE
+ 
+         If this object is set to 'false', DHCP option 82 data
+         will not be inserted."
+-    REFERENCE       "RFC 3046, DHCP Relay Agent Information Option." 
++    REFERENCE       "RFC 3046, DHCP Relay Agent Information Option."
+     ::= { cdsGlobal 4 }
+ 
+ cdsRelayAgentInfoOptRemoteId OBJECT-TYPE
+@@ -190,13 +192,13 @@ cdsRelayAgentInfoOptRemoteId OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the Remote ID used as part of the
+         DHCP relay information option (option 82) data inserted
+-        to DHCP packets by DHCP Snooping feature. 
++        to DHCP packets by DHCP Snooping feature.
+ 
+         The value of this object is ignored whenever the value
+         of cdsRelayAgentInfoOptEnable object is 'false'.
+         This object is deprecated and superceded by
+         cdsRelayAgentInfoOptRemoteIdSub object."
+-    REFERENCE       "RFC 3046, DHCP Relay Agent Information Option." 
++    REFERENCE       "RFC 3046, DHCP Relay Agent Information Option."
+     ::= { cdsGlobal 5 }
+ 
+ cdsMatchMacAddressEnable OBJECT-TYPE
+@@ -205,13 +207,13 @@ cdsMatchMacAddressEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates if DHCP Snooping Mac address
+-        matching is enabled. 
++        matching is enabled.
+ 
+         If this object is set to 'true', DHCP Snooping Mac
+         address matching is enabled.
+ 
+         If this object is set to 'false', DHCP Snooping Mac
+-        address matching is disabled." 
++        address matching is disabled."
+     ::= { cdsGlobal 6 }
+ 
+ cdsGlobalMaxBindingsLimit OBJECT-TYPE
+@@ -220,24 +222,24 @@ cdsGlobalMaxBindingsLimit OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the maximum number of DHCP
+-        bindings allowed in the device." 
++        bindings allowed in the device."
+     ::= { cdsGlobal 7 }
+ 
+ cdsRelayAgentInfoOptRemoteIdSub OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (1..64))
++    SYNTAX          DisplayString (SIZE  (1..64))
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the Remote ID used in Agent Remote ID
+-        sub-option of the DHCP relay information option (option 82) 
+-        data inserted to DHCP packets by DHCP Snooping feature. 
++        sub-option of the DHCP relay information option (option 82)
++        data inserted to DHCP packets by DHCP Snooping feature.
+ 
+-        The value of this object is in a format of a user-defined 
++        The value of this object is in a format of a user-defined
+         string. Its default value is the device's MAC address.
+ 
+         The value of this object is ignored whenever the value
+         of cdsRelayAgentInfoOptEnable object is 'false'."
+-    REFERENCE       "RFC 3046, DHCP Relay Agent Information Option." 
++    REFERENCE       "RFC 3046, DHCP Relay Agent Information Option."
+     ::= { cdsGlobal 8 }
+ 
+ cdsBindingsNotifEnabled OBJECT-TYPE
+@@ -252,16 +254,16 @@ cdsBindingsNotifEnabled OBJECT-TYPE
+         generation of cdsBindingsNotification.
+ 
+         Seting this object value to 'false' will disable
+-        generation of cdsBindingsNotification." 
++        generation of cdsBindingsNotification."
+     ::= { cdsGlobal 9 }
+ -- The DHCP Snooping Vlan Group
+---   
++--
+ 
+---   
++--
+ -- The DHCP Snooping VLAN Config Table
+ 
+ cdsVlanConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CdsVlanConfigEntry 
++    SYNTAX          SEQUENCE OF CdsVlanConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -277,13 +279,13 @@ cdsVlanConfigEntry OBJECT-TYPE
+     DESCRIPTION
+         "A row instance contains the configuration to enable
+         or disable DHCP Snooping at each existing VLAN."
+-    INDEX           { cdsVlanIndex } 
++    INDEX           { cdsVlanIndex }
+     ::= { cdsVlanConfigTable 1 }
+ 
+ CdsVlanConfigEntry ::= SEQUENCE {
+         cdsVlanIndex                  VlanIndex,
+         cdsVlanDhcpSnoopingEnable     TruthValue,
+-        cdsVlanDhcpSnoopingOperStatus INTEGER 
++        cdsVlanDhcpSnoopingOperStatus INTEGER
+ }
+ 
+ cdsVlanIndex OBJECT-TYPE
+@@ -292,7 +294,7 @@ cdsVlanIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the VLAN number on which DHCP Snooping
+-        feature is configured." 
++        feature is configured."
+     ::= { cdsVlanConfigEntry 1 }
+ 
+ cdsVlanDhcpSnoopingEnable OBJECT-TYPE
+@@ -301,35 +303,35 @@ cdsVlanDhcpSnoopingEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates whether DHCP Snooping is enabled in
+-        this VLAN. 
++        this VLAN.
+ 
+-        If this object is set to 'true', DHCP Snooping is enabled. 
++        If this object is set to 'true', DHCP Snooping is enabled.
+ 
+-        If this object is set to 'false', DHCP Snooping is disabled." 
++        If this object is set to 'false', DHCP Snooping is disabled."
+     ::= { cdsVlanConfigEntry 2 }
+- 
++
+ cdsVlanDhcpSnoopingOperStatus OBJECT-TYPE
+-    SYNTAX          INTEGER { operational(1), notOperational(2) } 
++    SYNTAX          INTEGER { operational(1), notOperational(2) }
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+         "This object indicates whether DHCP Snooping is operational in
+-        this VLAN. 
++        this VLAN.
+ 
+-        If this object is 'operational', DHCP Snooping is running. 
++        If this object is 'operational', DHCP Snooping is running.
+ 
+-        If this object is 'notOperational', DHCP Snooping is not running." 
++        If this object is 'notOperational', DHCP Snooping is not running."
+     ::= { cdsVlanConfigEntry 3 }
+- 
++
+ 
+ -- The DHCP Snooping Interface Group
+---   
++--
+ 
+---   
++--
+ -- The DHCP Snooping Interface Config Table
+ 
+ cdsIfConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CdsIfConfigEntry 
++    SYNTAX          SEQUENCE OF CdsIfConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -346,9 +348,9 @@ cdsIfConfigEntry OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "A row instance contains the configuration to enable
+-        or disable trust state for DHCP Snooping at each 
++        or disable trust state for DHCP Snooping at each
+         interface capable of this feature."
+-    INDEX           { ifIndex } 
++    INDEX           { ifIndex }
+     ::= { cdsIfConfigTable 1 }
+ 
+ CdsIfConfigEntry ::= SEQUENCE {
+@@ -361,7 +363,7 @@ cdsIfTrustEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates whether the interface is trusted for
+-        DHCP Snooping purpose. 
++        DHCP Snooping purpose.
+ 
+         If this object is set to 'true', the interface is trusted.
+         DHCP packets coming to this interface will be forwarded
+@@ -369,14 +371,14 @@ cdsIfTrustEnable OBJECT-TYPE
+ 
+         If this object is set to 'false', the interface is not
+         trusted. DHCP packets coming to this interface will be
+-        subjected to DHCP checks." 
++        subjected to DHCP checks."
+     ::= { cdsIfConfigEntry 1 }
+- 
++
+ 
+ -- The DHCP Snooping Rate Limit Interface Config Table
+ 
+ cdsIfRateLimitTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CdsIfRateLimitEntry 
++    SYNTAX          SEQUENCE OF CdsIfRateLimitEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -395,7 +397,7 @@ cdsIfRateLimitEntry OBJECT-TYPE
+         "A row instance contains the configuration of rate limit
+         DHCP Snooping at each interface capable of this
+         feature."
+-    INDEX           { ifIndex } 
++    INDEX           { ifIndex }
+     ::= { cdsIfRateLimitTable 1 }
+ 
+ CdsIfRateLimitEntry ::= SEQUENCE {
+@@ -410,21 +412,21 @@ cdsIfRateLimit OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates rate limit value for DHCP Snooping
+         purpose. If the value of this object is 0, no rate limit is
+-        applied for DHCP traffic at this interface." 
++        applied for DHCP traffic at this interface."
+     ::= { cdsIfRateLimitEntry 1 }
+- 
++
+ 
+ -- The DHCP Snooping Interface Feature Enable Table
+ 
+ cdsIfFeatureConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CdsIfFeatureConfigEntry 
++    SYNTAX          SEQUENCE OF CdsIfFeatureConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "A table provides the mechanism to enable or disable
+         DHCP Snooping feature at each interface capable of this
+         feature. Some of the interfaces (but not limited to) for
+-        which this configuration might be applicable are: 
++        which this configuration might be applicable are:
+         ifType = ethernetCsmacd(6)."
+     ::= { cdsInterface 3 }
+ 
+@@ -436,7 +438,7 @@ cdsIfFeatureConfigEntry OBJECT-TYPE
+         "A row instance contains the configuration to enable
+         or disable DHCP Snooping at each interface capable of this
+         feature."
+-    INDEX           { ifIndex } 
++    INDEX           { ifIndex }
+     ::= { cdsIfFeatureConfigTable 1 }
+ 
+ CdsIfFeatureConfigEntry ::= SEQUENCE {
+@@ -449,18 +451,18 @@ cdsIfFeatureEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates whether the  DHCP Snooping feature
+-        is enabled at this interface. 
++        is enabled at this interface.
+ 
+-        If this object is set to 'true', DHCP Snooping is enabled. 
++        If this object is set to 'true', DHCP Snooping is enabled.
+ 
+-        If this object is set to 'false', DHCP Snooping is disabled." 
++        If this object is set to 'false', DHCP Snooping is disabled."
+     ::= { cdsIfFeatureConfigEntry 1 }
+- 
++
+ 
+ -- The DHCP Bindings limit table
+ 
+ cdsIfBindingsLimitTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CdsIfBindingsLimitEntry 
++    SYNTAX          SEQUENCE OF CdsIfBindingsLimitEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -478,7 +480,7 @@ cdsIfBindingsLimitEntry OBJECT-TYPE
+     DESCRIPTION
+         "A row instance contains the configuration of binding limit at
+         each interface capable of this feature."
+-    INDEX           { ifIndex } 
++    INDEX           { ifIndex }
+     ::= { cdsIfBindingsLimitTable 1 }
+ 
+ CdsIfBindingsLimitEntry ::= SEQUENCE {
+@@ -492,17 +494,17 @@ cdsIfBindingsLimit OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the maximum number of DHCP bindings
+         allowed on this interface. This objects value will limit
+-        the number of entries in cdsBindingsTable and 
++        the number of entries in cdsBindingsTable and
+         cdsStaticBindingsTable. The sum of all instances' value of
+         cdsIfBindingsLimit in this table should be less than or equal
+-        to the object value of cdsGlobalMaxBindingsLimit." 
++        to the object value of cdsGlobalMaxBindingsLimit."
+     ::= { cdsIfBindingsLimitEntry 1 }
+- 
++
+ 
+ -- DHCP Snooping Option 82 circuit-id table
+ 
+ cdsIfVlanRelayInfoOptCircuitIdTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CdsIfVlanRelayInfoOptCircuitIdEntry 
++    SYNTAX          SEQUENCE OF CdsIfVlanRelayInfoOptCircuitIdEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -520,12 +522,12 @@ cdsIfVlanRelayInfoOptCircuitIdEntry OBJECT-TYPE
+     INDEX           {
+                         ifIndex,
+                         cdsIfVlan
+-                    } 
++                    }
+     ::= { cdsIfVlanRelayInfoOptCircuitIdTable 1 }
+ 
+ CdsIfVlanRelayInfoOptCircuitIdEntry ::= SEQUENCE {
+         cdsIfVlan                            VlanIndex,
+-        cdsIfVlanRelayInfoOptCircuitId       OCTET STRING,
++        cdsIfVlanRelayInfoOptCircuitId       DisplayString,
+         cdsIfVlanRelayInfoOptCircuitIdStatus RowStatus,
+         cdsIfVlanRelayInfoOptCircuitIdDirect TruthValue
+ }
+@@ -536,24 +538,24 @@ cdsIfVlan OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the VLAN on which circuit-id is
+-        configured." 
++        configured."
+     ::= { cdsIfVlanRelayInfoOptCircuitIdEntry 1 }
+ 
+ cdsIfVlanRelayInfoOptCircuitId OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (1..64))
++    SYNTAX          DisplayString (SIZE  (1..64))
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+         "This object specifies circuit-id used in Agent Circuit ID
+-        sub-option of the DHCP relay information option (option 82) 
+-        data inserted to DHCP packets by DHCP Snooping feature. 
++        sub-option of the DHCP relay information option (option 82)
++        data inserted to DHCP packets by DHCP Snooping feature.
+ 
+         The value of this object is in a format of a user-defined
+-        string. 
++        string.
+ 
+         The value of this object is ignored whenever the value
+         of cdsRelayAgentInfoOptEnable object is 'false'."
+-    REFERENCE       "RFC 3046, DHCP Relay Agent Information Option." 
++    REFERENCE       "RFC 3046, DHCP Relay Agent Information Option."
+     ::= { cdsIfVlanRelayInfoOptCircuitIdEntry 2 }
+ 
+ cdsIfVlanRelayInfoOptCircuitIdStatus OBJECT-TYPE
+@@ -562,17 +564,17 @@ cdsIfVlanRelayInfoOptCircuitIdStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object is used to manage the creation and deletion
+-        of rows in this table. It only supports 'active(1)', 
+-        'destroy(6)' and 'createAndGo(4)' value. 
++        of rows in this table. It only supports 'active(1)',
++        'destroy(6)' and 'createAndGo(4)' value.
+ 
+         Entry in this table gets created by setting
+         cdsIfVlanRelayInfoOptCircuitIdStatus object to 'createAndGo'.
+-        Entry in this table gets deleted by setting 
+-        cdsIfVlanRelayInfoOptCircuitIdStatus object to 'destroy' 
++        Entry in this table gets deleted by setting
++        cdsIfVlanRelayInfoOptCircuitIdStatus object to 'destroy'
+ 
+         Value of cdsIfRelayInfoOptCircuitId object can be
+         modified when the value of this RowStatus object is
+-        'active'." 
++        'active'."
+     ::= { cdsIfVlanRelayInfoOptCircuitIdEntry 3 }
+ 
+ cdsIfVlanRelayInfoOptCircuitIdDirect OBJECT-TYPE
+@@ -581,19 +583,19 @@ cdsIfVlanRelayInfoOptCircuitIdDirect OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies to ignore the length and type in
+-        Agent Circuit ID sub-option of the DHCP relay information 
+-        option (option 82) data inserted to DHCP packets by 
++        Agent Circuit ID sub-option of the DHCP relay information
++        option (option 82) data inserted to DHCP packets by
+         DHCP Snooping feature.
+ 
+         The value of this object is ignored whenever the value
+-        of cdsRelayAgentInfoOptEnable object is 'false'." 
++        of cdsRelayAgentInfoOptEnable object is 'false'."
+     ::= { cdsIfVlanRelayInfoOptCircuitIdEntry 4 }
+- 
++
+ 
+ -- The DHCP Bindings group
+ 
+ cdsBindingsTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CdsBindingsEntry 
++    SYNTAX          SEQUENCE OF CdsBindingsEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -612,7 +614,7 @@ cdsBindingsEntry OBJECT-TYPE
+     INDEX           {
+                         cdsBindingsVlan,
+                         cdsBindingsMacAddress
+-                    } 
++                    }
+     ::= { cdsBindingsTable 1 }
+ 
+ CdsBindingsEntry ::= SEQUENCE {
+@@ -632,7 +634,7 @@ cdsBindingsVlan OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the VLAN to which a DHCP client host
+-        belongs." 
++        belongs."
+     ::= { cdsBindingsEntry 1 }
+ 
+ cdsBindingsMacAddress OBJECT-TYPE
+@@ -641,7 +643,7 @@ cdsBindingsMacAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the MAC address of a DHCP client
+-        host." 
++        host."
+     ::= { cdsBindingsEntry 2 }
+ 
+ cdsBindingsAddrType OBJECT-TYPE
+@@ -650,7 +652,7 @@ cdsBindingsAddrType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the type of IP address denoted
+-        in cdsBindingsIpAddress object." 
++        in cdsBindingsIpAddress object."
+     ::= { cdsBindingsEntry 3 }
+ 
+ cdsBindingsIpAddress OBJECT-TYPE
+@@ -659,7 +661,7 @@ cdsBindingsIpAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the allocated IP address of
+-        a DHCP client host." 
++        a DHCP client host."
+     ::= { cdsBindingsEntry 4 }
+ 
+ cdsBindingsInterface OBJECT-TYPE
+@@ -668,7 +670,7 @@ cdsBindingsInterface OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the interface where a DHCP client
+-        host connects to." 
++        host connects to."
+     ::= { cdsBindingsEntry 5 }
+ 
+ cdsBindingsLeasedTime OBJECT-TYPE
+@@ -678,7 +680,7 @@ cdsBindingsLeasedTime OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the leased time of this DHCP
+-        bindings." 
++        bindings."
+     ::= { cdsBindingsEntry 6 }
+ 
+ cdsBindingsStatus OBJECT-TYPE
+@@ -688,13 +690,13 @@ cdsBindingsStatus OBJECT-TYPE
+     DESCRIPTION
+         "This object is used to manage the deletion of rows
+         in this table. This object only supports active(1) and
+-        destroy(6) value. 
++        destroy(6) value.
+ 
+         Whenever a DHCP binding is learnt by the device, an
+         entry will be created by the device in this table with
+         its RowStatus object set to active(1). Setting this
+         object value to destroy(6) will clear the DHCP bindings
+-        information represented by this row instance." 
++        information represented by this row instance."
+     ::= { cdsBindingsEntry 7 }
+ 
+ cdsBindingsHostname OBJECT-TYPE
+@@ -704,14 +706,14 @@ cdsBindingsHostname OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the host name of the DHCP client
+         as denoted by DHCP option 12 field. An empty string
+-        indicates absence of option 12 in DHCP packet." 
++        indicates absence of option 12 in DHCP packet."
+     ::= { cdsBindingsEntry 8 }
+- 
++
+ 
+ -- The static bindings table
+ 
+ cdsStaticBindingsTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CdsStaticBindingsEntry 
++    SYNTAX          SEQUENCE OF CdsStaticBindingsEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -730,7 +732,7 @@ cdsStaticBindingsEntry OBJECT-TYPE
+     INDEX           {
+                         cdsStaticBindingsVlan,
+                         cdsStaticBindingsMacAddress
+-                    } 
++                    }
+     ::= { cdsStaticBindingsTable 1 }
+ 
+ CdsStaticBindingsEntry ::= SEQUENCE {
+@@ -748,7 +750,7 @@ cdsStaticBindingsVlan OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the VLAN to which a DHCP client host
+-        belongs." 
++        belongs."
+     ::= { cdsStaticBindingsEntry 1 }
+ 
+ cdsStaticBindingsMacAddress OBJECT-TYPE
+@@ -757,7 +759,7 @@ cdsStaticBindingsMacAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the MAC address of a DHCP client
+-        host." 
++        host."
+     ::= { cdsStaticBindingsEntry 2 }
+ 
+ cdsStaticBindingsAddrType OBJECT-TYPE
+@@ -766,7 +768,7 @@ cdsStaticBindingsAddrType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the type of IP address denoted
+-        in cdsStaticBindingsIpAddress object." 
++        in cdsStaticBindingsIpAddress object."
+     ::= { cdsStaticBindingsEntry 3 }
+ 
+ cdsStaticBindingsIpAddress OBJECT-TYPE
+@@ -775,7 +777,7 @@ cdsStaticBindingsIpAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the allocated IP address of
+-        a DHCP client host." 
++        a DHCP client host."
+     ::= { cdsStaticBindingsEntry 4 }
+ 
+ cdsStaticBindingsInterface OBJECT-TYPE
+@@ -784,7 +786,7 @@ cdsStaticBindingsInterface OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the ifIndex value of the interface
+-        where a DHCP client host connects to." 
++        where a DHCP client host connects to."
+     ::= { cdsStaticBindingsEntry 5 }
+ 
+ cdsStaticBindingsStatus OBJECT-TYPE
+@@ -797,11 +799,11 @@ cdsStaticBindingsStatus OBJECT-TYPE
+         the instance value of this object to 'createAndGo', and
+         deleted by setting the instance value of this object to
+         'destroy'. The value of cdsStaticBindingsAddrType,
+-        cdsStaticBindingsIpAddress, cdsStaticBindingsInterface 
++        cdsStaticBindingsIpAddress, cdsStaticBindingsInterface
+         object can be modified when the value of this RowStatus
+-        object is 'active'." 
++        object is 'active'."
+     ::= { cdsStaticBindingsEntry 6 }
+- 
++
+ 
+ 
+ -- The DHCP Snooping Statistics group
+@@ -813,7 +815,7 @@ cdsTotalForwardedPkts OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the total number of packets subjected to
+-        DHCP Snooping is forwarded." 
++        DHCP Snooping is forwarded."
+     ::= { cdsStatistics 1 }
+ 
+ cdsTotalDroppedPkts OBJECT-TYPE
+@@ -823,7 +825,7 @@ cdsTotalDroppedPkts OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the total number of packets subjected to
+-        DHCP Snooping is dropped." 
++        DHCP Snooping is dropped."
+     ::= { cdsStatistics 2 }
+ 
+ cdsUntrustedPortDroppedPkts OBJECT-TYPE
+@@ -833,7 +835,7 @@ cdsUntrustedPortDroppedPkts OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates the number of packets subjected to DHCP Snooping
+-        is dropped because they come from untrusted interface." 
++        is dropped because they come from untrusted interface."
+     ::= { cdsStatistics 3 }
+ 
+ cdsForwardedWithoutOption82Pkts OBJECT-TYPE
+@@ -844,12 +846,12 @@ cdsForwardedWithoutOption82Pkts OBJECT-TYPE
+     DESCRIPTION
+         "Indicates the number of packets subjected to DHCP Snooping
+         is forwarded without insertion of DHCP relay agent information
+-        option (option 82) data." 
++        option (option 82) data."
+     ::= { cdsStatistics 4 }
+ -- The IP Source Guard Group
+ 
+ cdsIfSrcGuardConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CdsIfSrcGuardConfigEntry 
++    SYNTAX          SEQUENCE OF CdsIfSrcGuardConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -875,7 +877,7 @@ cdsIfSrcGuardConfigEntry OBJECT-TYPE
+         or disable IP Source Guard as well as the configuration
+         of the filter type at each physical interface capable
+         of IP Source Guard feature."
+-    INDEX           { ifIndex } 
++    INDEX           { ifIndex }
+     ::= { cdsIfSrcGuardConfigTable 1 }
+ 
+ CdsIfSrcGuardConfigEntry ::= SEQUENCE {
+@@ -889,7 +891,7 @@ cdsIfSrcGuardEnable OBJECT-TYPE
+     STATUS          deprecated
+     DESCRIPTION
+         "This object indicates whether IP Source Guard is enabled
+-        at this interface. 
++        at this interface.
+ 
+         If this object is set to 'true', IP Source Guard is
+         enabled. Traffic coming to this interface will be forwarded
+@@ -900,7 +902,7 @@ cdsIfSrcGuardEnable OBJECT-TYPE
+         disabled.
+ 
+         This object is deprecated and superceded by
+-        cdsIfSrcGuardFilterType object." 
++        cdsIfSrcGuardFilterType object."
+     ::= { cdsIfSrcGuardConfigEntry 1 }
+ 
+ cdsIfSrcGuardFilterType OBJECT-TYPE
+@@ -918,7 +920,7 @@ cdsIfSrcGuardFilterType OBJECT-TYPE
+ 
+         'disable' indicates that Source Guard feature is disabled.
+ 
+-        'ip' indicates that Source Guard feature is enabled and 
++        'ip' indicates that Source Guard feature is enabled and
+         only applied to IP traffic.
+ 
+         'ipMac' indicates that Source Guard feature is enabled and
+@@ -930,12 +932,12 @@ cdsIfSrcGuardFilterType OBJECT-TYPE
+         client IP address, MAC address, VLAN and interface where
+         the DHCP client is connected."
+     ::= { cdsIfSrcGuardConfigEntry 2 }
+- 
++
+ 
+ -- cdsIfSrcGuardAddrTable
+ 
+ cdsIfSrcGuardAddrTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CdsIfSrcGuardAddrEntry 
++    SYNTAX          SEQUENCE OF CdsIfSrcGuardAddrEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -957,7 +959,7 @@ cdsIfSrcGuardAddrEntry OBJECT-TYPE
+     INDEX           {
+                         ifIndex,
+                         cdsIfSrcGuardIndex
+-                    } 
++                    }
+     ::= { cdsIfSrcGuardAddrTable 1 }
+ 
+ CdsIfSrcGuardAddrEntry ::= SEQUENCE {
+@@ -968,8 +970,8 @@ CdsIfSrcGuardAddrEntry ::= SEQUENCE {
+         cdsIfSrcGuardFilterMode      INTEGER,
+         cdsIfSrcGuardMacAddress      MacAddress,
+         cdsIfSrcGuardMacFilterAction INTEGER,
+-        cdsIfSrcGuardVlansLow        OCTET STRING,
+-        cdsIfSrcGuardVlansHigh       OCTET STRING
++        cdsIfSrcGuardVlansLow        DisplayString,
++        cdsIfSrcGuardVlansHigh       DisplayString
+ }
+ 
+ cdsIfSrcGuardIndex OBJECT-TYPE
+@@ -977,7 +979,7 @@ cdsIfSrcGuardIndex OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This object indicates the index of this entry." 
++        "This object indicates the index of this entry."
+     ::= { cdsIfSrcGuardAddrEntry 1 }
+ 
+ cdsIfSrcGuardAddrType OBJECT-TYPE
+@@ -986,7 +988,7 @@ cdsIfSrcGuardAddrType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the type of IP address denoted
+-        in cdsIfSrcGuardAddress object." 
++        in cdsIfSrcGuardAddress object."
+     ::= { cdsIfSrcGuardAddrEntry 2 }
+ 
+ cdsIfSrcGuardAddress OBJECT-TYPE
+@@ -996,7 +998,7 @@ cdsIfSrcGuardAddress OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the IP address obtained at
+         this interface through DHCP Snooping or statically
+-        configured." 
++        configured."
+     ::= { cdsIfSrcGuardAddrEntry 3 }
+ 
+ cdsIfSrcGuardIpFilterAction OBJECT-TYPE
+@@ -1017,7 +1019,7 @@ cdsIfSrcGuardIpFilterAction OBJECT-TYPE
+         denyAllIpAdress(2) indicates that all IP traffic
+         coming to this interface will be dropped. The value
+         of cdsIfSrcGuardAddress object will be ignored in
+-        this case." 
++        this case."
+     ::= { cdsIfSrcGuardAddrEntry 4 }
+ 
+ cdsIfSrcGuardFilterMode OBJECT-TYPE
+@@ -1041,7 +1043,7 @@ cdsIfSrcGuardFilterMode OBJECT-TYPE
+ 
+         inactiveNoSnoopingVlan(3) indicates that the Source
+         Guard feature is inactive because this interface
+-        does not have a VLAN which has DHCP Snooping enabled." 
++        does not have a VLAN which has DHCP Snooping enabled."
+     ::= { cdsIfSrcGuardAddrEntry 5 }
+ 
+ cdsIfSrcGuardMacAddress OBJECT-TYPE
+@@ -1050,7 +1052,7 @@ cdsIfSrcGuardMacAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the MAC address for Source Guard
+-        purpose." 
++        purpose."
+     ::= { cdsIfSrcGuardAddrEntry 6 }
+ 
+ cdsIfSrcGuardMacFilterAction OBJECT-TYPE
+@@ -1077,11 +1079,11 @@ cdsIfSrcGuardMacFilterAction OBJECT-TYPE
+         permitAllMacAddresses(3) indicates that all MAC traffic
+         coming to this interface will be allowed. The value
+         of cdsIfSrcGuardMacAddress object will be ignored in
+-        this case." 
++        this case."
+     ::= { cdsIfSrcGuardAddrEntry 7 }
+ 
+ cdsIfSrcGuardVlansLow OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..256))
++    SYNTAX          DisplayString (SIZE  (0..256))
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+@@ -1100,11 +1102,11 @@ cdsIfSrcGuardVlansLow OBJECT-TYPE
+         the value zero. A NMS may omit any zero-valued octets
+         from the end of this string in order to reduce SetPDU size,
+         and the agent may also omit zero-valued trailing octets,
+-        to reduce the size of GetResponse PDUs." 
++        to reduce the size of GetResponse PDUs."
+     ::= { cdsIfSrcGuardAddrEntry 8 }
+ 
+ cdsIfSrcGuardVlansHigh OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..256))
++    SYNTAX          DisplayString (SIZE  (0..256))
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+@@ -1124,9 +1126,9 @@ cdsIfSrcGuardVlansHigh OBJECT-TYPE
+         the value zero. A NMS may omit any zero-valued octets
+         from the end of this string in order to reduce SetPDU size,
+         and the agent may also omit zero-valued trailing octets,
+-        to reduce the size of GetResponse PDUs." 
++        to reduce the size of GetResponse PDUs."
+     ::= { cdsIfSrcGuardAddrEntry 9 }
+- 
++
+ 
+ 
+ -- Notifications
+@@ -1141,8 +1143,8 @@ cdsBindingsNotification NOTIFICATION-TYPE
+     DESCRIPTION
+         "This notification is generated when a DHCP binding
+         is learnt dynamically by the device. cdsBindingsAddrType
+-        and cdsBindingsIpAddress provides the IP address 
+-        allocated for the DHCP client by the DHCP server. 
++        and cdsBindingsIpAddress provides the IP address
++        allocated for the DHCP client by the DHCP server.
+         ifName identifies the interface where the DHCP client
+         connects to."
+    ::= { ciscoDhcpSnoopingMIBNotifs 1 }
+@@ -1492,13 +1494,13 @@ cdsMIBCompliance4 MODULE-COMPLIANCE
+     GROUP           cdsRelayAgentInfoOptRemoteIdSubGroup
+     DESCRIPTION
+         "This group is mandatory only for platforms which support
+-        configuration of remote-id sub-option for Option 82 DHCP 
++        configuration of remote-id sub-option for Option 82 DHCP
+         Snooping feature."
+ 
+     GROUP           cdsIfVlanRelayInfoOptCircuitIdGroup
+     DESCRIPTION
+         "This group is mandatory only for platforms which support
+-        configuration of circuit-id sub-option for Option 82 DHCP 
++        configuration of circuit-id sub-option for Option 82 DHCP
+         Snooping feature."
+ 
+     GROUP           cdsStatisticsExtGroup
+@@ -1606,13 +1608,13 @@ cdsMIBCompliance5 MODULE-COMPLIANCE
+     GROUP           cdsRelayAgentInfoOptRemoteIdSubGroup
+     DESCRIPTION
+         "This group is mandatory only for platforms which support
+-        configuration of remote-id sub-option for Option 82 DHCP 
++        configuration of remote-id sub-option for Option 82 DHCP
+         Snooping feature."
+ 
+     GROUP           cdsIfVlanRelayInfoOptCircuitIdGroup
+     DESCRIPTION
+         "This group is mandatory only for platforms which support
+-        configuration of circuit-id sub-option for Option 82 DHCP 
++        configuration of circuit-id sub-option for Option 82 DHCP
+         Snooping feature."
+ 
+     GROUP           cdsStatisticsExtGroup
+@@ -1642,7 +1644,7 @@ cdsMIBCompliance5 MODULE-COMPLIANCE
+     ::= { cdsMIBCompliances 5 }
+ 
+ cdsMIBCompliance6 MODULE-COMPLIANCE
+-    STATUS          deprecated 
++    STATUS          deprecated
+     DESCRIPTION
+         "The compliance statement for the CISCO-DHCP-SNOOPING-MIB.
+          This statement is deprecated and superceded by
+@@ -1732,13 +1734,13 @@ cdsMIBCompliance6 MODULE-COMPLIANCE
+     GROUP           cdsRelayAgentInfoOptRemoteIdSubGroup
+     DESCRIPTION
+         "This group is mandatory only for platforms which support
+-        configuration of remote-id sub-option for Option 82 DHCP 
++        configuration of remote-id sub-option for Option 82 DHCP
+         Snooping feature."
+ 
+     GROUP           cdsIfVlanRelayInfoOptCircuitIdGroup
+     DESCRIPTION
+         "This group is mandatory only for platforms which support
+-        configuration of circuit-id sub-option for Option 82 DHCP 
++        configuration of circuit-id sub-option for Option 82 DHCP
+         Snooping feature."
+ 
+     GROUP           cdsStatisticsExtGroup
+@@ -1862,13 +1864,13 @@ cdsMIBCompliance7 MODULE-COMPLIANCE
+     GROUP           cdsRelayAgentInfoOptRemoteIdSubGroup
+     DESCRIPTION
+         "This group is mandatory only for platforms which support
+-        configuration of remote-id sub-option for Option 82 DHCP 
++        configuration of remote-id sub-option for Option 82 DHCP
+         Snooping feature."
+ 
+     GROUP           cdsIfVlanRelayInfoOptCircuitIdGroup
+     DESCRIPTION
+         "This group is mandatory only for platforms which support
+-        configuration of circuit-id sub-option for Option 82 DHCP 
++        configuration of circuit-id sub-option for Option 82 DHCP
+         Snooping feature."
+ 
+     GROUP           cdsStatisticsExtGroup
+@@ -1908,7 +1910,7 @@ cdsMIBCompliance7 MODULE-COMPLIANCE
+     ::= { cdsMIBCompliances 7 }
+ 
+ -- Units of Conformance
+---   
++--
+ -- cdsGlobalGroup
+ 
+ cdsGlobalEnableGroup OBJECT-GROUP
+@@ -1927,7 +1929,7 @@ cdsDatabaseGroup OBJECT-GROUP
+     STATUS          current
+     DESCRIPTION
+         "A collection of objects which are used to configure as
+-        well as show information regarding the DHCP Snooping 
++        well as show information regarding the DHCP Snooping
+         database filename and update interval."
+     ::= { cdsMIBGroups 2 }
+ 
+@@ -1936,7 +1938,7 @@ cdsVlanConfigGroup OBJECT-GROUP
+     STATUS          current
+     DESCRIPTION
+         "A collection of object which are used to configure as
+-        well as show information regarding the DHCP Snooping 
++        well as show information regarding the DHCP Snooping
+         feature per VLAN."
+     ::= { cdsMIBGroups 3 }
+ 
+@@ -1954,7 +1956,7 @@ cdsIfRateLimitGroup OBJECT-GROUP
+     STATUS          current
+     DESCRIPTION
+         "A collection of object which are used to configure as
+-        well as show information regarding the rate limit per 
++        well as show information regarding the rate limit per
+         interface for DHCP Snooping purpose."
+     ::= { cdsMIBGroups 5 }
+ 
+@@ -2003,7 +2005,7 @@ cdsIfSrcGuardGroup OBJECT-GROUP
+     STATUS          deprecated
+     DESCRIPTION
+         "A collection of objects which are used to configure as
+-        well as show information regarding IP Source Guard 
++        well as show information regarding IP Source Guard
+         purpose."
+     ::= { cdsMIBGroups 9 }
+ 
+@@ -2098,7 +2100,7 @@ cdsIfSrcGuardGroupRev1 OBJECT-GROUP
+     STATUS          current
+     DESCRIPTION
+         "A collection of objects which are used to configure as
+-        well as show information regarding IP Source Guard 
++        well as show information regarding IP Source Guard
+         purpose."
+     ::= { cdsMIBGroups 18 }
+ 
+@@ -2159,7 +2161,7 @@ cdsIfVlanRelayInfoOptCircuitIdGroupSup1 OBJECT-GROUP
+     DESCRIPTION
+         "A collection of objects which indicates to ignore the length
+         and type in Agent Circuit ID sub-option of the DHCP relay
+-        information option (option 82) data inserted to DHCP packets by 
++        information option (option 82) data inserted to DHCP packets by
+         DHCP Snooping feature."
+     ::= { cdsMIBGroups 25 }
+ 
+@@ -2168,7 +2170,7 @@ cdsVlanOperStatusGroup OBJECT-GROUP
+     STATUS          current
+     DESCRIPTION
+         "A collection of objects which provides information on
+-        operation status of DHCP Snooping feature in VLAN." 
++        operation status of DHCP Snooping feature in VLAN."
+     ::= { cdsMIBGroups 26 }
+ 
+ END

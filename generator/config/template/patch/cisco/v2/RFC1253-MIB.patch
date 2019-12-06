@@ -1,0 +1,69 @@
+diff --git a/mibs/cisco/cat3750/v1/RFC1253-MIB.my b/mibs/cisco/cat3750/v1/RFC1253-MIB.my
+index bc14187..085f1be 100644
+--- a/mibs/cisco/cat3750/v1/RFC1253-MIB.my
++++ b/mibs/cisco/cat3750/v1/RFC1253-MIB.my
+@@ -17,7 +17,9 @@
+              mib-2
+                      FROM RFC1213-MIB
+              OBJECT-TYPE
+-                     FROM RFC-1212;
++                     FROM RFC-
++             DisplayString
++                     FROM SNMPv2-TC;
+ 
+      --  This MIB module uses the extended OBJECT-TYPE macro as
+      --  defined in [9].
+@@ -531,7 +533,7 @@
+ 
+                  INTEGER,
+              ospfLsdbAdvertisement
+-                 OCTET STRING
++                 DisplayString
+          }
+ 
+      ospfLsdbAreaId OBJECT-TYPE
+@@ -645,7 +647,7 @@
+          ::= { ospfLsdbEntry 7 }
+ 
+      ospfLsdbAdvertisement OBJECT-TYPE
+-         SYNTAX   OCTET STRING
++         SYNTAX   DisplayString
+          ACCESS   read-only
+          STATUS   mandatory
+          DESCRIPTION
+@@ -912,7 +914,7 @@
+              ospfIfEvents
+                  Counter,
+              ospfIfAuthKey
+-                 OCTET STRING
++                 DisplayString
+          }
+ 
+      ospfIfIpAddress OBJECT-TYPE
+@@ -1123,7 +1125,7 @@
+          ::= { ospfIfEntry 15 }
+ 
+      ospfIfAuthKey OBJECT-TYPE
+-         SYNTAX   OCTET STRING
++         SYNTAX   DisplayString
+          ACCESS   read-write
+          STATUS   mandatory
+          DESCRIPTION
+@@ -1333,7 +1335,7 @@
+              ospfVirtIfEvents
+                  Counter,
+              ospfVirtIfAuthKey
+-                 OCTET STRING,
++                 DisplayString,
+              ospfVirtIfStatus
+                  Validation
+          }
+@@ -1436,7 +1438,7 @@
+          ::= { ospfVirtIfEntry 8 }
+ 
+      ospfVirtIfAuthKey OBJECT-TYPE
+-         SYNTAX   OCTET STRING
++         SYNTAX   DisplayString
+          ACCESS   read-write
+          STATUS   mandatory
+          DESCRIPTION

@@ -1,0 +1,58 @@
+diff --git a/mibs/cisco/wlc/v2/ENTITY-MIB.my b/mibs/cisco/wlc/v2/ENTITY-MIB.my
+index e99ac17..2850265 100644
+--- a/mibs/cisco/wlc/v2/ENTITY-MIB.my
++++ b/mibs/cisco/wlc/v2/ENTITY-MIB.my
+@@ -18,7 +18,7 @@ IMPORTS
+         FROM SNMPv2-SMI
+     TDomain, TAddress, TEXTUAL-CONVENTION,
+     AutonomousType, RowPointer, TimeStamp, TruthValue,
+-    DateAndTime
++    DateAndTime, DisplayString
+         FROM SNMPv2-TC
+     MODULE-COMPLIANCE, OBJECT-GROUP, NOTIFICATION-GROUP
+         FROM SNMPv2-CONF
+@@ -221,7 +221,7 @@ SnmpEngineIdOrNone ::= TEXTUAL-CONVENTION
+             contains a zero-length string, then no appropriate
+             SnmpEngineID is associated with the logical entity (i.e.,
+             SNMPv3 is not supported)."
+-    SYNTAX OCTET STRING (SIZE(0..32)) -- empty string or SnmpEngineID
++    SYNTAX DisplayString (SIZE(0..32)) -- empty string or SnmpEngineID
+ 
+ --           The Physical Entity Table
+ entPhysicalTable OBJECT-TYPE
+@@ -269,7 +269,7 @@ EntPhysicalEntry ::= SEQUENCE {
+       entPhysicalAssetID        SnmpAdminString,
+       entPhysicalIsFRU          TruthValue,
+       entPhysicalMfgDate        DateAndTime,
+-      entPhysicalUris           OCTET STRING
++      entPhysicalUris           DisplayString
+ 
+ }
+ 
+@@ -668,7 +668,7 @@ entPhysicalMfgDate  OBJECT-TYPE
+     ::= { entPhysicalEntry 17 }
+ 
+ entPhysicalUris OBJECT-TYPE
+-    SYNTAX      OCTET STRING
++    SYNTAX      DisplayString
+     MAX-ACCESS  read-write
+     STATUS      current
+     DESCRIPTION
+@@ -721,7 +721,7 @@ EntLogicalEntry ::= SEQUENCE {
+       entLogicalIndex            Integer32,
+       entLogicalDescr            SnmpAdminString,
+       entLogicalType             AutonomousType,
+-      entLogicalCommunity        OCTET STRING,
++      entLogicalCommunity        DisplayString,
+       entLogicalTAddress         TAddress,
+       entLogicalTDomain          TDomain,
+       entLogicalContextEngineID  SnmpEngineIdOrNone,
+@@ -770,7 +770,7 @@ entLogicalType OBJECT-TYPE
+     ::= { entLogicalEntry 3 }
+ 
+ entLogicalCommunity OBJECT-TYPE
+-    SYNTAX      OCTET STRING (SIZE (0..255))
++    SYNTAX      DisplayString (SIZE (0..255))
+     MAX-ACCESS  read-only
+     STATUS      deprecated
+     DESCRIPTION

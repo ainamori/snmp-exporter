@@ -1,0 +1,1240 @@
+diff --git a/mibs/cisco/wlc/v2/CISCO-LWAPP-WEBAUTH-MIB.my b/mibs/cisco/wlc/v2/CISCO-LWAPP-WEBAUTH-MIB.my
+index 5f47ae4..a55883a 100644
+--- a/mibs/cisco/wlc/v2/CISCO-LWAPP-WEBAUTH-MIB.my
++++ b/mibs/cisco/wlc/v2/CISCO-LWAPP-WEBAUTH-MIB.my
+@@ -3,13 +3,13 @@
+ -- Light Weight Access Point Web Authentication MIB
+ -- January 2006, Devesh Pujari, Prasanna Viswakumar
+ -- February 2007 , Updated by Ambika Mohanty
+--- February 2017 , Updated by Hari Krishna Mitta 
++-- February 2017 , Updated by Hari Krishna Mitta
+ -- Copyright (c) 2006-2017 by Cisco Systems, Inc.
+ -- All rights reserved.
+ -- ******************************************************************
+ 
+ CISCO-LWAPP-WEBAUTH-MIB DEFINITIONS ::= BEGIN
+- 
++
+ IMPORTS
+     MODULE-IDENTITY,
+     NOTIFICATION-TYPE,
+@@ -28,7 +28,8 @@ IMPORTS
+     TruthValue,
+     RowStatus,
+     MacAddress,
+-    TimeStamp
++    TimeStamp,
++    DisplayString
+         FROM SNMPv2-TC
+     InetAddressType,
+     InetAddress
+@@ -74,7 +75,7 @@ ciscoLwappWebAuthMIB MODULE-IDENTITY
+ 
+         This MIB is used to configure web authentication
+         parameters in the controller to manage clients'
+-        authentication.  The mobile nodes are 
++        authentication.  The mobile nodes are
+         web-authenticated if they select the WLAN that
+         has web security enabled.
+ 
+@@ -128,7 +129,7 @@ ciscoLwappWebAuthMIB MODULE-IDENTITY
+         An entity that contains an 802.11 medium access
+         control ( MAC ) and physical layer ( PHY ) interface
+         and provides access to the distribution services via
+-        the wireless medium for associated clients.  
++        the wireless medium for associated clients.
+ 
+         LWAPP APs encapsulate all the 802.11 frames in
+         LWAPP frames and sends them to the controller to which
+@@ -138,20 +139,20 @@ ciscoLwappWebAuthMIB MODULE-IDENTITY
+ 
+         The central entity that terminates the LWAPP protocol
+         tunnel from the LWAPP APs.  Throughout this MIB,
+-        this entity also referred to as 'controller'. 
++        this entity also referred to as 'controller'.
+ 
+         Guest User
+ 
+         A guest user is a temporary user with access
+         privileges for configuring the wireless network
+-        for a finite life time.  The wireless networks 
++        for a finite life time.  The wireless networks
+         are configured on the controller. The method of
+         authentication to the controller can be configured
+         using this MIB instrumentation.
+ 
+-        Light Weight Access Point Protocol ( LWAPP ) 
++        Light Weight Access Point Protocol ( LWAPP )
+ 
+-        This is a generic protocol that defines the 
++        This is a generic protocol that defines the
+         communication between the Access Points and the
+         Central Controller.
+ 
+@@ -159,21 +160,21 @@ ciscoLwappWebAuthMIB MODULE-IDENTITY
+ 
+         A roaming 802.11 wireless device in a wireless
+         network associated with an access point. Mobile Node,
+-        Mobile Station(Ms) and client are used interchangeably. 
++        Mobile Station(Ms) and client are used interchangeably.
+ 
+-        Web-Authentication 
++        Web-Authentication
+ 
+-        Clients are web authenticated, when clients open the 
++        Clients are web authenticated, when clients open the
+         web-browser and send HTTP packets. Then user is asked
+-        to enter login and password. This is known as Web 
+-        Authentication. 
++        to enter login and password. This is known as Web
++        Authentication.
+ 
+         REFERENCE
+ 
+         [1] Wireless LAN Medium Access Control ( MAC ) and
+         Physical Layer ( PHY ) Specifications.
+ 
+-        [2] Draft-obara-capwap-lwapp-00.txt, IETF Light 
++        [2] Draft-obara-capwap-lwapp-00.txt, IETF Light
+         Weight Access Point Protocol"
+     REVISION        "201705100000Z"
+     DESCRIPTION
+@@ -181,12 +182,12 @@ ciscoLwappWebAuthMIB MODULE-IDENTITY
+         the mib objects for proxy redirecting configs,
+         local user modes. Revised cLWACustomWebMessage to
+         cLWACustomWebMessageRev1 and added cLWALocalNetUserLoginTime.
+-        Added cLWebAuthWlanConfigTable, cLWALocalNetUserRoleTable, 
++        Added cLWebAuthWlanConfigTable, cLWALocalNetUserRoleTable,
+         cLWACustomizedWebPageListTable, ciscoLwappPortalConfig,
+         ciscoLwappPortalStats and ciscoLwappPortalTotalStats
+         cLGuestUserSessionStatusTable.
+-        Added the following notification objects cLWAGuestUserAdded, 
+-        cLWAGuestUserLoggedIn, cLWAGuestUserLoggedOut and 
++        Added the following notification objects cLWAGuestUserAdded,
++        cLWAGuestUserLoggedIn, cLWAGuestUserLoggedOut and
+         cLWAPortalUnreachNotify."
+     REVISION        "200703040000Z"
+     DESCRIPTION
+@@ -248,15 +249,15 @@ cLWAWebAuthType OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the type of web authentication for the 
++        "This object specifies the type of web authentication for the
+          clients.
+ 
+          Web authentication can be of three types;
+ 
+-         internalDefault - The default login page will be 
++         internalDefault - The default login page will be
+          presented to the client for authentication.
+ 
+-         internalCustom -  The administrator has created and 
++         internalCustom -  The administrator has created and
+          uploaded a custom login page and it will be
+          presented to the clients for authentication.
+ 
+@@ -265,7 +266,7 @@ cLWAWebAuthType OBJECT-TYPE
+          that cLWAWebAuthType can be successfully set to this
+          value when the cLWAExternalWebAuthURL object has been
+          set to string with non-zero length."
+-    DEFVAL          { internalDefault } 
++    DEFVAL          { internalDefault }
+     ::= { ciscoLwappWebAuthConfig 1 }
+ 
+ cLWAManufacturerLogo OBJECT-TYPE
+@@ -277,11 +278,11 @@ cLWAManufacturerLogo OBJECT-TYPE
+          manufacturer logo on the login page.
+ 
+          A value of 'true' indicates that the manufacturer
+-         logo will be displayed on the login page. 
++         logo will be displayed on the login page.
+ 
+          A value of 'false' indicates that the manufacturer
+          logo won't be displayed on the login page."
+-    DEFVAL          { true } 
++    DEFVAL          { true }
+     ::= { ciscoLwappWebAuthConfig 2 }
+ 
+ cLWACustomLogoFileName OBJECT-TYPE
+@@ -291,7 +292,7 @@ cLWACustomLogoFileName OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the name of the custom logo file.
+          The logo in this file will appear on the login page
+-         when the value of cLWebAuthType is 'internalDefault'." 
++         when the value of cLWebAuthType is 'internalDefault'."
+     ::= { ciscoLwappWebAuthConfig 3 }
+ 
+ cLWACustomWebTitle OBJECT-TYPE
+@@ -302,7 +303,7 @@ cLWACustomWebTitle OBJECT-TYPE
+         "This object specifies title text that appears on the login page
+          of the clients when the value of cLWebAuthType
+          is 'internalDefault'."
+-    DEFVAL          { "" } 
++    DEFVAL          { "" }
+     ::= { ciscoLwappWebAuthConfig 4 }
+ 
+ cLWACustomWebMessage OBJECT-TYPE
+@@ -310,12 +311,12 @@ cLWACustomWebMessage OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          deprecated
+     DESCRIPTION
+-        "This object specifies the message that appears on the login 
++        "This object specifies the message that appears on the login
+          page of clients when the value of cLWebAuthType is
+          'internalDefault'.
+-         cLWACustomWebMessage object is superseded by 
++         cLWACustomWebMessage object is superseded by
+          cLWACustomWebMessageRev1."
+-    DEFVAL          { "" } 
++    DEFVAL          { "" }
+     ::= { ciscoLwappWebAuthConfig 5 }
+ 
+ cLWACustomWebRedirectURL OBJECT-TYPE
+@@ -323,9 +324,9 @@ cLWACustomWebRedirectURL OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the URL used to load client web page 
+-         after successful authentication." 
+-    DEFVAL          { "" } 
++        "This object specifies the URL used to load client web page
++         after successful authentication."
++    DEFVAL          { "" }
+     ::= { ciscoLwappWebAuthConfig 6 }
+ 
+ cLWAExternalWebAuthURL OBJECT-TYPE
+@@ -333,23 +334,23 @@ cLWAExternalWebAuthURL OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the webpage to which client will be 
+-         directed for authentication. This object will be used when the 
+-         cLWebAuthType object is set to 'external'. The configured URL 
+-         should resolve to one of the web server IP addresses configured 
+-         through cLWAExternalWebServerTable." 
+-    DEFVAL          { "" } 
++        "This object specifies the webpage to which client will be
++         directed for authentication. This object will be used when the
++         cLWebAuthType object is set to 'external'. The configured URL
++         should resolve to one of the web server IP addresses configured
++         through cLWAExternalWebServerTable."
++    DEFVAL          { "" }
+     ::= { ciscoLwappWebAuthConfig 7 }
+ 
+ cLWACustomWebMessageRev1 OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..2047))
++    SYNTAX          DisplayString (SIZE  (0..2047))
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the message that appears on the login
+-         page of clients, when the value of cLWebAuthType is 
++         page of clients, when the value of cLWebAuthType is
+          'internalDefault'."
+-    DEFVAL          { "" } 
++    DEFVAL          { "" }
+     ::= { ciscoLwappWebAuthConfig 9 }
+ 
+ cLWAProxyRedirectMode OBJECT-TYPE
+@@ -361,8 +362,8 @@ cLWAProxyRedirectMode OBJECT-TYPE
+          A value of 'true' indicates that webauth proxy redirection
+          is enabled.
+          A value of 'false' indicates that webauth proxy redirection
+-         is disabled." 
+-    DEFVAL          { false } 
++         is disabled."
++    DEFVAL          { false }
+     ::= { ciscoLwappWebAuthConfig 10 }
+ 
+ cLWAProxyRedirectPortNumber OBJECT-TYPE
+@@ -370,9 +371,9 @@ cLWAProxyRedirectPortNumber OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the port number to which the 
+-         request should be redirected." 
+-    DEFVAL          { 80 } 
++        "This object specifies the port number to which the
++         request should be redirected."
++    DEFVAL          { 80 }
+     ::= { ciscoLwappWebAuthConfig 11 }
+ 
+ cLWAWebAuthSecureWeb OBJECT-TYPE
+@@ -381,11 +382,11 @@ cLWAWebAuthSecureWeb OBJECT-TYPE
+     STATUS     current
+     DESCRIPTION
+         "This object specifies the secure web mode.
+-         A value of 'true' indicates that the secure web mode is 
++         A value of 'true' indicates that the secure web mode is
+          enabled.
+-         A value of 'false' indicates that the secure web mode is 
++         A value of 'false' indicates that the secure web mode is
+          disabled."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { ciscoLwappWebAuthConfig 12 }
+ 
+ cLWAWebAuthLoginSuccessPageMode OBJECT-TYPE
+@@ -396,9 +397,9 @@ cLWAWebAuthLoginSuccessPageMode OBJECT-TYPE
+     MAX-ACCESS read-write
+     STATUS     current
+     DESCRIPTION
+-        "This object specifies the page that would be displayed after 
++        "This object specifies the page that would be displayed after
+          webauth is successful.
+-         default(1) - This indicates that a default page would be 
++         default(1) - This indicates that a default page would be
+                       displayed after web-auth is successful.
+          none(2) - This indicates that a blank page will be displayed
+                    after web-auth is successful."
+@@ -419,14 +420,14 @@ cLWACaptiveBypassMode OBJECT-TYPE
+     ::= { ciscoLwappWebAuthConfig 14 }
+ 
+ cLWebAuthWlanConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLWebAuthWlanConfigEntry 
++    SYNTAX          SEQUENCE OF CLWebAuthWlanConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This table contains the list of WLANs and the type of 
+-         web-auth configured in each of them. If web-auth type is 
++        "This table contains the list of WLANs and the type of
++         web-auth configured in each of them. If web-auth type is
+          customised, then it will also have the login page associated
+-         for that WLAN. If the web-auth type is external, then it will 
++         for that WLAN. If the web-auth type is external, then it will
+          also have the URL associated with it."
+     ::= { ciscoLwappWebAuthConfig 8 }
+ 
+@@ -435,9 +436,9 @@ cLWebAuthWlanConfigEntry OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "Each entry in the table represents the web-auth type for 
++        "Each entry in the table represents the web-auth type for
+          each WLAN."
+-    INDEX           { cLWlanIndex } 
++    INDEX           { cLWlanIndex }
+     ::= { cLWebAuthWlanConfigTable 1 }
+ 
+ CLWebAuthWlanConfigEntry ::= SEQUENCE {
+@@ -448,7 +449,7 @@ CLWebAuthWlanConfigEntry ::= SEQUENCE {
+         cLWlanWebAuthLoginFailurePage  SnmpAdminString,
+ 	cLWlanWebAuthLogoutPage        SnmpAdminString,
+         cLWlanExternalWebAuthAcl       SnmpAdminString,
+-        cLWlanWebAuthCaptiveBypassMode INTEGER 
++        cLWlanWebAuthCaptiveBypassMode INTEGER
+ }
+ 
+ cLWlanGlobalWebAuthConfig OBJECT-TYPE
+@@ -456,11 +457,11 @@ cLWlanGlobalWebAuthConfig OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies whether the web authentication is set 
++        "This object specifies whether the web authentication is set
+          per WLAN or not.
+          A value of 'true' indicates that webauth is enabled on WLAN.
+          A value of 'false' indicates that webauth is disabled on WLAN."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLWebAuthWlanConfigEntry 1 }
+ 
+ cLWlanWebAuthType OBJECT-TYPE
+@@ -471,17 +472,17 @@ cLWlanWebAuthType OBJECT-TYPE
+         "This object specifies the type of web authentication for the
+          clients. Web Authentication can be of three types;
+ 
+-         internalDefault - The default login page will be presented to 
++         internalDefault - The default login page will be presented to
+          the client for authentication.
+-         internalCustom -  The administrator has created and uploaded a 
+-         custom login page and it will be presented to the clients for 
++         internalCustom -  The administrator has created and uploaded a
++         custom login page and it will be presented to the clients for
+          authentication.
+-         external  - This value indicates that the login page of the 
+-         client, connected to this WLAN would be served from the 
+-         external web server.  Note that cLWAWebAuthType can be 
+-         successfully set to this value when the cLWAExternalWebAuthURL 
++         external  - This value indicates that the login page of the
++         client, connected to this WLAN would be served from the
++         external web server.  Note that cLWAWebAuthType can be
++         successfully set to this value when the cLWAExternalWebAuthURL
+          object has been set to string with non-zero length."
+-    DEFVAL          { internalDefault } 
++    DEFVAL          { internalDefault }
+     ::= { cLWebAuthWlanConfigEntry 2 }
+ 
+ cLWlanWebAuthLoginPage OBJECT-TYPE
+@@ -490,8 +491,8 @@ cLWlanWebAuthLoginPage OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the login page of the client, which is
+-         connected to this WLAN. This is applicable when the  
+-         cLWlanWebAuthType is customized." 
++         connected to this WLAN. This is applicable when the
++         cLWlanWebAuthType is customized."
+     ::= { cLWebAuthWlanConfigEntry 3 }
+ 
+ cLWlanExternalWebAuthUrl OBJECT-TYPE
+@@ -500,9 +501,9 @@ cLWlanExternalWebAuthUrl OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the URL to which the client webpage
+-         will be directed for authentication when a client joins the 
+-         WLAN. This is applicable when the cLWlanWebAuthType is 
+-         external." 
++         will be directed for authentication when a client joins the
++         WLAN. This is applicable when the cLWlanWebAuthType is
++         external."
+     ::= { cLWebAuthWlanConfigEntry 4 }
+ 
+ cLWlanWebAuthLoginFailurePage OBJECT-TYPE
+@@ -510,9 +511,9 @@ cLWlanWebAuthLoginFailurePage OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the login failure page which will be 
+-         displayed to the client connecting to this WLAN. This only 
+-         applies when the cLWlanWebAuthType is set to customized." 
++        "This object specifies the login failure page which will be
++         displayed to the client connecting to this WLAN. This only
++         applies when the cLWlanWebAuthType is set to customized."
+     ::= { cLWebAuthWlanConfigEntry 5 }
+ 
+ cLWlanWebAuthLogoutPage OBJECT-TYPE
+@@ -521,8 +522,8 @@ cLWlanWebAuthLogoutPage OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the logout page of the client, which is
+-         connected to this WLAN. This only applies when the 
+-         cLWlanWebAuthType is set to customized." 
++         connected to this WLAN. This only applies when the
++         cLWlanWebAuthType is set to customized."
+     ::= { cLWebAuthWlanConfigEntry 6 }
+ 
+ cLWlanExternalWebAuthAcl OBJECT-TYPE
+@@ -531,8 +532,8 @@ cLWlanExternalWebAuthAcl OBJECT-TYPE
+     STATUS      current
+     DESCRIPTION
+         "This object specifies about the ACL which is applied
+-         on AP, so the packets are switched locally for reaching the 
+-         external web server. This is applicable only when the web-auth 
++         on AP, so the packets are switched locally for reaching the
++         external web server. This is applicable only when the web-auth
+          type is external."
+     ::= { cLWebAuthWlanConfigEntry  7 }
+ 
+@@ -546,14 +547,14 @@ cLWlanWebAuthCaptiveBypassMode OBJECT-TYPE
+     MAX-ACCESS read-write
+     STATUS     current
+     DESCRIPTION
+-        "This object specifies the captive bypass configuration on 
++        "This object specifies the captive bypass configuration on
+          WLAN. It over-rides the global captive bypass configuration.
+          enabled(1) - This indicates captive bypass is enabled on
+                       the WLAN.
+          disabled(2) - This indicates captive bypass is disabled on
+                        the WLAN.
+          none(3) - This indicates it is not configured on this WLAN,
+-                   rather it has to consider the global captive bypass 
++                   rather it has to consider the global captive bypass
+                    configuration."
+     ::= { cLWebAuthWlanConfigEntry 8 }
+ 
+@@ -562,7 +563,7 @@ cLWlanWebAuthCaptiveBypassMode OBJECT-TYPE
+ -- ********************************************************************
+ 
+ cLWAExternalWebServerTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLWAExternalWebServerEntry 
++    SYNTAX          SEQUENCE OF CLWAExternalWebServerEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -587,11 +588,11 @@ cLWAExternalWebServerEntry OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "Each entry in this table represents a row in 
+-         cLWAExternalWebServerTable. Each  entry corresponds to one 
+-         external web authentication server whose address is 
++        "Each entry in this table represents a row in
++         cLWAExternalWebServerTable. Each  entry corresponds to one
++         external web authentication server whose address is
+          represented by cLWAExternalWebServerAddr."
+-    INDEX           { cLWAExternalWebServerIndex } 
++    INDEX           { cLWAExternalWebServerIndex }
+     ::= { cLWAExternalWebServerTable 1 }
+ 
+ CLWAExternalWebServerEntry ::= SEQUENCE {
+@@ -607,7 +608,7 @@ cLWAExternalWebServerIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the index of the external
+-         web server." 
++         web server."
+     ::= { cLWAExternalWebServerEntry 1 }
+ 
+ cLWAExternalWebServerAddrType OBJECT-TYPE
+@@ -616,7 +617,7 @@ cLWAExternalWebServerAddrType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The object specifies the IP address type of the web server.
+-         Its a corresponding instance of cLWAExternalWebServerAddr." 
++         Its a corresponding instance of cLWAExternalWebServerAddr."
+     ::= { cLWAExternalWebServerEntry 2 }
+ 
+ cLWAExternalWebServerAddr OBJECT-TYPE
+@@ -624,12 +625,12 @@ cLWAExternalWebServerAddr OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the IP address of the web server from 
++        "This object specifies the IP address of the web server from
+          which traffic is allowed before client's authentication.
+-         Please note that the row creation will be successful only if 
++         Please note that the row creation will be successful only if
+          the address of the web server represented by the values of
+          cLWAExternalWebServerAddrType and
+-         cLWAExternalWebServerAddr is unique across all the entries." 
++         cLWAExternalWebServerAddr is unique across all the entries."
+     ::= { cLWAExternalWebServerEntry 3 }
+ 
+ cLWAExternalWebServerRowStatus OBJECT-TYPE
+@@ -637,16 +638,16 @@ cLWAExternalWebServerRowStatus OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This is the status column for this row and is used to create 
++        "This is the status column for this row and is used to create
+          and delete specific instances of rows in this table."
+     ::= { cLWAExternalWebServerEntry 4 }
+- 
++
+ cLWALocalNetUserTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLWALocalNetUserEntry 
++    SYNTAX          SEQUENCE OF CLWALocalNetUserEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This table contains the list of user type for each user 
++        "This table contains the list of user type for each user
+          present in the controller. The user type can be guest or
+          permanent."
+     ::= { ciscoLwappLocalNetUserConfig 1 }
+@@ -658,16 +659,16 @@ cLWALocalNetUserEntry OBJECT-TYPE
+     DESCRIPTION
+         "Each entry in this table represents to a guest
+          or permanent user present in the controller."
+-    INDEX           { cLWALocalNetUserName } 
++    INDEX           { cLWALocalNetUserName }
+     ::= { cLWALocalNetUserTable 1 }
+ 
+ CLWALocalNetUserEntry ::= SEQUENCE {
+         cLWALocalNetUserName       	 SnmpAdminString,
+         cLWALocalNetUserIsGuest    	 TruthValue,
+-        cLWALocalNetUserRole             OCTET STRING,
++        cLWALocalNetUserRole             DisplayString,
+         cLWALocalNetUserLoginTime        Unsigned32,
+-        cLWALocalNetUserLoginCount       Unsigned32, 
+-        cLWALocalNetUserLifeTime         TimeTicks 
++        cLWALocalNetUserLoginCount       Unsigned32,
++        cLWALocalNetUserLifeTime         TimeTicks
+ }
+ 
+ cLWALocalNetUserName OBJECT-TYPE
+@@ -676,7 +677,7 @@ cLWALocalNetUserName OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the user name of the guest
+-         user or the permanent user in the controller." 
++         user or the permanent user in the controller."
+     ::= { cLWALocalNetUserEntry 1 }
+ 
+ cLWALocalNetUserIsGuest OBJECT-TYPE
+@@ -684,19 +685,19 @@ cLWALocalNetUserIsGuest OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the type of user on controller. 
++        "This object specifies the type of user on controller.
+          A value of 'true' indicates that client is a guest user.
+-         A value of 'false' indicates that client is a permanent user." 
++         A value of 'false' indicates that client is a permanent user."
+     ::= { cLWALocalNetUserEntry 2 }
+ 
+ cLWALocalNetUserRole OBJECT-TYPE
+-    SYNTAX     	    OCTET STRING
++    SYNTAX     	    DisplayString
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the role of a guest user. This object is
+-         not applicable if the user is not a guest user as indicated by 
+-         a value of 'false' for cLWALocalNetUserIsGuest." 
++         not applicable if the user is not a guest user as indicated by
++         a value of 'false' for cLWALocalNetUserIsGuest."
+     ::= { cLWALocalNetUserEntry 3 }
+ 
+ cLWALocalNetUserLoginTime OBJECT-TYPE
+@@ -706,10 +707,10 @@ cLWALocalNetUserLoginTime OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the time at which the guest user first
+-         logged in. This represents number of seconds elapsed since 
++         logged in. This represents number of seconds elapsed since
+          00:00:00 on January 1, 1970, Coordinated Universal Time (UTC).
+-         This object is not applicable if the user is not guest user as 
+-         indicated by a value of 'false' for cLWALocalNetUserIsGuest." 
++         This object is not applicable if the user is not guest user as
++         indicated by a value of 'false' for cLWALocalNetUserIsGuest."
+     ::= { cLWALocalNetUserEntry 4 }
+ 
+ cLWALocalNetUserLoginCount OBJECT-TYPE
+@@ -718,9 +719,9 @@ cLWALocalNetUserLoginCount OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the number of logins made by a guest
+-         user. This object is not applicable if the user is not a guest 
+-         user as indicated by a value of 'false' for 
+-         cLWALocalNetUserIsGuest." 
++         user. This object is not applicable if the user is not a guest
++         user as indicated by a value of 'false' for
++         cLWALocalNetUserIsGuest."
+     ::= { cLWALocalNetUserEntry 5 }
+ 
+ cLWALocalNetUserLifeTime OBJECT-TYPE
+@@ -730,7 +731,7 @@ cLWALocalNetUserLifeTime OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the lifetime of an user account
+          expressed in hundredths of a second. WLAN identifiers
+-         which have webauth policy, are valid for guest user." 
++         which have webauth policy, are valid for guest user."
+     ::= { cLWALocalNetUserEntry 6 }
+ 
+ cLWALocalNetUserMaxGuestRoles OBJECT-TYPE
+@@ -738,9 +739,9 @@ cLWALocalNetUserMaxGuestRoles OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the maximum number of guest-role users 
++        "This object specifies the maximum number of guest-role users
+          that can be configured on the controller."
+-    DEFVAL          { 10 } 
++    DEFVAL          { 10 }
+     ::= { ciscoLwappLocalNetUserConfig 2 }
+ 
+ cLWALocalNetUserGuestRolesCount OBJECT-TYPE
+@@ -749,8 +750,8 @@ cLWALocalNetUserGuestRolesCount OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the count of the number of guest-roles
+-         currently configured on the controller." 
+-    DEFVAL          { 0 } 
++         currently configured on the controller."
++    DEFVAL          { 0 }
+     ::= { ciscoLwappLocalNetUserConfig 3 }
+ 
+ -- ********************************************************************
+@@ -758,7 +759,7 @@ cLWALocalNetUserGuestRolesCount OBJECT-TYPE
+ -- ********************************************************************
+ 
+ cLWALocalNetUserRoleTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLWALocalNetUserRoleEntry 
++    SYNTAX          SEQUENCE OF CLWALocalNetUserRoleEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -771,10 +772,10 @@ cLWALocalNetUserRoleEntry OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "Each entry in this table represents the entry in 
+-         cLWALocalNetUserRoleTable, which indicates the various 
++        "Each entry in this table represents the entry in
++         cLWALocalNetUserRoleTable, which indicates the various
+          roles of a guest user."
+-    INDEX           { cLWALocalNetUserRoleName } 
++    INDEX           { cLWALocalNetUserRoleName }
+     ::= { cLWALocalNetUserRoleTable 1 }
+ 
+ CLWALocalNetUserRoleEntry ::= SEQUENCE {
+@@ -787,11 +788,11 @@ CLWALocalNetUserRoleEntry ::= SEQUENCE {
+ }
+ 
+ cLWALocalNetUserRoleName OBJECT-TYPE
+-    SYNTAX          SnmpAdminString 
++    SYNTAX          SnmpAdminString
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This object represents the name of the guest user role." 
++        "This object represents the name of the guest user role."
+     ::= { cLWALocalNetUserRoleEntry 1 }
+ 
+ cLWALocalNetUserRoleAverageDataRate OBJECT-TYPE
+@@ -800,7 +801,7 @@ cLWALocalNetUserRoleAverageDataRate OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the average data rate per user." 
++        "This object specifies the average data rate per user."
+     ::= { cLWALocalNetUserRoleEntry 2 }
+ 
+ cLWALocalNetUserRoleBurstDataRate OBJECT-TYPE
+@@ -809,7 +810,7 @@ cLWALocalNetUserRoleBurstDataRate OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the burst data rate per user." 
++        "This object specifies the burst data rate per user."
+     ::= { cLWALocalNetUserRoleEntry 3 }
+ 
+ cLWALocalNetUserRoleAvgRealTimeDataRate OBJECT-TYPE
+@@ -818,8 +819,8 @@ cLWALocalNetUserRoleAvgRealTimeDataRate OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the average real time data rate per 
+-         user." 
++        "This object specifies the average real time data rate per
++         user."
+     ::= { cLWALocalNetUserRoleEntry 4 }
+ 
+ cLWALocalNetUserRoleBurstRealTimeDataRate OBJECT-TYPE
+@@ -828,7 +829,7 @@ cLWALocalNetUserRoleBurstRealTimeDataRate OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the burst real time data rate per user." 
++        "This object specifies the burst real time data rate per user."
+     ::= { cLWALocalNetUserRoleEntry 5 }
+ 
+ cLWALocalNetUserRoleRowStatus OBJECT-TYPE
+@@ -836,16 +837,16 @@ cLWALocalNetUserRoleRowStatus OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This is the status column for this row and is used to create 
++        "This is the status column for this row and is used to create
+          and delete specific instances of rows in this table."
+     ::= { cLWALocalNetUserRoleEntry 6 }
+- 
++
+ cLWACustomizedWebPageListTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLWACustomizedWebPageListEntry 
++    SYNTAX          SEQUENCE OF CLWACustomizedWebPageListEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This table contains the list of web pages downloaded on 
++        "This table contains the list of web pages downloaded on
+          the controller."
+     ::= { ciscoLwappWebPageList 1 }
+ 
+@@ -854,10 +855,10 @@ cLWACustomizedWebPageListEntry OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "Each entry in this table represents the conceptual row of the 
+-         cLWACustomizedWebPageListTable. Each entry will be having the 
++        "Each entry in this table represents the conceptual row of the
++         cLWACustomizedWebPageListTable. Each entry will be having the
+          customized web login page."
+-    INDEX           { cLWACustomizedWebLoginPage } 
++    INDEX           { cLWACustomizedWebLoginPage }
+     ::= { cLWACustomizedWebPageListTable 1 }
+ 
+ CLWACustomizedWebPageListEntry ::= SEQUENCE {
+@@ -870,16 +871,16 @@ cLWACustomizedWebLoginPage OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the login page which will be displayed
+-         to the client connecting to the WLANs." 
++         to the client connecting to the WLANs."
+     ::= { cLWACustomizedWebPageListEntry 1 }
+ 
+ cLGuestUserSessionStatusTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLGuestUserSessionStatusEntry 
++    SYNTAX          SEQUENCE OF CLGuestUserSessionStatusEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table contains information about the various sessions,
+-         indicated by the cLGuestUserSessionIdentifier, for all the 
++         indicated by the cLGuestUserSessionIdentifier, for all the
+          guest users, indicated by cLGuestUserName."
+     ::= { ciscoLwappGuestUserSessionStatus 1 }
+ 
+@@ -888,20 +889,20 @@ cLGuestUserSessionStatusEntry OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "Each entry in this table  represents a particular session for 
+-         a guest user. 
+-         An entry is created when a guest user logs in with a valid 
+-         username and password. The entry gets removed, when the user 
++        "Each entry in this table  represents a particular session for
++         a guest user.
++         An entry is created when a guest user logs in with a valid
++         username and password. The entry gets removed, when the user
+          logs out."
+     INDEX           {
+                         cLGuestUserName,
+                         cLGuestUserSessionId
+-                    } 
++                    }
+     ::= { cLGuestUserSessionStatusTable 1 }
+ 
+ CLGuestUserSessionStatusEntry ::=
+         SEQUENCE {
+-                cLGuestUserName OCTET STRING,
++                cLGuestUserName DisplayString,
+                 cLGuestUserSessionId  Unsigned32,
+                 cLGuestUserClientMacAddress MacAddress,
+                 cLGuestUserClientIpAddressType InetAddressType,
+@@ -914,11 +915,11 @@ CLGuestUserSessionStatusEntry ::=
+         }
+ 
+ cLGuestUserName OBJECT-TYPE
+-    SYNTAX          OCTET STRING(SIZE(1..24))
++    SYNTAX          DisplayString(SIZE(1..24))
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This object represents the name of the guest user." 
++        "This object represents the name of the guest user."
+     ::= { cLGuestUserSessionStatusEntry 1 }
+ 
+ cLGuestUserSessionId OBJECT-TYPE
+@@ -927,7 +928,7 @@ cLGuestUserSessionId OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the session identifier of a particular
+-         session, used by a guest user represented by cLGuestUserName." 
++         session, used by a guest user represented by cLGuestUserName."
+     ::= { cLGuestUserSessionStatusEntry 2 }
+ 
+ cLGuestUserClientMacAddress OBJECT-TYPE
+@@ -937,7 +938,7 @@ cLGuestUserClientMacAddress OBJECT-TYPE
+     DESCRIPTION
+         "This object represents the MAC address of the client, which
+          logged in/out in the particular session corresponding
+-         to cLGuestUserSessionId." 
++         to cLGuestUserSessionId."
+     ::= { cLGuestUserSessionStatusEntry 3 }
+ 
+ cLGuestUserClientIpAddressType OBJECT-TYPE
+@@ -946,7 +947,7 @@ cLGuestUserClientIpAddressType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the IP address type of
+-         cLGuestUserClientIpAddress." 
++         cLGuestUserClientIpAddress."
+     ::= { cLGuestUserSessionStatusEntry 4 }
+ 
+ cLGuestUserClientIpAddress OBJECT-TYPE
+@@ -956,7 +957,7 @@ cLGuestUserClientIpAddress OBJECT-TYPE
+     DESCRIPTION
+         "This object represents the IP address of the client, which
+          logged in/out in the particular session corresponding
+-         to cLGuestUserSessionId." 
++         to cLGuestUserSessionId."
+     ::= { cLGuestUserSessionStatusEntry 5 }
+ 
+ cLGuestUserApMacAddress OBJECT-TYPE
+@@ -965,8 +966,8 @@ cLGuestUserApMacAddress OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the MAC address of the AP, using which
+-         the client had joined to the controller using the guest user 
+-         account corresponding to cLGuestUserName." 
++         the client had joined to the controller using the guest user
++         account corresponding to cLGuestUserName."
+     ::= { cLGuestUserSessionStatusEntry 6 }
+ 
+ cLGuestUserLoggedInTime OBJECT-TYPE
+@@ -976,7 +977,7 @@ cLGuestUserLoggedInTime OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the time at which the guest client
+-         logged in that particular session corresponding to 
++         logged in that particular session corresponding to
+          cLGuestUserSessionId.
+          This represents number of seconds elapsed since 00:00:00
+          on January 1, 1970, Coordinated Universal Time (UTC).  So
+@@ -990,7 +991,7 @@ cLGuestUserLoggedOutTime OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the time at which the guest client
+-         logged out of that particular session corresponding to 
++         logged out of that particular session corresponding to
+          cLGuestUserSessionId.
+          This represents number of seconds elapsed since 00:00:00
+          on January 1, 1970, Coordinated Universal Time (UTC).  So
+@@ -1004,8 +1005,8 @@ cLGuestUserBytesReceived OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the number of bytes received by the
+-         guest user in that particular session corresponding to 
+-         cLGuestUserSessionId." 
++         guest user in that particular session corresponding to
++         cLGuestUserSessionId."
+     ::= { cLGuestUserSessionStatusEntry 9 }
+ 
+ cLGuestUserBytesTransmitted OBJECT-TYPE
+@@ -1015,8 +1016,8 @@ cLGuestUserBytesTransmitted OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the number of bytes transmitted by the
+-         guest user in that particular session corresponding to 
+-         cLGuestUserSessionId." 
++         guest user in that particular session corresponding to
++         cLGuestUserSessionId."
+     ::= { cLGuestUserSessionStatusEntry 10 }
+ 
+ -- ********************************************************************
+@@ -1024,11 +1025,11 @@ cLGuestUserBytesTransmitted OBJECT-TYPE
+ -- ********************************************************************
+ 
+ cLWAPortalConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLWAPortalConfigEntry 
++    SYNTAX          SEQUENCE OF CLWAPortalConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This table contains the list of portal servers related 
++        "This table contains the list of portal servers related
+          configurations of the controller."
+     ::= { ciscoLwappPortalConfig 1 }
+ 
+@@ -1037,9 +1038,9 @@ cLWAPortalConfigEntry OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "Each entry in this table represents an entry about the portal 
++        "Each entry in this table represents an entry about the portal
+          server related configuration on the controller."
+-    INDEX           { cLWAPortalIndex } 
++    INDEX           { cLWAPortalIndex }
+     ::= { cLWAPortalConfigTable 1 }
+ 
+ CLWAPortalConfigEntry ::= SEQUENCE {
+@@ -1053,7 +1054,7 @@ cLWAPortalIndex OBJECT-TYPE
+     SYNTAX Unsigned32
+     MAX-ACCESS not-accessible
+     STATUS     current
+-    DESCRIPTION                
++    DESCRIPTION
+         "This object represents the index of the portal server."
+     ::= { cLWAPortalConfigEntry 1 }
+ 
+@@ -1078,22 +1079,22 @@ cLWAPortalUnreachSet OBJECT-TYPE
+     MAX-ACCESS read-only
+     STATUS     current
+     DESCRIPTION
+-        "This object represents whether this portal server is 
++        "This object represents whether this portal server is
+          reachable or not.
+          The value of 'true' indicates that portal server is reachable.
+-         The value of 'false' indicates this portal server is not 
+-         reachable." 
++         The value of 'false' indicates this portal server is not
++         reachable."
+     ::= { cLWAPortalConfigEntry 4 }
+ 
+ -- ********************************************************************
+--- Portal Server Stats Counter 
++-- Portal Server Stats Counter
+ -- ********************************************************************
+ cLWAPortalCounterTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLWAPortalCounterEntry 
++    SYNTAX          SEQUENCE OF CLWAPortalCounterEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This table contains the list of portal server related 
++        "This table contains the list of portal server related
+          statistics on the controller."
+     ::= { ciscoLwappPortalStats 1 }
+ 
+@@ -1102,9 +1103,9 @@ cLWAPortalCounterEntry OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "Each entry in this table represents an entry in the 
++        "Each entry in this table represents an entry in the
+          portal server related statistics on the controller."
+-    INDEX           { cLWAPortalIndex } 
++    INDEX           { cLWAPortalIndex }
+     ::= { cLWAPortalCounterTable 1 }
+ 
+ CLWAPortalCounterEntry ::= SEQUENCE {
+@@ -1128,7 +1129,7 @@ cLWAPortalChallengeReq OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
++    DESCRIPTION
+         "This object represents the number of challenge requests
+          sent to the portal server."
+     ::= { cLWAPortalCounterEntry  1 }
+@@ -1137,7 +1138,7 @@ cLWAPortalChallengeAck OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
++    DESCRIPTION
+         "This object represents the number of challenge acknowledgements
+          received from the portal server."
+     ::= { cLWAPortalCounterEntry  2 }
+@@ -1146,8 +1147,8 @@ cLWAPortalChallengeErr OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the number of challenge error 
++    DESCRIPTION
++        "This object represents the number of challenge error
+          communications between WLC and the portal server."
+     ::= { cLWAPortalCounterEntry  3 }
+ 
+@@ -1155,7 +1156,7 @@ cLWAPortalAuthenticationReq OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
++    DESCRIPTION
+         "This object represents the number of authentication requests
+          sent to the portal server."
+     ::= { cLWAPortalCounterEntry  4 }
+@@ -1164,8 +1165,8 @@ cLWAPortalAuthenticationAck OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the number of authentication 
++    DESCRIPTION
++        "This object represents the number of authentication
+          acknowledgements received from the portal server."
+     ::= { cLWAPortalCounterEntry  5 }
+ 
+@@ -1173,8 +1174,8 @@ cLWAPortalAuthenticationErr OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the number of authentication error 
++    DESCRIPTION
++        "This object represents the number of authentication error
+          communications between WLC and the portal server."
+     ::= { cLWAPortalCounterEntry  6 }
+ 
+@@ -1182,8 +1183,8 @@ cLWAPortalLogoutReq OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the number of logout requests sent 
++    DESCRIPTION
++        "This object represents the number of logout requests sent
+          to the portal server."
+     ::= { cLWAPortalCounterEntry  7 }
+ 
+@@ -1191,7 +1192,7 @@ cLWAPortalLogoutAck OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
++    DESCRIPTION
+         "This object represents the number of logout acknowledgements
+          received from the portal server."
+     ::= { cLWAPortalCounterEntry  8 }
+@@ -1200,8 +1201,8 @@ cLWAPortalLogoutErr OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the number of logout error 
++    DESCRIPTION
++        "This object represents the number of logout error
+          communications between WLC and the portal server."
+     ::= { cLWAPortalCounterEntry  9 }
+ 
+@@ -1209,8 +1210,8 @@ cLWAPortalLogoutNTF OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the number of logout notification 
++    DESCRIPTION
++        "This object represents the number of logout notification
+          communications between WLC and the portal server."
+     ::= { cLWAPortalCounterEntry  10 }
+ 
+@@ -1218,7 +1219,7 @@ cLWAPortalUnknownReq OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
++    DESCRIPTION
+         "This object represents the number of unknown requests
+          sent from WLC to the portal server."
+     ::= { cLWAPortalCounterEntry  11 }
+@@ -1227,8 +1228,8 @@ cLWAPortalAuthenticatedClient OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the number of 
++    DESCRIPTION
++        "This object represents the number of
+          authenticated client counters."
+     ::= { cLWAPortalCounterEntry  12 }
+ 
+@@ -1236,8 +1237,8 @@ cLWAPortalAuthenticatedMaxClient OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the maximum number of clients that got 
++    DESCRIPTION
++        "This object represents the maximum number of clients that got
+          authenticated through the portal server."
+     ::= { cLWAPortalCounterEntry  13 }
+ 
+@@ -1245,21 +1246,21 @@ cLWAPortalHttpReq OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the number of HTTP requests from 
++    DESCRIPTION
++        "This object represents the number of HTTP requests from
+          WLC to the portal server."
+     ::= { cLWAPortalCounterEntry  14 }
+ 
+ -- ********************************************************************
+--- Portal Server Stats Counter 
++-- Portal Server Stats Counter
+ -- ********************************************************************
+ 
+ cLWAPortalDisconnectOnlineUsersCount OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the number of logout 
++    DESCRIPTION
++        "This object represents the number of logout
+          sent to portal server."
+     ::= { ciscoLwappPortalTotalStats  1 }
+ 
+@@ -1267,17 +1268,17 @@ cLWAPortalConnectLostUsersCount OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the number of abnormal 
++    DESCRIPTION
++        "This object represents the number of abnormal
+          offline users with portal authentication attribute."
+     ::= { ciscoLwappPortalTotalStats  2 }
+-        
++
+ cLWAPortalAuthReqCount OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the total number of 
++    DESCRIPTION
++        "This object represents the total number of
+          authentication requests sent to portal server."
+     ::= { ciscoLwappPortalTotalStats  3 }
+ 
+@@ -1285,8 +1286,8 @@ cLWAPortalAuthReqSucessCount OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the total number of successful 
++    DESCRIPTION
++        "This object represents the total number of successful
+          authentication requests sent to the portal server."
+     ::= { ciscoLwappPortalTotalStats  4 }
+ 
+@@ -1294,8 +1295,8 @@ cLWAPortalAuthReqFailureCount OBJECT-TYPE
+     SYNTAX     Counter32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION                
+-        "This object represents the total number of failed 
++    DESCRIPTION
++        "This object represents the total number of failed
+          authentication requests sent to the portal server."
+     ::= { ciscoLwappPortalTotalStats  5 }
+ 
+@@ -1303,8 +1304,8 @@ cLWAPortalMaxAuthClient OBJECT-TYPE
+     SYNTAX     Integer32
+     MAX-ACCESS read-only
+     STATUS     current
+-    DESCRIPTION               
+-        "This object represents the max authenticated clients the 
++    DESCRIPTION
++        "This object represents the max authenticated clients the
+          portal server allows."
+     ::= { ciscoLwappPortalTotalStats  6 }
+ 
+@@ -1313,11 +1314,11 @@ cLWAPortalMaxAuthClient OBJECT-TYPE
+ -- ********************************************************************
+ 
+ cLWAGuestUserName OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (1..24))
++    SYNTAX          DisplayString (SIZE  (1..24))
+     MAX-ACCESS      accessible-for-notify
+     STATUS          current
+     DESCRIPTION
+-        "This object represents the name of the guest user." 
++        "This object represents the name of the guest user."
+     ::= { ciscoLwappWebAuthMIBNotifObjs 1 }
+ 
+ -- ********************************************************************
+@@ -1378,7 +1379,7 @@ cLWAPortalUnreachNotify NOTIFICATION-TYPE
+                     }
+     STATUS     current
+     DESCRIPTION
+-            "This notification is generated when portal server is 
++            "This notification is generated when portal server is
+              unreachable/recovered."
+     ::= { ciscoLwappWebAuthMIBNotifs 5 }
+ 
+@@ -1497,7 +1498,7 @@ cLWACustomWebAuthGroup OBJECT-GROUP
+     DESCRIPTION
+         "This collection of objects is used for internal-
+          default and internal-custom web-authentication.
+-         cLWACustomWebAuthGroup object is superseded by 
++         cLWACustomWebAuthGroup object is superseded by
+          cLWACustomWebAuthGroupRev1."
+     ::= { ciscoLwappWebAuthMIBGroups 1 }
+ 
+@@ -1638,7 +1639,7 @@ cLWACustomWebAuthGroupRev1 OBJECT-GROUP
+         "This collection of objects is used for internal-
+          default and internal-custom web-authentication."
+     ::= { ciscoLwappWebAuthMIBGroups 11 }
+-    
++
+ cLWAPortalStatsGroup OBJECT-GROUP
+     OBJECTS         {
+                         cLWAPortalChallengeReq,
+@@ -1667,7 +1668,7 @@ cLWAPortalStatsGroup OBJECT-GROUP
+         "This collection of objects provides the statistics of portal
+          server about web-authentication."
+     ::= { ciscoLwappWebAuthMIBGroups 12 }
+-    
++
+ 
+ END
+ 

@@ -1,0 +1,87 @@
+diff --git a/mibs/netgate/pfsense/v2/BEGEMOT-HAST-MIB.txt b/mibs/netgate/pfsense/v2/BEGEMOT-HAST-MIB.txt
+index d5208a9..6130ac8 100644
+--- a/mibs/netgate/pfsense/v2/BEGEMOT-HAST-MIB.txt
++++ b/mibs/netgate/pfsense/v2/BEGEMOT-HAST-MIB.txt
+@@ -32,7 +32,7 @@ IMPORTS
+     MODULE-IDENTITY, OBJECT-TYPE, NOTIFICATION-TYPE,
+     Counter64, Integer32
+ 	FROM SNMPv2-SMI
+-    TEXTUAL-CONVENTION, RowStatus
++    TEXTUAL-CONVENTION, RowStatus, DisplayString
+ 	FROM SNMPv2-TC
+     InterfaceIndex, ifIndex
+ 	FROM IF-MIB
+@@ -76,7 +76,7 @@ begemotHastObjects	OBJECT IDENTIFIER ::= { begemotHast 1 }
+ hastConfig	OBJECT IDENTIFIER ::= { begemotHastObjects 1 }
+ 
+ hastConfigFile OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -105,14 +105,14 @@ hastResourceEntry OBJECT-TYPE
+ 
+ HastResourceEntry ::= SEQUENCE {
+     hastResourceIndex			Integer32,
+-    hastResourceName			OCTET STRING,
++    hastResourceName			DisplayString,
+     hastResourceRole			INTEGER,
+-    hastResourceProvName		OCTET STRING,
+-    hastResourceLocalPath		OCTET STRING,
++    hastResourceProvName		DisplayString,
++    hastResourceLocalPath		DisplayString,
+     hastResourceExtentSize		Integer32,
+     hastResourceKeepDirty		Integer32,
+-    hastResourceRemoteAddr		OCTET STRING,
+-    hastResourceSourceAddr		OCTET STRING,
++    hastResourceRemoteAddr		DisplayString,
++    hastResourceSourceAddr		DisplayString,
+     hastResourceReplication		INTEGER,
+     hastResourceStatus			INTEGER,
+     hastResourceDirty			Counter64,
+@@ -142,7 +142,7 @@ hastResourceIndex OBJECT-TYPE
+     ::= { hastResourceEntry 1 }
+ 
+ hastResourceName OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -158,7 +158,7 @@ hastResourceRole OBJECT-TYPE
+     ::= { hastResourceEntry 3 }
+ 
+ hastResourceProvName OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -166,7 +166,7 @@ hastResourceProvName OBJECT-TYPE
+     ::= { hastResourceEntry 4 }
+ 
+ hastResourceLocalPath OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -198,7 +198,7 @@ hastResourceKeepDirty OBJECT-TYPE
+     ::= { hastResourceEntry 7 }
+ 
+ hastResourceRemoteAddr OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -206,7 +206,7 @@ hastResourceRemoteAddr OBJECT-TYPE
+     ::= { hastResourceEntry 8 }
+ 
+ hastResourceSourceAddr OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION

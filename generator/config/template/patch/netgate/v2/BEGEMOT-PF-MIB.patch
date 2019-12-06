@@ -1,0 +1,146 @@
+diff --git a/mibs/netgate/pfsense/v2/BEGEMOT-PF-MIB.txt b/mibs/netgate/pfsense/v2/BEGEMOT-PF-MIB.txt
+index a058b37..1e46ea8 100644
+--- a/mibs/netgate/pfsense/v2/BEGEMOT-PF-MIB.txt
++++ b/mibs/netgate/pfsense/v2/BEGEMOT-PF-MIB.txt
+@@ -1,4 +1,4 @@
+--- 
++--
+ -- ----------------------------------------------------------------------------
+ -- "THE BEER-WARE LICENSE" (Revision 42):
+ -- <philip@FreeBSD.org> wrote this file.  As long as you retain this notice you
+@@ -7,7 +7,7 @@
+ -- ----------------------------------------------------------------------------
+ --
+ -- $FreeBSD: releng/10.1/usr.sbin/bsnmpd/modules/snmp_pf/BEGEMOT-PF-MIB.txt 240233 2012-09-08 06:41:54Z glebius $
+--- 
++--
+ 
+ BEGEMOT-PF-MIB DEFINITIONS ::= BEGIN
+ 
+@@ -15,7 +15,8 @@ IMPORTS
+     MODULE-IDENTITY, OBJECT-TYPE, Counter64, Integer32,
+     TimeTicks, Unsigned32
+ 	FROM SNMPv2-SMI
+-    TruthValue
++    TruthValue,
++    DisplayString
+ 	FROM SNMPv2-TC
+     InetAddress, InetAddressType, InetAddressPrefixLength
+ 	FROM INET-ADDRESS-MIB
+@@ -103,7 +104,7 @@ pfStatusDebug OBJECT-TYPE
+     ::= { pfStatus 3 }
+ 
+ pfStatusHostId OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -444,7 +445,7 @@ pfTimeoutsSrcNode OBJECT-TYPE
+ --
+ 
+ pfLogInterfaceName OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -582,7 +583,7 @@ pfInterfacesIfEntry OBJECT-TYPE
+ 
+ PfInterfacesIfEntry ::= SEQUENCE {
+     pfInterfacesIfIndex		    Integer32,
+-    pfInterfacesIfDescr		    OCTET STRING,
++    pfInterfacesIfDescr		    DisplayString,
+     pfInterfacesIfType		    INTEGER,
+     pfInterfacesIfTZero		    TimeTicks,
+     pfInterfacesIfRefsState	    Null,
+@@ -612,9 +613,9 @@ pfInterfacesIfIndex OBJECT-TYPE
+     DESCRIPTION
+ 	"A unique value, greater than zero, for each interface."
+     ::= { pfInterfacesIfEntry 1 }
+-    
++
+ pfInterfacesIfDescr OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -821,7 +822,7 @@ pfTablesTblEntry OBJECT-TYPE
+ 
+ PfTablesTblEntry ::= SEQUENCE {
+     pfTablesTblIndex		    Integer32,
+-    pfTablesTblDescr		    OCTET STRING,
++    pfTablesTblDescr		    DisplayString,
+     pfTablesTblCount		    Integer32,
+     pfTablesTblTZero		    TimeTicks,
+     pfTablesTblRefsAnchor	    Integer32,
+@@ -851,7 +852,7 @@ pfTablesTblIndex OBJECT-TYPE
+     ::= { pfTablesTblEntry 1 }
+ 
+ pfTablesTblDescr OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS  read-only
+     STATUS	current
+     DESCRIPTION
+@@ -876,7 +877,7 @@ pfTablesTblTZero OBJECT-TYPE
+         cleared or the time since this table was loaded, whichever is
+         sooner."
+     ::= { pfTablesTblEntry 4 }
+-	
++
+ pfTablesTblRefsAnchor OBJECT-TYPE
+     SYNTAX	Integer32
+     MAX-ACCESS  read-only
+@@ -1188,8 +1189,8 @@ pfAltqQueueEntry OBJECT-TYPE
+ 
+ PfAltqQueueEntry ::= SEQUENCE {
+     pfAltqQueueIndex		    Integer32,
+-    pfAltqQueueDescr		    OCTET STRING,
+-    pfAltqQueueParent		    OCTET STRING,
++    pfAltqQueueDescr		    DisplayString,
++    pfAltqQueueParent		    DisplayString,
+     pfAltqQueueScheduler	    INTEGER,
+     pfAltqQueueBandwidth	    Unsigned32,
+     pfAltqQueuePriority		    Integer32,
+@@ -1205,7 +1206,7 @@ pfAltqQueueIndex OBJECT-TYPE
+     ::= { pfAltqQueueEntry 1 }
+ 
+ pfAltqQueueDescr OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -1213,7 +1214,7 @@ pfAltqQueueDescr OBJECT-TYPE
+     ::= { pfAltqQueueEntry 2 }
+ 
+ pfAltqQueueParent OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -1280,7 +1281,7 @@ pfLabelsLblEntry OBJECT-TYPE
+ 
+ PfLabelsLblEntry ::= SEQUENCE {
+     pfLabelsLblIndex		Integer32,
+-    pfLabelsLblName		OCTET STRING,
++    pfLabelsLblName		DisplayString,
+     pfLabelsLblEvals		Counter64,
+     pfLabelsLblBytesIn		Counter64,
+     pfLabelsLblBytesOut		Counter64,
+@@ -1294,10 +1295,10 @@ pfLabelsLblIndex OBJECT-TYPE
+     STATUS	current
+     DESCRIPTION
+ 	"A unique value, greater than zero, for each label."
+-    ::= { pfLabelsLblEntry 1 } 
++    ::= { pfLabelsLblEntry 1 }
+ 
+ pfLabelsLblName OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION

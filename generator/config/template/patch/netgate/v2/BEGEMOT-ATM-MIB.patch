@@ -1,0 +1,40 @@
+diff --git a/mibs/netgate/pfsense/v2/BEGEMOT-ATM.txt b/mibs/netgate/pfsense/v2/BEGEMOT-ATM.txt
+index f6cca96..8f0ad23 100644
+--- a/mibs/netgate/pfsense/v2/BEGEMOT-ATM.txt
++++ b/mibs/netgate/pfsense/v2/BEGEMOT-ATM.txt
+@@ -7,7 +7,7 @@
+ -- 	All rights reserved.
+ --
+ -- Author: Hartmut Brandt <harti@freebsd.org>
+--- 
++--
+ -- Redistribution and use in source and binary forms, with or without
+ -- modification, are permitted provided that the following conditions
+ -- are met:
+@@ -16,7 +16,7 @@
+ -- 2. Redistributions in binary form must reproduce the above copyright
+ --    notice, this list of conditions and the following disclaimer in the
+ --    documentation and/or other materials provided with the distribution.
+--- 
++--
+ -- THIS SOFTWARE IS PROVIDED BY AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ -- ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ -- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+@@ -28,7 +28,7 @@
+ -- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ -- OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ -- SUCH DAMAGE.
+---  
++--
+ -- $Begemot: libunimsg/snmp_atm/BEGEMOT-ATM.txt,v 1.2 2004/08/06 14:50:26 brandt Exp $
+ --
+ -- Private Begemot MIB for ATM interfaces.
+@@ -74,7 +74,7 @@ AtmESI ::= TEXTUAL-CONVENTION
+     DESCRIPTION
+ 	    "An ATM End System Identifier. This is basically the same as
+ 	    an Ethernet Address and is assigned using the same rules."
+-    SYNTAX	OCTET STRING (SIZE(6))
++    SYNTAX	DisplayString (SIZE(6))
+ 
+ -- --------------------------------------------------------------------------
+ 

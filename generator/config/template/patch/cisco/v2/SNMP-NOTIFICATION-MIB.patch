@@ -1,0 +1,32 @@
+diff --git a/mibs/cisco/cat3750/v2/SNMP-NOTIFICATION-MIB.my b/mibs/cisco/cat3750/v2/SNMP-NOTIFICATION-MIB.my
+index 1959de5..dc38cb7 100644
+--- a/mibs/cisco/cat3750/v2/SNMP-NOTIFICATION-MIB.my
++++ b/mibs/cisco/cat3750/v2/SNMP-NOTIFICATION-MIB.my
+@@ -7,7 +7,8 @@
+            FROM SNMPv2-SMI
+ 
+        RowStatus,
+-       StorageType
++       StorageType,
++       DisplayString
+            FROM SNMPv2-TC
+ 
+        SnmpAdminString
+@@ -320,7 +321,7 @@
+ 
+    SnmpNotifyFilterEntry ::= SEQUENCE {
+        snmpNotifyFilterSubtree           OBJECT IDENTIFIER,
+-       snmpNotifyFilterMask              OCTET STRING,
++       snmpNotifyFilterMask              DisplayString,
+        snmpNotifyFilterType              INTEGER,
+        snmpNotifyFilterStorageType       StorageType,
+        snmpNotifyFilterRowStatus         RowStatus
+@@ -342,7 +343,7 @@
+             filter profile."
+        ::= { snmpNotifyFilterEntry 1 }
+    snmpNotifyFilterMask OBJECT-TYPE
+-       SYNTAX      OCTET STRING (SIZE(0..16))
++       SYNTAX      DisplayString (SIZE(0..16))
+        MAX-ACCESS  read-create
+        STATUS      current
+        DESCRIPTION

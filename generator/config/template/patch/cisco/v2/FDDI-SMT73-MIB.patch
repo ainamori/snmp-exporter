@@ -1,0 +1,140 @@
+diff --git a/mibs/cisco/cat3750/v1/FDDI-SMT73-MIB.my b/mibs/cisco/cat3750/v1/FDDI-SMT73-MIB.my
+index 4e637eb..12f9580 100644
+--- a/mibs/cisco/cat3750/v1/FDDI-SMT73-MIB.my
++++ b/mibs/cisco/cat3750/v1/FDDI-SMT73-MIB.my
+@@ -1,13 +1,13 @@
+ -- *****************************************************************
+ -- FDDI-SMT73-MIB.my : RFC 1512 FDDI MIB for SMT 7.3
+--- 
++--
+ -- October 31, Chifei Cheng
+ --
+ -- Copyright (c) 1994-1996 by cisco Systems, Inc.
+ -- All rights reserved.
+--- 
++--
+ -- *****************************************************************
+--- 
++--
+ 
+           FDDI-SMT73-MIB DEFINITIONS ::= BEGIN
+ 
+@@ -17,7 +17,9 @@
+                   transmission
+                       FROM RFC1213-MIB
+                   OBJECT-TYPE
+-                      FROM RFC-1212;
++                      FROM RFC-1212
++                  DisplayString
++                      FROM SNMPv2-TC;
+ 
+           --  This MIB module uses the extended OBJECT-TYPE macro as
+           --  defined in [7].
+@@ -70,7 +72,7 @@
+           -- PORT, or PATH Resource ID.  Indexing begins
+           -- at 1.  Zero is used to indicate the absence of a resource.
+ 
+-          FddiSMTStationIdType ::= OCTET STRING (SIZE (8))
++          FddiSMTStationIdType ::= DisplayString (SIZE (8))
+           -- The unique identifier for the FDDI station.  This is a
+           -- string of 8 octets, represented as X' yy yy xx xx xx xx
+           -- xx xx' with the low order 6 octet (xx) from a unique IEEE
+@@ -89,7 +91,7 @@
+           -- addresses in the ANSI FDDI standard SMT frames are
+           -- represented in FDDI MAC order.
+ 
+-          FddiMACLongAddressType ::= OCTET STRING (SIZE (6))
++          FddiMACLongAddressType ::= DisplayString (SIZE (6))
+           -- The representation of long MAC addresses as management
+           -- values is in the IEEE (ANSI/IEEE P802.1A) canonical
+           -- notation for 48 bit addresses.  The canonical form is a
+@@ -170,7 +172,7 @@
+                   fddimibSMTLoVersionId
+                       INTEGER,
+                   fddimibSMTUserData
+-                      OCTET STRING,
++                      DisplayString,
+                   fddimibSMTMIBVersionId
+                       INTEGER,
+                   fddimibSMTMACCts
+@@ -225,7 +227,7 @@
+               ::= { fddimibSMTEntry 1 }
+ 
+           fddimibSMTStationId OBJECT-TYPE
+-              SYNTAX  FddiSMTStationIdType -- OCTET STRING (SIZE (8))
++              SYNTAX  FddiSMTStationIdType -- DisplayString (SIZE (8))
+               ACCESS  read-only
+               STATUS  mandatory
+               DESCRIPTION
+@@ -269,7 +271,7 @@
+               ::= { fddimibSMTEntry 5 }
+ 
+           fddimibSMTUserData OBJECT-TYPE
+-              SYNTAX  OCTET STRING (SIZE (32))
++              SYNTAX  DisplayString (SIZE (32))
+               ACCESS  read-write
+               STATUS  mandatory
+               DESCRIPTION
+@@ -875,7 +877,7 @@
+               ::= { fddimibMACEntry 8 }
+ 
+           fddimibMACUpstreamNbr OBJECT-TYPE
+-              SYNTAX  FddiMACLongAddressType -- OCTET STRING (SIZE (6))
++              SYNTAX  FddiMACLongAddressType -- DisplayString (SIZE (6))
+               ACCESS  read-only
+               STATUS  mandatory
+               DESCRIPTION
+@@ -889,7 +891,7 @@
+               ::= { fddimibMACEntry 9 }
+ 
+           fddimibMACDownstreamNbr OBJECT-TYPE
+-              SYNTAX  FddiMACLongAddressType -- OCTET STRING (SIZE (6))
++              SYNTAX  FddiMACLongAddressType -- DisplayString (SIZE (6))
+               ACCESS  read-only
+               STATUS  mandatory
+               DESCRIPTION
+@@ -903,7 +905,7 @@
+               ::= { fddimibMACEntry 10 }
+ 
+           fddimibMACOldUpstreamNbr OBJECT-TYPE
+-              SYNTAX  FddiMACLongAddressType -- OCTET STRING (SIZE (6))
++              SYNTAX  FddiMACLongAddressType -- DisplayString (SIZE (6))
+               ACCESS  read-only
+               STATUS  mandatory
+               DESCRIPTION
+@@ -918,7 +920,7 @@
+               ::= { fddimibMACEntry 11 }
+ 
+           fddimibMACOldDownstreamNbr OBJECT-TYPE
+-              SYNTAX  FddiMACLongAddressType -- OCTET STRING (SIZE (6))
++              SYNTAX  FddiMACLongAddressType -- DisplayString (SIZE (6))
+               ACCESS  read-only
+               STATUS  mandatory
+               DESCRIPTION
+@@ -984,7 +986,7 @@
+               ::= { fddimibMACEntry 15 }
+ 
+           fddimibMACSMTAddress OBJECT-TYPE
+-              SYNTAX  FddiMACLongAddressType -- OCTET STRING (SIZE (6))
++              SYNTAX  FddiMACLongAddressType -- DisplayString (SIZE (6))
+               ACCESS  read-only
+               STATUS  mandatory
+               DESCRIPTION
+@@ -1716,7 +1718,7 @@
+                   fddimibPORTCurrentPath
+                           INTEGER,
+                   fddimibPORTRequestedPaths
+-                          OCTET STRING,
++                          DisplayString,
+                   fddimibPORTMACPlacement
+                           FddiResourceId,
+                   fddimibPORTAvailablePaths
+@@ -1861,7 +1863,7 @@
+               ::= { fddimibPORTEntry 7 }
+ 
+           fddimibPORTRequestedPaths OBJECT-TYPE
+-              SYNTAX  OCTET STRING (SIZE (3))
++              SYNTAX  DisplayString (SIZE (3))
+               ACCESS  read-write
+               STATUS  mandatory
+               DESCRIPTION

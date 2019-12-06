@@ -1,0 +1,58 @@
+diff --git a/mibs/cisco/cat3750/v2/CISCO-QOS-PIB-MIB.my b/mibs/cisco/cat3750/v2/CISCO-QOS-PIB-MIB.my
+index bdf7d0b..0cbb154 100644
+--- a/mibs/cisco/cat3750/v2/CISCO-QOS-PIB-MIB.my
++++ b/mibs/cisco/cat3750/v2/CISCO-QOS-PIB-MIB.my
+@@ -147,7 +147,7 @@ QosInterfaceQueueType ::= TEXTUAL-CONVENTION
+         oneP2Q2t(31),   oneP3Q1t(32),   oneP7Q8t(33),    oneP3Q8t(34),
+         sixteenQ8t(35), oneP15Q8t(36),  oneP15Q1t(37),   oneP7Q1t(38),
+         oneP31Q1t(39),  thirtytwoQ1t(40), thirtytwoQ8t(41),
+-        oneP31Q8t(42),  oneP7Q4t(43),   oneP3Q4t(44),    oneP7Q2t(45) 
++        oneP31Q8t(42),  oneP7Q4t(43),   oneP3Q4t(44),    oneP7Q2t(45)
+     }
+ 
+ QosInterfaceTypeCapabilities ::= TEXTUAL-CONVENTION
+@@ -189,7 +189,7 @@ QosInterfaceTypeCapabilities ::= TEXTUAL-CONVENTION
+ --     DESCRIPTION
+ --         "A display string where valid letters are a-z, A-Z, 0-9,
+ --         ., - and _.  Name can not start with an '_'.
+---     SYNTAX OCTET STRING (SIZE (1..31))
++--     SYNTAX DisplayString (SIZE (1..31))
+ 
+ -- Role Combination
+ --
+@@ -199,7 +199,7 @@ RoleCombination ::= TEXTUAL-CONVENTION
+         "A Display string consisting of a set of roles concatenated
+         with a '+' character where the roles are in lexicographic
+         order from minimum to maximum."
+-    SYNTAX OCTET STRING (SIZE (0..255))
++    SYNTAX DisplayString (SIZE (0..255))
+ 
+ -- Policy Instance Index
+ --
+@@ -271,7 +271,7 @@ qosDevicePibIncarnationEntry OBJECT-TYPE
+ QosDevicePibIncarnationEntry ::= SEQUENCE {
+         qosDeviceIncarnationId   PolicyInstanceId,
+         qosDevicePdpName         DisplayString,
+-        qosDevicePibIncarnation  OCTET STRING,
++        qosDevicePibIncarnation  DisplayString,
+         qosDevicePibTtl          Unsigned32
+     }
+ 
+@@ -294,7 +294,7 @@ qosDevicePdpName OBJECT-TYPE
+         ::= { qosDevicePibIncarnationEntry 2 }
+ 
+ qosDevicePibIncarnation OBJECT-TYPE
+-    SYNTAX OCTET STRING (SIZE (128))
++    SYNTAX DisplayString (SIZE (128))
+     MAX-ACCESS read-only
+     STATUS current
+     DESCRIPTION
+@@ -1787,7 +1787,7 @@ qosPIBCompliance MODULE-COMPLIANCE
+     STATUS current
+     DESCRIPTION
+         "The compliance statement for the QOS Policy Derived MIB."
+-    MODULE        
++    MODULE
+     MANDATORY-GROUPS {
+         qosDevicePibIncarnationTableGroup,
+         qosDeviceAttributeTableGroup,

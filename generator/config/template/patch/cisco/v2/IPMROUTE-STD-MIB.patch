@@ -1,0 +1,31 @@
+diff --git a/mibs/cisco/cat3750/v2/IPMROUTE-STD-MIB.my b/mibs/cisco/cat3750/v2/IPMROUTE-STD-MIB.my
+index 37b8bf5..61c7a3e 100644
+--- a/mibs/cisco/cat3750/v2/IPMROUTE-STD-MIB.my
++++ b/mibs/cisco/cat3750/v2/IPMROUTE-STD-MIB.my
+@@ -5,7 +5,7 @@
+ --
+ -- Copyright (c) 2000, 2001 by cisco Systems, Inc.
+ -- All rights reserved.
+--- 
++--
+ -- *****************************************************************
+ 
+ -- This mib was extracted from RFC 2932.
+@@ -17,7 +17,7 @@ IMPORTS
+     Integer32, Counter32, Counter64, Gauge32,
+     IpAddress, TimeTicks             FROM SNMPv2-SMI
+     RowStatus, TEXTUAL-CONVENTION,
+-    TruthValue                       FROM SNMPv2-TC
++    TruthValue, DisplayString        FROM SNMPv2-TC
+     MODULE-COMPLIANCE, OBJECT-GROUP  FROM SNMPv2-CONF
+     SnmpAdminString                  FROM SNMP-FRAMEWORK-MIB
+     InterfaceIndexOrZero,
+@@ -67,7 +67,7 @@ LanguageTag ::= TEXTUAL-CONVENTION
+             represent with this syntax.  Sampling of language tags in
+             current use on the Internet suggests that this limit does
+             not pose a serious problem in practice."
+-   SYNTAX       OCTET STRING (SIZE (1..100))
++   SYNTAX       DisplayString (SIZE (1..100))
+ 
+ 
+ -- Top-level structure of the MIB

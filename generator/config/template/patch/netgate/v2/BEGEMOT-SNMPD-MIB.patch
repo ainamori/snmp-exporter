@@ -1,0 +1,130 @@
+diff --git a/mibs/netgate/pfsense/v2/BEGEMOT-SNMPD.txt b/mibs/netgate/pfsense/v2/BEGEMOT-SNMPD.txt
+index 3262ada..b70c861 100644
+--- a/mibs/netgate/pfsense/v2/BEGEMOT-SNMPD.txt
++++ b/mibs/netgate/pfsense/v2/BEGEMOT-SNMPD.txt
+@@ -4,7 +4,7 @@
+ --	All rights reserved.
+ --
+ -- Author: Harti Brandt <harti@freebsd.org>
+--- 
++--
+ -- Redistribution and use in source and binary forms, with or without
+ -- modification, are permitted provided that the following conditions
+ -- are met:
+@@ -13,7 +13,7 @@
+ -- 2. Redistributions in binary form must reproduce the above copyright
+ --    notice, this list of conditions and the following disclaimer in the
+ --    documentation and/or other materials provided with the distribution.
+--- 
++--
+ -- THIS SOFTWARE IS PROVIDED BY AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ -- ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ -- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+@@ -36,7 +36,7 @@ IMPORTS
+     MODULE-IDENTITY, OBJECT-TYPE, OBJECT-IDENTITY, Counter32,
+     Unsigned32, IpAddress
+ 	FROM SNMPv2-SMI
+-    TEXTUAL-CONVENTION, TruthValue, RowStatus
++    TEXTUAL-CONVENTION, TruthValue, RowStatus, DisplayString
+ 	FROM SNMPv2-TC
+     MODULE-COMPLIANCE, OBJECT-GROUP
+ 	FROM SNMPv2-CONF
+@@ -72,7 +72,7 @@ SectionName ::= TEXTUAL-CONVENTION
+     DESCRIPTION
+ 	"Name of a loadable module. Should consist of alphanumeric characers
+ 	only, the first character must be a letter."
+-    SYNTAX	OCTET STRING (SIZE(1..14))
++    SYNTAX	DisplayString (SIZE(1..14))
+ 
+ -- --------------------------------------------------------------------------
+ --
+@@ -273,8 +273,8 @@ begemotSnmpdCommunityEntry OBJECT-TYPE
+ BegemotSnmpdCommunityEntry ::= SEQUENCE {
+     begemotSnmpdCommunityModule	SectionName,
+     begemotSnmpdCommunityIndex	Unsigned32,
+-    begemotSnmpdCommunityString	OCTET STRING,
+-    begemotSnmpdCommunityDescr	OCTET STRING
++    begemotSnmpdCommunityString	DisplayString,
++    begemotSnmpdCommunityDescr	DisplayString
+ }
+ 
+ begemotSnmpdCommunityModule OBJECT-TYPE
+@@ -295,7 +295,7 @@ begemotSnmpdCommunityIndex OBJECT-TYPE
+     ::= { begemotSnmpdCommunityEntry 2 }
+ 
+ begemotSnmpdCommunityString OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-write
+     STATUS	current
+     DESCRIPTION
+@@ -303,7 +303,7 @@ begemotSnmpdCommunityString OBJECT-TYPE
+     ::= { begemotSnmpdCommunityEntry 3 }
+ 
+ begemotSnmpdCommunityDescr OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -333,8 +333,8 @@ begemotSnmpdModuleEntry OBJECT-TYPE
+ 
+ BegemotSnmpdModuleEntry ::= SEQUENCE {
+     begemotSnmpdModuleSection	SectionName,
+-    begemotSnmpdModulePath	OCTET STRING,
+-    begemotSnmpdModuleComment	OCTET STRING
++    begemotSnmpdModulePath	DisplayString,
++    begemotSnmpdModuleComment	DisplayString
+ }
+ 
+ begemotSnmpdModuleSection OBJECT-TYPE
+@@ -348,7 +348,7 @@ begemotSnmpdModuleSection OBJECT-TYPE
+ 
+ 
+ begemotSnmpdModulePath OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-create
+     STATUS	current
+     DESCRIPTION
+@@ -358,7 +358,7 @@ begemotSnmpdModulePath OBJECT-TYPE
+     ::= { begemotSnmpdModuleEntry 2 }
+ 
+ begemotSnmpdModuleComment OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-only
+     STATUS	current
+     DESCRIPTION
+@@ -471,13 +471,13 @@ begemotSnmpdLocalPortEntry OBJECT-TYPE
+     ::= { begemotSnmpdLocalPortTable 1 }
+ 
+ BegemotSnmpdLocalPortEntry ::= SEQUENCE {
+-    begemotSnmpdLocalPortPath	OCTET STRING,
++    begemotSnmpdLocalPortPath	DisplayString,
+     begemotSnmpdLocalPortStatus	INTEGER,
+     begemotSnmpdLocalPortType	INTEGER
+ }
+ 
+ begemotSnmpdLocalPortPath OBJECT-TYPE
+-    SYNTAX	OCTET STRING (SIZE(1..104))
++    SYNTAX	DisplayString (SIZE(1..104))
+     MAX-ACCESS	not-accessible
+     STATUS	current
+     DESCRIPTION
+@@ -532,13 +532,13 @@ begemotSnmpdTransportEntry OBJECT-TYPE
+     ::= { begemotSnmpdTransportTable 1 }
+ 
+ BegemotSnmpdTransportEntry ::= SEQUENCE {
+-    begemotSnmpdTransportName	OCTET STRING,
++    begemotSnmpdTransportName	DisplayString,
+     begemotSnmpdTransportStatus	INTEGER,
+     begemotSnmpdTransportOid	OBJECT IDENTIFIER
+ }
+ 
+ begemotSnmpdTransportName OBJECT-TYPE
+-    SYNTAX	OCTET STRING (SIZE(1..256))
++    SYNTAX	DisplayString (SIZE(1..256))
+     MAX-ACCESS	not-accessible
+     STATUS	current
+     DESCRIPTION

@@ -1,0 +1,2181 @@
+diff --git a/mibs/cisco/wlc/v2/CISCO-VTP-MIB.my b/mibs/cisco/wlc/v2/CISCO-VTP-MIB.my
+index 7f6f266..dc451d9 100644
+--- a/mibs/cisco/wlc/v2/CISCO-VTP-MIB.my
++++ b/mibs/cisco/wlc/v2/CISCO-VTP-MIB.my
+@@ -1,17 +1,17 @@
+ -- *****************************************************************
+ -- Cisco VTP MIB
+---   
++--
+ -- February, 1997 Chris Young
+ -- April, 2003  Wen Xu
+ -- July, 2003  Wen Xu
+ -- August, 2003  Wen Xu
+ -- November, 2003  Wen Xu
+ -- February, 2004  Wen Xu
+---   
++--
+ -- Copyright (c) 1996-2013 by Cisco Systems Inc.
+ -- All rights reserved.
+ -- *****************************************************************
+---   
++--
+ 
+ CISCO-VTP-MIB DEFINITIONS ::= BEGIN
+ 
+@@ -67,7 +67,7 @@ ciscoVtpMIB MODULE-IDENTITY
+ 
+             Tel: +1 800 553-NETS
+ 
+-            E-mail: cs-wbu@cisco.com, 
++            E-mail: cs-wbu@cisco.com,
+                     cs-lan-switch-snmp@cisco.com"
+     DESCRIPTION
+         "The MIB module for entities implementing the VTP
+@@ -113,15 +113,15 @@ ciscoVtpMIB MODULE-IDENTITY
+     REVISION        "200311210000Z"
+     DESCRIPTION
+         "Add vtpInternalVlanGrp to configure internal
+-        VLANs' allocation policy and show the owner 
++        VLANs' allocation policy and show the owner
+         application names."
+     REVISION        "200308080000Z"
+     DESCRIPTION
+         "Split vtpConfigNotificationsGroup into two groups:
+-        vtpConfigNotificationsGroupRev1 and 
++        vtpConfigNotificationsGroupRev1 and
+         vtpConfigNotificationsGroup5. Write a new compliance
+         statement to list vtpConfigNotificationsGroupRev1 in
+-        instead of vtpConfigNotificationsGroup in the 
++        instead of vtpConfigNotificationsGroup in the
+         MANDATORY-GROUPS."
+     REVISION        "200307110000Z"
+     DESCRIPTION
+@@ -129,27 +129,27 @@ ciscoVtpMIB MODULE-IDENTITY
+     REVISION        "200304160000Z"
+     DESCRIPTION
+         "Add support for VTP version 3 features.
+-        -- Add enumerators and modify the 'DESCRIPTION' of 6 
+-           existing objects: 
++        -- Add enumerators and modify the 'DESCRIPTION' of 6
++           existing objects:
+            vtpVersion, managementDomainLocalMode,
+-           managementDomainConfigRevNumber, 
++           managementDomainConfigRevNumber,
+            managementDomainLastUpdater,
+-           managementDomainLastChange,  
++           managementDomainLastChange,
+            managementDomainVersionInUse.
+-        -- Add 3 new groups: vtpAuthGroup, 
++        -- Add 3 new groups: vtpAuthGroup,
+            vtpDiscoverGroup, vtpDatabaseGroup."
+     REVISION        "200204100000Z"
+     DESCRIPTION
+         "-- Add 4 new notifications/traps vtpLocalModeChanged,
+-        vtpVersionInUseChanged, vtpVlanCreated and 
+-        vtpVlanDeleted. 
+-        -- Add 2 new objects vtpVlanCreatedNotifEnabled and 
++        vtpVersionInUseChanged, vtpVlanCreated and
++        vtpVlanDeleted.
++        -- Add 2 new objects vtpVlanCreatedNotifEnabled and
+         vtpVlanDeletedNotifEnabled to control the
+         generation of vtpVlanCreated and vtpVlanDeleted.
+         -- Use vtpNotificationsEnabled to control the
+         generation of vtpLocalModeChanged and
+         vtpVersionInUseChanged by grouping them in a
+-        new group vtpConfigNotificationsGroup2.  
++        new group vtpConfigNotificationsGroup2.
+         -- Deprecate the object vlanTrunkPortsDot1qTag and
+         its related group."
+     REVISION        "200202280000Z"
+@@ -234,7 +234,7 @@ VlanIndex ::= TEXTUAL-CONVENTION
+ 
+         For a new object which needs the vlan-id of a VLAN as
+         its SYNTAX, it is suggested to import VlanIndex from
+-        Q-BRIDGE-MIB instead of importing this TC here in 
++        Q-BRIDGE-MIB instead of importing this TC here in
+         CISCO-VTP-MIB."
+     SYNTAX          Integer32 (0..4095)
+ 
+@@ -276,9 +276,9 @@ VlanTypeExt ::= TEXTUAL-CONVENTION
+     STATUS          current
+     DESCRIPTION
+         "The additional type information of VLAN.
+-        vtpmanageable(0)    An user defined VLAN which is 
++        vtpmanageable(0)    An user defined VLAN which is
+                             manageable through VTP protocol.
+-                            The value of this bit cannot be 
++                            The value of this bit cannot be
+                             changed.
+         internal(1)         An internal VLAN created by the device.
+                             Internal VLANs cannot be created or
+@@ -297,7 +297,7 @@ VlanTypeExt ::= TEXTUAL-CONVENTION
+                             be modified.
+         dynamicGvrp(4)      A VLAN dynamically created by GVRP
+                             (GARP VLAN Registration Protocol)
+-                            propagation. The value of this bit 
++                            propagation. The value of this bit
+                             cannot be changed."
+ 
+     REFERENCE       "RFC2674."
+@@ -327,7 +327,7 @@ vtpVersion OBJECT-TYPE
+         "The version of VTP in use on the local system.  A device
+         will report its version capability and not any particular
+         version in use on the device. If the device does not support
+-        vtp, the version is none(3)." 
++        vtp, the version is none(3)."
+     ::= { vtpStatus 1 }
+ 
+ vtpMaxVlanStorage OBJECT-TYPE
+@@ -340,7 +340,7 @@ vtpMaxVlanStorage OBJECT-TYPE
+         reboot.  If the number of defined VLANs is greater than this
+         value, then the system can not act as a VTP Server. For a
+         device which has no means to calculate the estimated number,
+-        this value is -1." 
++        this value is -1."
+     ::= { vtpStatus 2 }
+ 
+ vtpNotificationsEnabled OBJECT-TYPE
+@@ -350,7 +350,7 @@ vtpNotificationsEnabled OBJECT-TYPE
+     DESCRIPTION
+         "An indication of whether the notifications/traps defined by
+         the vtpConfigNotificationsGroup, vtpConfigNotificationsGroup2,
+-        and vtpConfigNotificationsGroup8 are enabled." 
++        and vtpConfigNotificationsGroup8 are enabled."
+     ::= { vtpStatus 3 }
+ 
+ vtpVlanCreatedNotifEnabled OBJECT-TYPE
+@@ -359,13 +359,13 @@ vtpVlanCreatedNotifEnabled OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "An indication of whether the notification should
+-        be generated when a VLAN is created. 
++        be generated when a VLAN is created.
+ 
+         If the value of this object is 'true' then the
+         vtpVlanCreated notification will be generated.
+ 
+         If the value of this object is 'false' then the
+-        vtpVlanCreated notification will not be generated." 
++        vtpVlanCreated notification will not be generated."
+     ::= { vtpStatus 4 }
+ 
+ vtpVlanDeletedNotifEnabled OBJECT-TYPE
+@@ -374,13 +374,13 @@ vtpVlanDeletedNotifEnabled OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "An indication of whether the notification should
+-        be generated when a VLAN is deleted.  
++        be generated when a VLAN is deleted.
+ 
+         If the value of this object is 'true' then the
+         vtpVlanDeleted notification will be generated.
+ 
+         If the value of this object is 'false' then the
+-        vtpVlanDeleted notification will not be generated." 
++        vtpVlanDeleted notification will not be generated."
+     ::= { vtpStatus 5 }
+ -- VTP Management Domains
+ 
+@@ -389,7 +389,7 @@ vlanManagementDomains  OBJECT IDENTIFIER
+ 
+ 
+ managementDomainTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF ManagementDomainEntry 
++    SYNTAX          SEQUENCE OF ManagementDomainEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -399,7 +399,7 @@ managementDomainTable OBJECT-TYPE
+         in this table, and will not let it be deleted nor let other
+         rows be created.  Devices which support multiple management
+         domains will allow rows to be created and deleted, but will
+-        not allow the last row to be deleted. If the device does 
++        not allow the last row to be deleted. If the device does
+         not support VTP, the table is read-only."
+     ::= { vlanManagementDomains 1 }
+ 
+@@ -409,7 +409,7 @@ managementDomainEntry OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Information about the status of one management domain."
+-    INDEX           { managementDomainIndex } 
++    INDEX           { managementDomainIndex }
+     ::= { managementDomainTable 1 }
+ 
+ ManagementDomainEntry ::= SEQUENCE {
+@@ -440,7 +440,7 @@ managementDomainIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "An arbitrary value to uniquely identify the management
+-        domain on the local system." 
++        domain on the local system."
+     ::= { managementDomainEntry 1 }
+ 
+ managementDomainName OBJECT-TYPE
+@@ -464,7 +464,7 @@ managementDomainName OBJECT-TYPE
+         modified by network management, the local system should re-
+         initialize its VLAN information (for the given management
+         domain) as if it had just been configured with a management
+-        domain name at installation time." 
++        domain name at installation time."
+     ::= { managementDomainEntry 2 }
+ 
+ managementDomainLocalMode OBJECT-TYPE
+@@ -481,8 +481,8 @@ managementDomainLocalMode OBJECT-TYPE
+         managementDomainVersionInUse is version1(1) or
+         version2(2).
+ 
+-        If managementDomainVersionInUse is version3(4), this 
+-        object has the same value with vtpDatabaseLocalMode 
++        If managementDomainVersionInUse is version3(4), this
++        object has the same value with vtpDatabaseLocalMode
+         of VLAN database type.
+ 
+         - 'client' indicates that the local system is acting
+@@ -498,7 +498,7 @@ managementDomainLocalMode OBJECT-TYPE
+           large for it to hold in DRAM.
+ 
+         - 'off' indicates that the local system does not
+-          generate, listen to or forward any VTP messages." 
++          generate, listen to or forward any VTP messages."
+     ::= { managementDomainEntry 3 }
+ 
+ managementDomainConfigRevNumber OBJECT-TYPE
+@@ -507,17 +507,17 @@ managementDomainConfigRevNumber OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The current Configuration Revision Number as known by
+-        the local device for this management domain when 
+-        managementDomainVersionInUse is version1(1) or 
++        the local device for this management domain when
++        managementDomainVersionInUse is version1(1) or
+         version2(2).
+ 
+-        If managementDomainVersionInUse is version3(4), this 
+-        object has the same value with vtpDatabaseRevisionNumber 
++        If managementDomainVersionInUse is version3(4), this
++        object has the same value with vtpDatabaseRevisionNumber
+         of VLAN database type.
+ 
+         This value is updated (if necessary) whenever a VTP
+         advertisement is received or generated. When in the
+-        'no management-domain' state, this value is 0." 
++        'no management-domain' state, this value is 0."
+     ::= { managementDomainEntry 4 }
+ 
+ managementDomainLastUpdater OBJECT-TYPE
+@@ -529,13 +529,13 @@ managementDomainLastUpdater OBJECT-TYPE
+         last updated the Configuration Revision Number, as indicated
+         in the most recently received VTP advertisement for this
+         management domain, when managementDomainVersionInUse is
+-        version1(1) or version2(2). 
++        version1(1) or version2(2).
+ 
+         If managementDomainVersionInUse is version3(4), this object
+         has the value of 0.0.0.0.
+ 
+         Before an advertisement has been received, this value is
+-        0.0.0.0." 
++        0.0.0.0."
+     ::= { managementDomainEntry 5 }
+ 
+ managementDomainLastChange OBJECT-TYPE
+@@ -547,14 +547,14 @@ managementDomainLastChange OBJECT-TYPE
+         (last) increased to its current value, as indicated in the
+         most recently received VTP advertisement for this management
+         domain when managementDomainVersionInUse is not version3(4)
+-        or in the most recently received VTP VLAN database 
+-        advertisement for this management domain when 
++        or in the most recently received VTP VLAN database
++        advertisement for this management domain when
+         managementDomainVersionInUse is version3(4).
+ 
+         The value 0x0000010100000000 indicates that the device which
+         last increased the Configuration Revision Number had no idea
+         of the date/time, or that no advertisement has been
+-        received." 
++        received."
+     ::= { managementDomainEntry 6 }
+ 
+ managementDomainRowStatus OBJECT-TYPE
+@@ -562,7 +562,7 @@ managementDomainRowStatus OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "The status of this conceptual row." 
++        "The status of this conceptual row."
+     ::= { managementDomainEntry 7 }
+ 
+ managementDomainTftpServer OBJECT-TYPE
+@@ -573,7 +573,7 @@ managementDomainTftpServer OBJECT-TYPE
+         "The IP address of a TFTP Server in/from which VTP VLAN
+         information for this management domain is to be
+         stored/retrieved.  If the information is being locally
+-        stored in NVRAM, this object should take the value 0.0.0.0." 
++        stored in NVRAM, this object should take the value 0.0.0.0."
+     ::= { managementDomainEntry 8 }
+ 
+ managementDomainTftpPathname OBJECT-TYPE
+@@ -586,7 +586,7 @@ managementDomainTftpPathname OBJECT-TYPE
+         in/from which VTP VLAN information for this management
+         domain is to be stored/retrieved.  If the value of
+         corresponding instance of managementDomainTftpServer is
+-        0.0.0.0, the value of this object is ignored." 
++        0.0.0.0, the value of this object is ignored."
+     ::= { managementDomainEntry 9 }
+ 
+ managementDomainPruningState OBJECT-TYPE
+@@ -598,15 +598,15 @@ managementDomainPruningState OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "An indication of whether VTP pruning is enabled or disabled
+-        in this managament domain. 
+-
+-        This object can only be modified, either when the 
+-        corresponding instance value of managementDomainVersionInUse 
+-        is 'version1' or 'version2' and the corresponding instance 
+-        value of managementDomainLocalMode is 'server', or when the 
+-        corresponding instance value of managementDomainVersionInUse 
+-        is 'version3' and the corresponding instance value of 
+-        managementDomainLocalMode is 'server' or 'client'." 
++        in this managament domain.
++
++        This object can only be modified, either when the
++        corresponding instance value of managementDomainVersionInUse
++        is 'version1' or 'version2' and the corresponding instance
++        value of managementDomainLocalMode is 'server', or when the
++        corresponding instance value of managementDomainVersionInUse
++        is 'version3' and the corresponding instance value of
++        managementDomainLocalMode is 'server' or 'client'."
+     ::= { managementDomainEntry 10 }
+ 
+ managementDomainVersionInUse OBJECT-TYPE
+@@ -620,10 +620,10 @@ managementDomainVersionInUse OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The current version of the VTP that is in use by the
+-        designated management domain. 
++        designated management domain.
+ 
+-        This object can be set to none(3) only when 
+-        vtpVersion is none(3)." 
++        This object can be set to none(3) only when
++        vtpVersion is none(3)."
+     ::= { managementDomainEntry 11 }
+ 
+ managementDomainPruningStateOper OBJECT-TYPE
+@@ -635,7 +635,7 @@ managementDomainPruningStateOper OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Indicates whether VTP pruning is operationally enabled or
+-        disabled in this managament domain." 
++        disabled in this managament domain."
+     ::= { managementDomainEntry 12 }
+ 
+ managementDomainAdminSrcIf OBJECT-TYPE
+@@ -647,7 +647,7 @@ managementDomainAdminSrcIf OBJECT-TYPE
+         preferred source interface for the VTP IP updater address.
+ 
+         A zero length value indicates that a source interface is not
+-        specified." 
++        specified."
+     ::= { managementDomainEntry 13 }
+ 
+ managementDomainSourceOnlyMode OBJECT-TYPE
+@@ -656,19 +656,19 @@ managementDomainSourceOnlyMode OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The object specifies whether to use only the IP address of
+-        managementDomainAdminSrcIf as the VTP IP updater address. 
++        managementDomainAdminSrcIf as the VTP IP updater address.
+ 
+-        'true' indicates to only use the IP address of 
+-               managementDomainAdminSrcIf as the VTP IP 
+-               updater address. 
++        'true' indicates to only use the IP address of
++               managementDomainAdminSrcIf as the VTP IP
++               updater address.
+ 
+-        'false' indicates to use the IP address of 
+-                managementDomainAdminSrcIf as the VTP IP 
+-                updater address if managementDomainAdminSrcIf 
+-                is configured with an IP address.  Otherwise, the 
++        'false' indicates to use the IP address of
++                managementDomainAdminSrcIf as the VTP IP
++                updater address if managementDomainAdminSrcIf
++                is configured with an IP address.  Otherwise, the
+                 first available IP address of the system will
+                 be used."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { managementDomainEntry 14 }
+ 
+ managementDomainOperSrcIf OBJECT-TYPE
+@@ -680,7 +680,7 @@ managementDomainOperSrcIf OBJECT-TYPE
+         preferred source interface for the VTP IP updater address.
+ 
+         A zero length string indicates that a source interface is not
+-        available." 
++        available."
+     ::= { managementDomainEntry 15 }
+ 
+ managementDomainConfigFile OBJECT-TYPE
+@@ -692,7 +692,7 @@ managementDomainConfigFile OBJECT-TYPE
+         is stored in the format of <filename> or <devices>:[<filename>].
+ 
+         <device> can be (but not limited to): flash, bootflash,
+-        slot0, slot1, disk0." 
++        slot0, slot1, disk0."
+     ::= { managementDomainEntry 16 }
+ 
+ managementDomainLocalUpdaterType OBJECT-TYPE
+@@ -705,7 +705,7 @@ managementDomainLocalUpdaterType OBJECT-TYPE
+ 
+         The value of this object is 'unknown' if
+         managementDomainVersionInUse is 'version3' or
+-        managementDomainLocalMode is not 'server'." 
++        managementDomainLocalMode is not 'server'."
+     ::= { managementDomainEntry 17 }
+ 
+ managementDomainLocalUpdater OBJECT-TYPE
+@@ -714,7 +714,7 @@ managementDomainLocalUpdater OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The object indicates the Internet address of the
+-        preferred source interface for the VTP IP updater." 
++        preferred source interface for the VTP IP updater."
+     ::= { managementDomainEntry 18 }
+ 
+ managementDomainDeviceID OBJECT-TYPE
+@@ -726,9 +726,9 @@ managementDomainDeviceID OBJECT-TYPE
+         this device within a VTP Domain.
+ 
+         The value of this object is zero length string if
+-        managementDomainVersionInUse is not 'version3'." 
++        managementDomainVersionInUse is not 'version3'."
+     ::= { managementDomainEntry 19 }
+- 
++
+ 
+ -- VLAN information
+ 
+@@ -736,11 +736,11 @@ vlanInfo  OBJECT IDENTIFIER
+     ::= { vtpMIBObjects 3 }
+ 
+ -- Global information on current VLANs
+---   
++--
+ -- This information is maintained by VTP Clients and VTP Servers
+ 
+ vtpVlanTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF VtpVlanEntry 
++    SYNTAX          SEQUENCE OF VtpVlanEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -759,7 +759,7 @@ vtpVlanEntry OBJECT-TYPE
+     INDEX           {
+                         managementDomainIndex,
+                         vtpVlanIndex
+-                    } 
++                    }
+     ::= { vtpVlanTable 1 }
+ 
+ VtpVlanEntry ::= SEQUENCE {
+@@ -768,7 +768,7 @@ VtpVlanEntry ::= SEQUENCE {
+         vtpVlanType               VlanType,
+         vtpVlanName               DisplayString,
+         vtpVlanMtu                Integer32,
+-        vtpVlanDot10Said          OCTET STRING,
++        vtpVlanDot10Said          DisplayString,
+         vtpVlanRingNumber         Integer32,
+         vtpVlanBridgeNumber       Integer32,
+         vtpVlanStpType            INTEGER,
+@@ -788,7 +788,7 @@ vtpVlanIndex OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "The VLAN-id of this VLAN on ISL or 802.1q trunks." 
++        "The VLAN-id of this VLAN on ISL or 802.1q trunks."
+     ::= { vtpVlanEntry 1 }
+ 
+ vtpVlanState OBJECT-TYPE
+@@ -809,7 +809,7 @@ vtpVlanState OBJECT-TYPE
+ 
+         The state 'mtuTooBigForTrunk' indicates that while this
+         VLAN's MTU is supported by this device, it is too large for
+-        one or more of the device's trunk ports." 
++        one or more of the device's trunk ports."
+     ::= { vtpVlanEntry 2 }
+ 
+ vtpVlanType OBJECT-TYPE
+@@ -817,7 +817,7 @@ vtpVlanType OBJECT-TYPE
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+-        "The type of this VLAN." 
++        "The type of this VLAN."
+     ::= { vtpVlanEntry 3 }
+ 
+ vtpVlanName OBJECT-TYPE
+@@ -826,7 +826,7 @@ vtpVlanName OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The name of this VLAN.  This name is used as the ELAN-name
+-        for an ATM LAN-Emulation segment of this VLAN." 
++        for an ATM LAN-Emulation segment of this VLAN."
+     ::= { vtpVlanEntry 4 }
+ 
+ vtpVlanMtu OBJECT-TYPE
+@@ -836,15 +836,15 @@ vtpVlanMtu OBJECT-TYPE
+     DESCRIPTION
+         "The MTU size on this VLAN, defined as the size of largest
+         MAC-layer (information field portion of the) data frame
+-        which can be transmitted on the VLAN." 
++        which can be transmitted on the VLAN."
+     ::= { vtpVlanEntry 5 }
+ 
+ vtpVlanDot10Said OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (4))
++    SYNTAX          DisplayString (SIZE  (4))
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+-        "The value of the 802.10 SAID field for this VLAN." 
++        "The value of the 802.10 SAID field for this VLAN."
+     ::= { vtpVlanEntry 6 }
+ 
+ vtpVlanRingNumber OBJECT-TYPE
+@@ -855,7 +855,7 @@ vtpVlanRingNumber OBJECT-TYPE
+         "The ring number of this VLAN.  This object is only
+         instantiated when the value of the corresponding instance of
+         vtpVlanType has a value of 'fddi' or 'tokenRing' and Source
+-        Routing is in use on this VLAN." 
++        Routing is in use on this VLAN."
+     ::= { vtpVlanEntry 7 }
+ 
+ vtpVlanBridgeNumber OBJECT-TYPE
+@@ -865,7 +865,7 @@ vtpVlanBridgeNumber OBJECT-TYPE
+     DESCRIPTION
+         "The bridge number of the VTP-capable switches for this
+         VLAN.  This object is only instantiated for VLANs that are
+-        involved with emulating token ring segments." 
++        involved with emulating token ring segments."
+     ::= { vtpVlanEntry 8 }
+ 
+ vtpVlanStpType OBJECT-TYPE
+@@ -897,7 +897,7 @@ vtpVlanStpType OBJECT-TYPE
+         configured in a combination of SRT and SRB
+         vtpVlanBridgeTypes while the instance of
+         vtpVlanEditStpType that corresponds to this object is set
+-        to 'auto'." 
++        to 'auto'."
+     ::= { vtpVlanEntry 9 }
+ 
+ vtpVlanParentVlan OBJECT-TYPE
+@@ -908,9 +908,9 @@ vtpVlanParentVlan OBJECT-TYPE
+         "The parent VLAN for this VLAN.  This object is only
+         instantiated when the value of the corresponding instance of
+         vtpVlanType has a value of 'fddi' or 'tokenRing' and Source
+-        Routing is in use on this VLAN.  The parent VLAN must have 
+-        a vtpVlanType value of fddiNet(4) or trNet(5), 
+-        respectively." 
++        Routing is in use on this VLAN.  The parent VLAN must have
++        a vtpVlanType value of fddiNet(4) or trNet(5),
++        respectively."
+     ::= { vtpVlanEntry 10 }
+ 
+ vtpVlanTranslationalVlan1 OBJECT-TYPE
+@@ -921,7 +921,7 @@ vtpVlanTranslationalVlan1 OBJECT-TYPE
+         "A VLAN to which this VLAN is being translational-bridged.
+         If this value and the corresponding instance of
+         vtpVlanTranslationalVlan2 are both zero, then this VLAN is
+-        not being translational-bridged." 
++        not being translational-bridged."
+     ::= { vtpVlanEntry 11 }
+ 
+ vtpVlanTranslationalVlan2 OBJECT-TYPE
+@@ -933,7 +933,7 @@ vtpVlanTranslationalVlan2 OBJECT-TYPE
+         vtpVlanTranslationalVlan1, to which this VLAN is being
+         translational-bridged.  If this value and the corresponding
+         instance of vtpVlanTranslationalVlan1 are both zero, then
+-        this VLAN is not being translational-bridged." 
++        this VLAN is not being translational-bridged."
+     ::= { vtpVlanEntry 12 }
+ 
+ vtpVlanBridgeType OBJECT-TYPE
+@@ -945,10 +945,10 @@ vtpVlanBridgeType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The type of the Source Route bridging mode in use on this
+-        VLAN.  This object is only instantiated when the value of 
+-        the corresponding instance of vtpVlanType has a value of 
++        VLAN.  This object is only instantiated when the value of
++        the corresponding instance of vtpVlanType has a value of
+         fddi(2) or tokenRing(3) and Source Routing is in use on
+-        this VLAN." 
++        this VLAN."
+     ::= { vtpVlanEntry 13 }
+ 
+ vtpVlanAreHopCount OBJECT-TYPE
+@@ -960,7 +960,7 @@ vtpVlanAreHopCount OBJECT-TYPE
+         All Routes Explorer frames on this VLAN.  This
+         object is only instantiated when the value of the
+         corresponding instance of vtpVlanType has a value of fddi(2)
+-        or tokenRing(3) and Source Routing is in use on this VLAN." 
++        or tokenRing(3) and Source Routing is in use on this VLAN."
+     ::= { vtpVlanEntry 14 }
+ 
+ vtpVlanSteHopCount OBJECT-TYPE
+@@ -972,7 +972,7 @@ vtpVlanSteHopCount OBJECT-TYPE
+         Spanning Tree Explorer frames on this VLAN.  This
+         object is only instantiated when the value of the
+         corresponding instance of vtpVlanType has a value of fddi(2)
+-        or tokenRing(3) and Source Routing is in use on this VLAN." 
++        or tokenRing(3) and Source Routing is in use on this VLAN."
+     ::= { vtpVlanEntry 15 }
+ 
+ vtpVlanIsCRFBackup OBJECT-TYPE
+@@ -981,7 +981,7 @@ vtpVlanIsCRFBackup OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "True if this VLAN is of type trCrf and also is acting as
+-        a backup trCrf for the ISL distributed BRF" 
++        a backup trCrf for the ISL distributed BRF"
+     ::= { vtpVlanEntry 16 }
+ 
+ vtpVlanTypeExt OBJECT-TYPE
+@@ -989,7 +989,7 @@ vtpVlanTypeExt OBJECT-TYPE
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+-        "The additional type information of this VLAN." 
++        "The additional type information of this VLAN."
+     ::= { vtpVlanEntry 17 }
+ 
+ vtpVlanIfIndex OBJECT-TYPE
+@@ -998,10 +998,10 @@ vtpVlanIfIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The value of the ifIndex corresponding to this VLAN ID.
+-        If the VLAN ID does not have its corresponding interface, 
+-        this object has the value of zero." 
++        If the VLAN ID does not have its corresponding interface,
++        this object has the value of zero."
+     ::= { vtpVlanEntry 18 }
+- 
++
+ 
+ internalVlanInfo  OBJECT IDENTIFIER
+     ::= { vlanInfo 2 }
+@@ -1018,24 +1018,24 @@ vtpInternalVlanAllocPolicy OBJECT-TYPE
+         "The internal VLAN allocation policy.
+ 
+         'ascending'  - internal VLANs are allocated
+-                       starting from a lowwer VLAN ID and 
++                       starting from a lowwer VLAN ID and
+                        upwards.
+         'descending' - internal VLANs are allocated
+                        starting from a higher VLAN ID and
+-                       downwards." 
++                       downwards."
+     ::= { internalVlanInfo 1 }
+ 
+ vtpInternalVlanTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF VtpInternalVlanEntry 
++    SYNTAX          SEQUENCE OF VtpInternalVlanEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "A vtpInternalVlanTable entry contains
+         information on an existing internal
+         VLAN. It is internally created by the
+-        device for a specific application program 
+-        and hence owned by the application.  
+-        It cannot be modified or deleted by (local 
++        device for a specific application program
++        and hence owned by the application.
++        It cannot be modified or deleted by (local
+         or network) management."
+     ::= { internalVlanInfo 2 }
+ 
+@@ -1049,7 +1049,7 @@ vtpInternalVlanEntry OBJECT-TYPE
+     INDEX           {
+                         managementDomainIndex,
+                         vtpVlanIndex
+-                    } 
++                    }
+     ::= { vtpInternalVlanTable 1 }
+ 
+ VtpInternalVlanEntry ::= SEQUENCE {
+@@ -1065,20 +1065,20 @@ vtpInternalVlanOwner OBJECT-TYPE
+         owner application. This internal VLAN
+         is allocated by the device specifically
+         for this application and no one else
+-        could create, modify or delete this 
+-        VLAN." 
++        could create, modify or delete this
++        VLAN."
+     ::= { vtpInternalVlanEntry 1 }
+- 
++
+ 
+ -- Modification of Global VLAN Information
+---   
++--
+ -- To change the global information on current VLANs, including
+ -- creating, modifying or deleting them,
+ -- . the current VLAN information is copied to the "Edit buffer",
+ -- . the information in the Edit buffer is modified as appropriate,
+ -- . an 'apply' is invoked to attempt to instanciate the modified
+ -- contents of the Edit Buffer as the new global VLAN information.
+---   
++--
+ -- Only one manager can edit the Edit Buffer at a time.  So, a
+ -- request to copy the current VLAN information into the Edit Buffer
+ -- must fail if the Edit Buffer is already in use (i.e., is not empty).
+@@ -1086,7 +1086,7 @@ vtpInternalVlanOwner OBJECT-TYPE
+ -- Edit Buffer are resolved according to whichever of them succeeds
+ -- in performing a successful copy.  An OwnerString object provides
+ -- information on which manager currently has access.
+---   
++--
+ -- Ownership of the Edit Buffer terminates when a NMS explicitly
+ -- releases it, or when a deadman-timer expires.  The deadman-timer
+ -- has a fixed expiry interval of 5 minutes.  The deadman-timer is
+@@ -1099,7 +1099,7 @@ vtpInternalVlanOwner OBJECT-TYPE
+ -- operation allows the results of the apply operation to be retained
+ -- until the requesting manager has retrieved them, but for only a
+ -- limited amount of time.
+---   
++--
+ -- When managementDomainVersionInUse is version1(1) or version2(2),
+ -- the local device with managementDomainLocalMode as server(2)
+ -- could change the global VLAN configuration by editing the VLAN
+@@ -1120,7 +1120,7 @@ vlanEdit  OBJECT IDENTIFIER
+ 
+ 
+ vtpEditControlTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF VtpEditControlEntry 
++    SYNTAX          SEQUENCE OF VtpEditControlEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -1139,7 +1139,7 @@ vtpEditControlEntry OBJECT-TYPE
+     DESCRIPTION
+         "Control information for editing the VLANs in one management
+         domain."
+-    AUGMENTS           { managementDomainEntry  } 
++    AUGMENTS           { managementDomainEntry  }
+     ::= { vtpEditControlTable 1 }
+ 
+ VtpEditControlEntry ::= SEQUENCE {
+@@ -1186,7 +1186,7 @@ vtpVlanEditOperation OBJECT-TYPE
+ 
+          'restartTimer' - restarts the deadman-timer.
+ 
+-         'none' - no operation is performed." 
++         'none' - no operation is performed."
+     ::= { vtpEditControlEntry 1 }
+ 
+ vtpVlanApplyStatus OBJECT-TYPE
+@@ -1219,7 +1219,7 @@ vtpVlanApplyStatus OBJECT-TYPE
+ 
+            configNumberError - the apply failed because the value of
+                   vtpVlanEditConfigRevNumber was less or equal to
+-                  the value of current value of 
++                  the value of current value of
+                   managementDomainConfigRevNumber;
+ 
+            inconsistentEdit - the apply failed because the modified
+@@ -1243,10 +1243,10 @@ vtpVlanApplyStatus OBJECT-TYPE
+            someOtherError - the apply failed for some other reason
+                   (e.g., insufficient memory).
+ 
+-           notPrimaryServer - the apply failed because the local 
+-                  device is not a VTP primary server for VLAN 
++           notPrimaryServer - the apply failed because the local
++                  device is not a VTP primary server for VLAN
+                   database type when managementDomainVersionInUse
+-                  is version3(4)." 
++                  is version3(4)."
+     ::= { vtpEditControlEntry 2 }
+ 
+ vtpVlanEditBufferOwner OBJECT-TYPE
+@@ -1259,7 +1259,7 @@ vtpVlanEditBufferOwner OBJECT-TYPE
+         a management domain is not currently in use, the value of
+         this object is the zero-length string.  Note that it is also
+         the zero-length string if a manager fails to set this object
+-        when invoking a copy operation." 
++        when invoking a copy operation."
+     ::= { vtpEditControlEntry 3 }
+ 
+ vtpVlanEditConfigRevNumber OBJECT-TYPE
+@@ -1270,11 +1270,11 @@ vtpVlanEditConfigRevNumber OBJECT-TYPE
+         "The Configuration Revision Number to be used for the next
+         apply operation.  This value is initialized (by the agent)
+         on a copy operation to be one greater than the value of
+-        managementDomainConfigRevNumber. On an apply, if the 
+-        number is less or equal to the value of 
++        managementDomainConfigRevNumber. On an apply, if the
++        number is less or equal to the value of
+         managementDomainConfigRevNumber, then the apply fails.
+         The value can be modified (increased) by network management
+-        before an apply to ensure that an apply does not fail for 
++        before an apply to ensure that an apply does not fail for
+         this reason.
+ 
+         This object is used to allow management control over whether
+@@ -1285,7 +1285,7 @@ vtpVlanEditConfigRevNumber OBJECT-TYPE
+         this situation.  By increasing this object's value after the
+         copy but before the apply, management can control whether
+         the apply is to succeed (with the update via VTP
+-        advertisement being lost)." 
++        advertisement being lost)."
+     ::= { vtpEditControlEntry 4 }
+ 
+ vtpVlanEditModifiedVlan OBJECT-TYPE
+@@ -1294,23 +1294,23 @@ vtpVlanEditModifiedVlan OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The VLAN-id of the modified VLAN in the Edit Buffer.
+-        If the object has the value of zero, any VLAN can 
++        If the object has the value of zero, any VLAN can
+         be edited. If the value of the object is not zero,
+         only this VLAN can be edited.
+ 
+         The object's value is reset to zero after a successful
+-        'apply' operation or a 'release' operation. 
++        'apply' operation or a 'release' operation.
+ 
+-        This object is only supported for devices which allow 
++        This object is only supported for devices which allow
+         only one VLAN editing for each 'apply' operation. For
+         devices which allow multiple VLAN editing for each
+-        'apply' operation, this object is not supported." 
++        'apply' operation, this object is not supported."
+     ::= { vtpEditControlEntry 5 }
+- 
++
+ 
+ 
+ vtpVlanEditTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF VtpVlanEditEntry 
++    SYNTAX          SEQUENCE OF VtpVlanEditEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -1365,7 +1365,7 @@ vtpVlanEditEntry OBJECT-TYPE
+     INDEX           {
+                         managementDomainIndex,
+                         vtpVlanEditIndex
+-                    } 
++                    }
+     ::= { vtpVlanEditTable 1 }
+ 
+ VtpVlanEditEntry ::= SEQUENCE {
+@@ -1374,7 +1374,7 @@ VtpVlanEditEntry ::= SEQUENCE {
+         vtpVlanEditType               VlanType,
+         vtpVlanEditName               DisplayString,
+         vtpVlanEditMtu                Integer32,
+-        vtpVlanEditDot10Said          OCTET STRING,
++        vtpVlanEditDot10Said          DisplayString,
+         vtpVlanEditRingNumber         Integer32,
+         vtpVlanEditBridgeNumber       Integer32,
+         vtpVlanEditStpType            INTEGER,
+@@ -1396,7 +1396,7 @@ vtpVlanEditIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The VLAN-id which this VLAN would have on ISL or
+-        802.1q trunks." 
++        802.1q trunks."
+     ::= { vtpVlanEditEntry 1 }
+ 
+ vtpVlanEditState OBJECT-TYPE
+@@ -1408,7 +1408,7 @@ vtpVlanEditState OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The state which this VLAN would have."
+-    DEFVAL          { operational } 
++    DEFVAL          { operational }
+     ::= { vtpVlanEditEntry 2 }
+ 
+ vtpVlanEditType OBJECT-TYPE
+@@ -1418,7 +1418,7 @@ vtpVlanEditType OBJECT-TYPE
+     DESCRIPTION
+         "The type which this VLAN would have.
+         An implementation may restrict access to this object."
+-    DEFVAL          { ethernet } 
++    DEFVAL          { ethernet }
+     ::= { vtpVlanEditEntry 3 }
+ 
+ vtpVlanEditName OBJECT-TYPE
+@@ -1430,7 +1430,7 @@ vtpVlanEditName OBJECT-TYPE
+         used as the ELAN-name for an ATM LAN-Emulation segment of
+         this VLAN.
+ 
+-        An implementation may restrict access to this object." 
++        An implementation may restrict access to this object."
+     ::= { vtpVlanEditEntry 4 }
+ 
+ vtpVlanEditMtu OBJECT-TYPE
+@@ -1443,18 +1443,18 @@ vtpVlanEditMtu OBJECT-TYPE
+         data frame which can be transmitted on the VLAN.
+ 
+         An implementation may restrict access to this object."
+-    DEFVAL          { 1500 } 
++    DEFVAL          { 1500 }
+     ::= { vtpVlanEditEntry 5 }
+ 
+ vtpVlanEditDot10Said OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (4))
++    SYNTAX          DisplayString (SIZE  (4))
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+         "The value of the 802.10 SAID field which would be used for
+         this VLAN.
+ 
+-        An implementation may restrict access to this object." 
++        An implementation may restrict access to this object."
+     ::= { vtpVlanEditEntry 6 }
+ 
+ vtpVlanEditRingNumber OBJECT-TYPE
+@@ -1465,8 +1465,8 @@ vtpVlanEditRingNumber OBJECT-TYPE
+         "The ring number which would be used for this VLAN.  This
+         object is only instantiated when the value of the
+         corresponding instance of vtpVlanEditType has a value of
+-        'fddi' or 'tokenRing' and Source Routing is in use on 
+-        this VLAN." 
++        'fddi' or 'tokenRing' and Source Routing is in use on
++        this VLAN."
+     ::= { vtpVlanEditEntry 7 }
+ 
+ vtpVlanEditBridgeNumber OBJECT-TYPE
+@@ -1477,7 +1477,7 @@ vtpVlanEditBridgeNumber OBJECT-TYPE
+         "The bridge number of the VTP-capable switches which would
+         be used for this VLAN.  This object is only instantiated
+         when the value of the corresponding instance of
+-        vtpVlanEditType has a value of fddiNet(4) or trNet(5)." 
++        vtpVlanEditType has a value of fddiNet(4) or trNet(5)."
+     ::= { vtpVlanEditEntry 8 }
+ 
+ vtpVlanEditStpType OBJECT-TYPE
+@@ -1501,7 +1501,7 @@ vtpVlanEditStpType OBJECT-TYPE
+         If 'auto' is selected, the STP that runs will be
+         dependant on the values of vtpVlanEditBridgeType for all
+         children tokenRing/fddi type VLANs.  This will result in
+-        a 'hybrid' STP (see vtpVlanStpType)." 
++        a 'hybrid' STP (see vtpVlanStpType)."
+     ::= { vtpVlanEditEntry 9 }
+ 
+ vtpVlanEditParentVlan OBJECT-TYPE
+@@ -1513,8 +1513,8 @@ vtpVlanEditParentVlan OBJECT-TYPE
+         this VLAN.  This object is only instantiated when the value
+         of the corresponding instance of vtpVlanEditType has a value
+         of 'fddi' or 'tokenRing' and Source Routing is in use on
+-        this VLAN.  The parent VLAN must have a vtpVlanEditType 
+-        value of fddiNet(4) or trNet(5), respectively." 
++        this VLAN.  The parent VLAN must have a vtpVlanEditType
++        value of fddiNet(4) or trNet(5), respectively."
+     ::= { vtpVlanEditEntry 10 }
+ 
+ vtpVlanEditRowStatus OBJECT-TYPE
+@@ -1534,7 +1534,7 @@ vtpVlanEditRowStatus OBJECT-TYPE
+         consistent in the table before 'apply'ing the buffer.  An
+         inconsistent entry in the table will cause the entire
+         buffer to be rejected with the vtpVlanApplyStatus object
+-        set to the appropriate error value." 
++        set to the appropriate error value."
+     ::= { vtpVlanEditEntry 11 }
+ 
+ vtpVlanEditTranslationalVlan1 OBJECT-TYPE
+@@ -1548,7 +1548,7 @@ vtpVlanEditTranslationalVlan1 OBJECT-TYPE
+         would not be translational-bridged.
+ 
+         An implementation may restrict access to this object."
+-    DEFVAL          { 0 } 
++    DEFVAL          { 0 }
+     ::= { vtpVlanEditEntry 12 }
+ 
+ vtpVlanEditTranslationalVlan2 OBJECT-TYPE
+@@ -1563,7 +1563,7 @@ vtpVlanEditTranslationalVlan2 OBJECT-TYPE
+         this VLAN would not be translational-bridged.
+ 
+         An implementation may restrict access to this object."
+-    DEFVAL          { 0 } 
++    DEFVAL          { 0 }
+     ::= { vtpVlanEditEntry 13 }
+ 
+ vtpVlanEditBridgeType OBJECT-TYPE
+@@ -1575,10 +1575,10 @@ vtpVlanEditBridgeType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The type of Source Route bridging mode which would be in
+-        use on this VLAN.  This object is only instantiated when 
++        use on this VLAN.  This object is only instantiated when
+         the value of  the corresponding instance of vtpVlanEditType
+-        has a value of fddi(2) or tokenRing(3) and Source Routing 
+-        is in use on this VLAN." 
++        has a value of fddi(2) or tokenRing(3) and Source Routing
++        is in use on this VLAN."
+     ::= { vtpVlanEditEntry 14 }
+ 
+ vtpVlanEditAreHopCount OBJECT-TYPE
+@@ -1590,7 +1590,7 @@ vtpVlanEditAreHopCount OBJECT-TYPE
+         All Routes Explorer frames on this VLAN.  This
+         object is only instantiated when the value of the
+         corresponding instance of vtpVlanType has a value of fddi(2)
+-        or tokenRing(3) and Source Routing is in use on this VLAN." 
++        or tokenRing(3) and Source Routing is in use on this VLAN."
+     ::= { vtpVlanEditEntry 15 }
+ 
+ vtpVlanEditSteHopCount OBJECT-TYPE
+@@ -1602,7 +1602,7 @@ vtpVlanEditSteHopCount OBJECT-TYPE
+         Spanning Tree Explorer frames on this VLAN.  This
+         object is only instantiated when the value of the
+         corresponding instance of vtpVlanType has a value of fddi(2)
+-        or tokenRing(3) and Source Routing is in use on this VLAN." 
++        or tokenRing(3) and Source Routing is in use on this VLAN."
+     ::= { vtpVlanEditEntry 16 }
+ 
+ vtpVlanEditIsCRFBackup OBJECT-TYPE
+@@ -1613,7 +1613,7 @@ vtpVlanEditIsCRFBackup OBJECT-TYPE
+         "True if this VLAN is of type trCrf and also is acting as
+         a backup trCrf for the ISL distributed BRF.  This object is
+         only instantiated when the value of the corresponding
+-        instance of vtpVlanEditType has a value of tokenRing(3)." 
++        instance of vtpVlanEditType has a value of tokenRing(3)."
+     ::= { vtpVlanEditEntry 17 }
+ 
+ vtpVlanEditTypeExt OBJECT-TYPE
+@@ -1622,7 +1622,7 @@ vtpVlanEditTypeExt OBJECT-TYPE
+     STATUS          deprecated
+     DESCRIPTION
+         "The additional type information of this VLAN.
+-        vtpVlanEditTypeExt object is superseded by vtpVlanEditTypeExt2." 
++        vtpVlanEditTypeExt object is superseded by vtpVlanEditTypeExt2."
+     ::= { vtpVlanEditEntry 18 }
+ 
+ vtpVlanEditTypeExt2 OBJECT-TYPE
+@@ -1633,13 +1633,13 @@ vtpVlanEditTypeExt2 OBJECT-TYPE
+         "The additional type information of this VLAN.
+         The VlanTypeExt TC specifies which bits may
+         be written by a management application.
+-        The agent should provide a default value." 
++        The agent should provide a default value."
+     ::= { vtpVlanEditEntry 19 }
+- 
++
+ 
+ 
+ vtpVlanLocalShutdownTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF VtpVlanLocalShutdownEntry 
++    SYNTAX          SEQUENCE OF VtpVlanLocalShutdownEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -1663,7 +1663,7 @@ vtpVlanLocalShutdownEntry OBJECT-TYPE
+     INDEX           {
+                         managementDomainIndex,
+                         vtpVlanIndex
+-                    } 
++                    }
+     ::= { vtpVlanLocalShutdownTable 1 }
+ 
+ VtpVlanLocalShutdownEntry ::= SEQUENCE {
+@@ -1678,9 +1678,9 @@ vtpVlanLocalShutdown OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "The object specifies the VLAN local shutdown state." 
++        "The object specifies the VLAN local shutdown state."
+     ::= { vtpVlanLocalShutdownEntry 1 }
+- 
++
+ 
+ -- VTP Statistics
+ 
+@@ -1689,7 +1689,7 @@ vtpStats  OBJECT IDENTIFIER
+ 
+ 
+ vtpStatsTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF VtpStatsEntry 
++    SYNTAX          SEQUENCE OF VtpStatsEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -1702,7 +1702,7 @@ vtpStatsEntry OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "VTP statistics for one management domain."
+-    AUGMENTS           { managementDomainEntry  } 
++    AUGMENTS           { managementDomainEntry  }
+     ::= { vtpStatsTable 1 }
+ 
+ VtpStatsEntry ::= SEQUENCE {
+@@ -1722,7 +1722,7 @@ vtpInSummaryAdverts OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The total number of VTP Summary Adverts received for this
+-        management domain." 
++        management domain."
+     ::= { vtpStatsEntry 1 }
+ 
+ vtpInSubsetAdverts OBJECT-TYPE
+@@ -1731,7 +1731,7 @@ vtpInSubsetAdverts OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The total number of VTP Subset Adverts received for this
+-        management domain." 
++        management domain."
+     ::= { vtpStatsEntry 2 }
+ 
+ vtpInAdvertRequests OBJECT-TYPE
+@@ -1740,7 +1740,7 @@ vtpInAdvertRequests OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The total number of VTP Advert Requests received for this
+-        management domain." 
++        management domain."
+     ::= { vtpStatsEntry 3 }
+ 
+ vtpOutSummaryAdverts OBJECT-TYPE
+@@ -1749,7 +1749,7 @@ vtpOutSummaryAdverts OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The total number of VTP Summary Adverts sent for this
+-        management domain." 
++        management domain."
+     ::= { vtpStatsEntry 4 }
+ 
+ vtpOutSubsetAdverts OBJECT-TYPE
+@@ -1758,7 +1758,7 @@ vtpOutSubsetAdverts OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The total number of VTP Subset Adverts sent for this
+-        management domain." 
++        management domain."
+     ::= { vtpStatsEntry 5 }
+ 
+ vtpOutAdvertRequests OBJECT-TYPE
+@@ -1767,7 +1767,7 @@ vtpOutAdvertRequests OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The total number of VTP Advert Requests sent for this
+-        management domain." 
++        management domain."
+     ::= { vtpStatsEntry 6 }
+ 
+ vtpConfigRevNumberErrors OBJECT-TYPE
+@@ -1784,7 +1784,7 @@ vtpConfigRevNumberErrors OBJECT-TYPE
+           same as the current locally-held value, and
+ 
+         - the advertisement's digest value is different from the
+-          current locally-held value." 
++          current locally-held value."
+     ::= { vtpStatsEntry 7 }
+ 
+ vtpConfigDigestErrors OBJECT-TYPE
+@@ -1803,9 +1803,9 @@ vtpConfigDigestErrors OBJECT-TYPE
+          receiving device does not match the checksum in the
+          summary advertisement that was received earlier. This
+          can happen, for example, if there is a mismatch in VTP
+-         passwords between the VTP devices." 
++         passwords between the VTP devices."
+     ::= { vtpStatsEntry 8 }
+- 
++
+ 
+ -- Trunk Ports
+ 
+@@ -1814,7 +1814,7 @@ vlanTrunkPorts  OBJECT IDENTIFIER
+ 
+ 
+ vlanTrunkPortTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF VlanTrunkPortEntry 
++    SYNTAX          SEQUENCE OF VlanTrunkPortEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -1828,38 +1828,38 @@ vlanTrunkPortEntry OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Information about one trunk port."
+-    INDEX           { vlanTrunkPortIfIndex } 
++    INDEX           { vlanTrunkPortIfIndex }
+     ::= { vlanTrunkPortTable 1 }
+ 
+ VlanTrunkPortEntry ::= SEQUENCE {
+         vlanTrunkPortIfIndex               InterfaceIndex,
+         vlanTrunkPortManagementDomain      ManagementDomainIndex,
+         vlanTrunkPortEncapsulationType     INTEGER,
+-        vlanTrunkPortVlansEnabled          OCTET STRING,
++        vlanTrunkPortVlansEnabled          DisplayString,
+         vlanTrunkPortNativeVlan            VlanIndex,
+         vlanTrunkPortRowStatus             RowStatus,
+         vlanTrunkPortInJoins               Counter32,
+         vlanTrunkPortOutJoins              Counter32,
+         vlanTrunkPortOldAdverts            Counter32,
+-        vlanTrunkPortVlansPruningEligible  OCTET STRING,
+-        vlanTrunkPortVlansXmitJoined       OCTET STRING,
+-        vlanTrunkPortVlansRcvJoined        OCTET STRING,
++        vlanTrunkPortVlansPruningEligible  DisplayString,
++        vlanTrunkPortVlansXmitJoined       DisplayString,
++        vlanTrunkPortVlansRcvJoined        DisplayString,
+         vlanTrunkPortDynamicState          INTEGER,
+         vlanTrunkPortDynamicStatus         INTEGER,
+         vlanTrunkPortVtpEnabled            TruthValue,
+         vlanTrunkPortEncapsulationOperType INTEGER,
+-        vlanTrunkPortVlansEnabled2k        OCTET STRING,
+-        vlanTrunkPortVlansEnabled3k        OCTET STRING,
+-        vlanTrunkPortVlansEnabled4k        OCTET STRING,
+-        vtpVlansPruningEligible2k          OCTET STRING,
+-        vtpVlansPruningEligible3k          OCTET STRING,
+-        vtpVlansPruningEligible4k          OCTET STRING,
+-        vlanTrunkPortVlansXmitJoined2k     OCTET STRING,
+-        vlanTrunkPortVlansXmitJoined3k     OCTET STRING,
+-        vlanTrunkPortVlansXmitJoined4k     OCTET STRING,
+-        vlanTrunkPortVlansRcvJoined2k      OCTET STRING,
+-        vlanTrunkPortVlansRcvJoined3k      OCTET STRING,
+-        vlanTrunkPortVlansRcvJoined4k      OCTET STRING,
++        vlanTrunkPortVlansEnabled2k        DisplayString,
++        vlanTrunkPortVlansEnabled3k        DisplayString,
++        vlanTrunkPortVlansEnabled4k        DisplayString,
++        vtpVlansPruningEligible2k          DisplayString,
++        vtpVlansPruningEligible3k          DisplayString,
++        vtpVlansPruningEligible4k          DisplayString,
++        vlanTrunkPortVlansXmitJoined2k     DisplayString,
++        vlanTrunkPortVlansXmitJoined3k     DisplayString,
++        vlanTrunkPortVlansXmitJoined4k     DisplayString,
++        vlanTrunkPortVlansRcvJoined2k      DisplayString,
++        vlanTrunkPortVlansRcvJoined3k      DisplayString,
++        vlanTrunkPortVlansRcvJoined4k      DisplayString,
+         vlanTrunkPortDot1qTunnel           INTEGER,
+         vlanTrunkPortVlansActiveFirst2k    Cisco2KVlanList,
+         vlanTrunkPortVlansActiveSecond2k   Cisco2KVlanList
+@@ -1871,7 +1871,7 @@ vlanTrunkPortIfIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The value of ifIndex for the interface corresponding to
+-        this trunk port." 
++        this trunk port."
+     ::= { vlanTrunkPortEntry 1 }
+ 
+ vlanTrunkPortManagementDomain OBJECT-TYPE
+@@ -1881,7 +1881,7 @@ vlanTrunkPortManagementDomain OBJECT-TYPE
+     DESCRIPTION
+         "The value of managementDomainIndex for the management
+         domain on this trunk port.  Devices which support only one
+-        management domain will support this object read-only." 
++        management domain will support this object read-only."
+     ::= { vlanTrunkPortEntry 2 }
+ 
+ vlanTrunkPortEncapsulationType OBJECT-TYPE
+@@ -1902,11 +1902,11 @@ vlanTrunkPortEncapsulationType OBJECT-TYPE
+         negotiation or if its vlanTrunkPortDynamicState is set to
+         on(1) or onNoNegotiate(5). Whether writing to this object
+         in order to modify the encapsulation is supported is both
+-        device and interface specific." 
++        device and interface specific."
+     ::= { vlanTrunkPortEntry 3 }
+ 
+ vlanTrunkPortVlansEnabled OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (128))
++    SYNTAX          DisplayString (SIZE  (128))
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+@@ -1926,7 +1926,7 @@ vlanTrunkPortVlansEnabled OBJECT-TYPE
+         of an instance of this object (e.g., enable/disable a single
+         VLAN on the trunk port), any SNMP Set operation accessing an
+         instance of this object should also write the value of
+-        vlanTrunkPortSetSerialNo." 
++        vlanTrunkPortSetSerialNo."
+     ::= { vlanTrunkPortEntry 4 }
+ 
+ vlanTrunkPortNativeVlan OBJECT-TYPE
+@@ -1937,7 +1937,7 @@ vlanTrunkPortNativeVlan OBJECT-TYPE
+         "The VlanIndex of the VLAN which is represented by native
+         frames on this trunk port.  For trunk ports not supporting
+         the sending and receiving of native frames, this value
+-        should be set to zero." 
++        should be set to zero."
+     ::= { vlanTrunkPortEntry 5 }
+ 
+ vlanTrunkPortRowStatus OBJECT-TYPE
+@@ -1951,7 +1951,7 @@ vlanTrunkPortRowStatus OBJECT-TYPE
+         the use of VTP on the port, and to assign the port to the
+         appropriate management domain.  In other circumstances, rows
+         in this table will be created as a by-product of other
+-        operations." 
++        operations."
+     ::= { vlanTrunkPortEntry 6 }
+ 
+ vlanTrunkPortInJoins OBJECT-TYPE
+@@ -1960,7 +1960,7 @@ vlanTrunkPortInJoins OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The number of VTP Join messages received on this trunk
+-        port." 
++        port."
+     ::= { vlanTrunkPortEntry 7 }
+ 
+ vlanTrunkPortOutJoins OBJECT-TYPE
+@@ -1968,7 +1968,7 @@ vlanTrunkPortOutJoins OBJECT-TYPE
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+-        "The number of VTP Join messages sent on this trunk port." 
++        "The number of VTP Join messages sent on this trunk port."
+     ::= { vlanTrunkPortEntry 8 }
+ 
+ vlanTrunkPortOldAdverts OBJECT-TYPE
+@@ -1978,11 +1978,11 @@ vlanTrunkPortOldAdverts OBJECT-TYPE
+     DESCRIPTION
+         "The number of VTP Advertisement messages which indicated
+         the sender does not support VLAN-pruning received on this
+-        trunk port." 
++        trunk port."
+     ::= { vlanTrunkPortEntry 9 }
+ 
+ vlanTrunkPortVlansPruningEligible OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (128))
++    SYNTAX          DisplayString (SIZE  (128))
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+@@ -2003,11 +2003,11 @@ vlanTrunkPortVlansPruningEligible OBJECT-TYPE
+         of an instance of this object (e.g., enable/disable a single
+         VLAN on the trunk port), any SNMP Set operation accessing an
+         instance of this object should also write the value of
+-        vlanTrunkPortSetSerialNo." 
++        vlanTrunkPortSetSerialNo."
+     ::= { vlanTrunkPortEntry 10 }
+ 
+ vlanTrunkPortVlansXmitJoined OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (128))
++    SYNTAX          DisplayString (SIZE  (128))
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+@@ -2022,11 +2022,11 @@ vlanTrunkPortVlansXmitJoined OBJECT-TYPE
+         VLAN is presently being forwarded on this trunk port, i.e.,
+         it is not pruned; if the bit is set to '0', then this VLAN
+         is presently not being forwarded on this trunk port, either
+-        because it is pruned or for some other reason." 
++        because it is pruned or for some other reason."
+     ::= { vlanTrunkPortEntry 11 }
+ 
+ vlanTrunkPortVlansRcvJoined OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (128))
++    SYNTAX          DisplayString (SIZE  (128))
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+@@ -2042,7 +2042,7 @@ vlanTrunkPortVlansRcvJoined OBJECT-TYPE
+         this trunk port, i.e., it is asking to receive frames for
+         this VLAN; if the bit is set to '0', then the local switch
+         is not currently sending joins for this VLAN on this trunk
+-        port." 
++        port."
+     ::= { vlanTrunkPortEntry 12 }
+ 
+ vlanTrunkPortDynamicState OBJECT-TYPE
+@@ -2100,7 +2100,7 @@ vlanTrunkPortDynamicState OBJECT-TYPE
+ 
+         Devices that do no support dynamic determination (for just
+         a particular interface, encapsulation or for the whole
+-        device) need only support the 'on', and 'off' values." 
++        device) need only support the 'on', and 'off' values."
+     ::= { vlanTrunkPortEntry 13 }
+ 
+ vlanTrunkPortDynamicStatus OBJECT-TYPE
+@@ -2114,7 +2114,7 @@ vlanTrunkPortDynamicStatus OBJECT-TYPE
+         "Indicates whether the specified interface is either
+         acting as a trunk or not. This is a result of the
+         vlanTrunkPortDynamicState and the ifOperStatus of the
+-        trunk port itself." 
++        trunk port itself."
+     ::= { vlanTrunkPortEntry 14 }
+ 
+ vlanTrunkPortVtpEnabled OBJECT-TYPE
+@@ -2128,7 +2128,7 @@ vlanTrunkPortVtpEnabled OBJECT-TYPE
+         way to remotely enable VTP on that module.  If a module
+         does not support a seperate VTP enabled state then this
+         object shall always return 'true' and will accept no other
+-        value during a SET operation." 
++        value during a SET operation."
+     ::= { vlanTrunkPortEntry 15 }
+ 
+ vlanTrunkPortEncapsulationOperType OBJECT-TYPE
+@@ -2146,11 +2146,11 @@ vlanTrunkPortEncapsulationOperType OBJECT-TYPE
+         "The type of VLAN encapsulation in use on this trunk port.
+         For intefaces with vlanTrunkPortDynamicStatus of
+         notTrunking(2) the vlanTrunkPortEncapsulationOperType shall
+-        be notApplicable(6)." 
++        be notApplicable(6)."
+     ::= { vlanTrunkPortEntry 16 }
+ 
+ vlanTrunkPortVlansEnabled2k OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+@@ -2172,11 +2172,11 @@ vlanTrunkPortVlansEnabled2k OBJECT-TYPE
+         of an instance of this object (e.g., enable/disable a single
+         VLAN on the trunk port), any SNMP Set operation accessing an
+         instance of this object should also write the value of
+-        vlanTrunkPortSetSerialNo." 
++        vlanTrunkPortSetSerialNo."
+     ::= { vlanTrunkPortEntry 17 }
+ 
+ vlanTrunkPortVlansEnabled3k OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+@@ -2198,11 +2198,11 @@ vlanTrunkPortVlansEnabled3k OBJECT-TYPE
+         of an instance of this object (e.g., enable/disable a single
+         VLAN on the trunk port), any SNMP Set operation accessing an
+         instance of this object should also write the value of
+-        vlanTrunkPortSetSerialNo." 
++        vlanTrunkPortSetSerialNo."
+     ::= { vlanTrunkPortEntry 18 }
+ 
+ vlanTrunkPortVlansEnabled4k OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+@@ -2224,11 +2224,11 @@ vlanTrunkPortVlansEnabled4k OBJECT-TYPE
+         of an instance of this object (e.g., enable/disable a single
+         VLAN on the trunk port), any SNMP Set operation accessing an
+         instance of this object should also write the value of
+-        vlanTrunkPortSetSerialNo." 
++        vlanTrunkPortSetSerialNo."
+     ::= { vlanTrunkPortEntry 19 }
+ 
+ vtpVlansPruningEligible2k OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+@@ -2251,11 +2251,11 @@ vtpVlansPruningEligible2k OBJECT-TYPE
+         of an instance of this object (e.g., enable/disable a single
+         VLAN on the trunk port), any SNMP Set operation accessing an
+         instance of this object should also write the value of
+-        vlanTrunkPortSetSerialNo." 
++        vlanTrunkPortSetSerialNo."
+     ::= { vlanTrunkPortEntry 20 }
+ 
+ vtpVlansPruningEligible3k OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+@@ -2278,11 +2278,11 @@ vtpVlansPruningEligible3k OBJECT-TYPE
+         of an instance of this object (e.g., enable/disable a single
+         VLAN on the trunk port), any SNMP Set operation accessing an
+         instance of this object should also write the value of
+-        vlanTrunkPortSetSerialNo." 
++        vlanTrunkPortSetSerialNo."
+     ::= { vlanTrunkPortEntry 21 }
+ 
+ vtpVlansPruningEligible4k OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+@@ -2305,11 +2305,11 @@ vtpVlansPruningEligible4k OBJECT-TYPE
+         of an instance of this object (e.g., enable/disable a single
+         VLAN on the trunk port), any SNMP Set operation accessing an
+         instance of this object should also write the value of
+-        vlanTrunkPortSetSerialNo." 
++        vlanTrunkPortSetSerialNo."
+     ::= { vlanTrunkPortEntry 22 }
+ 
+ vlanTrunkPortVlansXmitJoined2k OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+@@ -2325,11 +2325,11 @@ vlanTrunkPortVlansXmitJoined2k OBJECT-TYPE
+         VLAN is presently being forwarded on this trunk port, i.e.,
+         it is not pruned; if the bit is set to '0', then this VLAN
+         is presently not being forwarded on this trunk port, either
+-        because it is pruned or for some other reason." 
++        because it is pruned or for some other reason."
+     ::= { vlanTrunkPortEntry 23 }
+ 
+ vlanTrunkPortVlansXmitJoined3k OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+@@ -2345,11 +2345,11 @@ vlanTrunkPortVlansXmitJoined3k OBJECT-TYPE
+         VLAN is presently being forwarded on this trunk port, i.e.,
+         it is not pruned; if the bit is set to '0', then this VLAN
+         is presently not being forwarded on this trunk port, either
+-        because it is pruned or for some other reason." 
++        because it is pruned or for some other reason."
+     ::= { vlanTrunkPortEntry 24 }
+ 
+ vlanTrunkPortVlansXmitJoined4k OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+@@ -2365,11 +2365,11 @@ vlanTrunkPortVlansXmitJoined4k OBJECT-TYPE
+         VLAN is presently being forwarded on this trunk port, i.e.,
+         it is not pruned; if the bit is set to '0', then this VLAN
+         is presently not being forwarded on this trunk port, either
+-        because it is pruned or for some other reason." 
++        because it is pruned or for some other reason."
+     ::= { vlanTrunkPortEntry 25 }
+ 
+ vlanTrunkPortVlansRcvJoined2k OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+@@ -2386,11 +2386,11 @@ vlanTrunkPortVlansRcvJoined2k OBJECT-TYPE
+         this trunk port, i.e., it is asking to receive frames for
+         this VLAN; if the bit is set to '0', then the local switch
+         is not currently sending joins for this VLAN on this trunk
+-        port." 
++        port."
+     ::= { vlanTrunkPortEntry 26 }
+ 
+ vlanTrunkPortVlansRcvJoined3k OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+@@ -2407,11 +2407,11 @@ vlanTrunkPortVlansRcvJoined3k OBJECT-TYPE
+         this trunk port, i.e., it is asking to receive frames for
+         this VLAN; if the bit is set to '0', then the local switch
+         is not currently sending joins for this VLAN on this trunk
+-        port." 
++        port."
+     ::= { vlanTrunkPortEntry 27 }
+ 
+ vlanTrunkPortVlansRcvJoined4k OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+@@ -2428,7 +2428,7 @@ vlanTrunkPortVlansRcvJoined4k OBJECT-TYPE
+         this trunk port, i.e., it is asking to receive frames for
+         this VLAN; if the bit is set to '0', then the local switch
+         is not currently sending joins for this VLAN on this trunk
+-        port." 
++        port."
+     ::= { vlanTrunkPortEntry 28 }
+ 
+ vlanTrunkPortDot1qTunnel OBJECT-TYPE
+@@ -2462,7 +2462,7 @@ vlanTrunkPortDot1qTunnel OBJECT-TYPE
+         This object has been deprecated and is replaced by the
+         object 'cltcDot1qTunnelMode' in the
+         CISCO-L2-TUNNEL-CONFIG-MIB"
+-    DEFVAL          { disabled } 
++    DEFVAL          { disabled }
+     ::= { vlanTrunkPortEntry 29 }
+ 
+ vlanTrunkPortVlansActiveFirst2k OBJECT-TYPE
+@@ -2479,7 +2479,7 @@ vlanTrunkPortVlansActiveFirst2k OBJECT-TYPE
+ 
+         If the bit corresponding to a VLAN is set to 0,
+         it indicates that vlan is not allowed or not active
+-        in management domain." 
++        in management domain."
+     ::= { vlanTrunkPortEntry 30 }
+ 
+ vlanTrunkPortVlansActiveSecond2k OBJECT-TYPE
+@@ -2496,9 +2496,9 @@ vlanTrunkPortVlansActiveSecond2k OBJECT-TYPE
+ 
+         If the bit corresponding to a VLAN is set to 0,
+         it indicates that vlan is not allowed or not active
+-        in management domain." 
++        in management domain."
+     ::= { vlanTrunkPortEntry 31 }
+- 
++
+ 
+ 
+ vlanTrunkPortSetSerialNo OBJECT-TYPE
+@@ -2508,7 +2508,7 @@ vlanTrunkPortSetSerialNo OBJECT-TYPE
+     DESCRIPTION
+         "An advisory lock used to allow several cooperating SNMPv2
+         managers to coordinate their use of the SNMPv2 set operation
+-        acting upon any instance of vlanTrunkPortVlansEnabled." 
++        acting upon any instance of vlanTrunkPortVlansEnabled."
+     ::= { vlanTrunkPorts 2 }
+ 
+ vlanTrunkPortsDot1qTag OBJECT-TYPE
+@@ -2526,20 +2526,20 @@ vlanTrunkPortsDot1qTag OBJECT-TYPE
+         This object has been deprecated and is replaced by the
+         object 'cltcDot1qAllTaggedEnabled' in the
+         CISCO-L2-TUNNEL-CONFIG-MIB"
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { vlanTrunkPorts 3 }
+ vtpDiscover  OBJECT IDENTIFIER
+     ::= { vtpMIBObjects 7 }
+ 
+ 
+ vtpDiscoverTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF VtpDiscoverEntry 
++    SYNTAX          SEQUENCE OF VtpDiscoverEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table contains information related to the discovery
+         of the VTP members in the designated management
+-        domain. This table is not instantiated when 
++        domain. This table is not instantiated when
+         managementDomainVersionInUse is version1(1), version2(3)
+         or none(3)."
+     ::= { vtpDiscover 1 }
+@@ -2551,7 +2551,7 @@ vtpDiscoverEntry OBJECT-TYPE
+     DESCRIPTION
+         "Information related to the discovery of the
+         VTP members in one management domain."
+-    INDEX           { managementDomainIndex } 
++    INDEX           { managementDomainIndex }
+     ::= { vtpDiscoverTable 1 }
+ 
+ VtpDiscoverEntry ::= SEQUENCE {
+@@ -2571,23 +2571,23 @@ vtpDiscoverAction OBJECT-TYPE
+     DESCRIPTION
+         "When this object is set to discover(1), all the
+         entries in vtpDiscoverResultTable for the
+-        corresponding management domain will be removed 
++        corresponding management domain will be removed
+         and the local device will begin to discover all
+         VTP members in the management domain. Upon the
+         successful completion of discovery, the discovered
+         result will be stored in the vtpDiscoverResultTable.
+ 
+-        If vtpDiscoverStatus is inProgress(1), setting 
+-        vtpDiscoverAction to discover(1) will fail. 
++        If vtpDiscoverStatus is inProgress(1), setting
++        vtpDiscoverAction to discover(1) will fail.
+ 
+-        When this object is set to purgeResult(3), 
+-        all the entries of vtpDiscoverResultTable for 
++        When this object is set to purgeResult(3),
++        all the entries of vtpDiscoverResultTable for
+         the corresponding management domain will be
+         removed from vtpDiscoverResultTable.
+ 
+         When this object is set to noOperation(2), no
+         action will be taken. When read, this object
+-        always returns noOperation(2)." 
++        always returns noOperation(2)."
+     ::= { vtpDiscoverEntry 1 }
+ 
+ vtpDiscoverStatus OBJECT-TYPE
+@@ -2605,7 +2605,7 @@ vtpDiscoverStatus OBJECT-TYPE
+         inProgress - a discovery is in progress;
+ 
+         succeeded - the discovery was completed successfully
+-                    (this value is also used when 
++                    (this value is also used when
+                     no discover has been invoked since the
+                     last time the local system restarted);
+ 
+@@ -2614,7 +2614,7 @@ vtpDiscoverStatus OBJECT-TYPE
+                     presently unavailable.
+ 
+         someOtherError - 'the discovery failed due to a
+-                    reason no listed." 
++                    reason no listed."
+     ::= { vtpDiscoverEntry 2 }
+ 
+ vtpLastDiscoverTime OBJECT-TYPE
+@@ -2626,19 +2626,19 @@ vtpLastDiscoverTime OBJECT-TYPE
+         was completed.
+ 
+         A value of zero indicates that no discovery has been
+-        invoked since last time the local system restarted." 
++        invoked since last time the local system restarted."
+     ::= { vtpDiscoverEntry 3 }
+- 
++
+ 
+ 
+ vtpDiscoverResultTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF VtpDiscoverResultEntry 
++    SYNTAX          SEQUENCE OF VtpDiscoverResultEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "The table containing information of discovered VTP members
+         in the management domain in which the local system is
+-        participating. This table is not instantiated when 
++        participating. This table is not instantiated when
+         managementDomainVersionInUse is version1(1), version2(2) or
+         none(3)."
+     ::= { vtpDiscover 2 }
+@@ -2653,7 +2653,7 @@ vtpDiscoverResultEntry OBJECT-TYPE
+     INDEX           {
+                         managementDomainIndex,
+                         vtpDiscoverResultIndex
+-                    } 
++                    }
+     ::= { vtpDiscoverResultTable 1 }
+ 
+ VtpDiscoverResultEntry ::= SEQUENCE {
+@@ -2672,8 +2672,8 @@ vtpDiscoverResultIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "A value assigned by the system which identifies
+-        a VTP member and the associated database in the 
+-        management domain." 
++        a VTP member and the associated database in the
++        management domain."
+     ::= { vtpDiscoverResultEntry 1 }
+ 
+ vtpDiscoverResultDatabaseName OBJECT-TYPE
+@@ -2682,7 +2682,7 @@ vtpDiscoverResultDatabaseName OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The database name associated with the
+-        discovered VTP member." 
++        discovered VTP member."
+     ::= { vtpDiscoverResultEntry 2 }
+ 
+ vtpDiscoverResultConflicting OBJECT-TYPE
+@@ -2693,11 +2693,11 @@ vtpDiscoverResultConflicting OBJECT-TYPE
+         "Indicates whether this VTP member contains
+         conflicting information.
+ 
+-        true(1) indicates that this member has conflicting 
++        true(1) indicates that this member has conflicting
+         information of the database type in the management domain.
+ 
+         false(2) indicates that there is no conflicting information
+-        of the database type in the management domain." 
++        of the database type in the management domain."
+     ::= { vtpDiscoverResultEntry 3 }
+ 
+ vtpDiscoverResultDeviceId OBJECT-TYPE
+@@ -2705,7 +2705,7 @@ vtpDiscoverResultDeviceId OBJECT-TYPE
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+-        "The unique identifier of the device for this VTP member." 
++        "The unique identifier of the device for this VTP member."
+     ::= { vtpDiscoverResultEntry 4 }
+ 
+ vtpDiscoverResultPrimaryServer OBJECT-TYPE
+@@ -2719,14 +2719,14 @@ vtpDiscoverResultPrimaryServer OBJECT-TYPE
+         There are two different VTP servers, the primary server
+         and the secondary server.  When a local device is
+         configured as a server for a certain database type,
+-        it becomes secondary server by default. 
++        it becomes secondary server by default.
+         Primary server is an operational role under which a
+         server can initiate or change the VTP configuration of the
+         database type.
+ 
+-        If this VTP member itself is the primary server, the   
+-        value of this object is the same as the value of 
+-        vtpDiscoverResultDeviceId of the instance." 
++        If this VTP member itself is the primary server, the
++        value of this object is the same as the value of
++        vtpDiscoverResultDeviceId of the instance."
+     ::= { vtpDiscoverResultEntry 5 }
+ 
+ vtpDiscoverResultRevNumber OBJECT-TYPE
+@@ -2736,7 +2736,7 @@ vtpDiscoverResultRevNumber OBJECT-TYPE
+     DESCRIPTION
+         "The current configuration revision number as known by the
+         VTP member. When the database type is unknown for
+-        the VTP member, this value is 0." 
++        the VTP member, this value is 0."
+     ::= { vtpDiscoverResultEntry 6 }
+ 
+ vtpDiscoverResultSystemName OBJECT-TYPE
+@@ -2744,22 +2744,22 @@ vtpDiscoverResultSystemName OBJECT-TYPE
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+-        "sysName of the VTP member." 
++        "sysName of the VTP member."
+     ::= { vtpDiscoverResultEntry 7 }
+- 
++
+ 
+ vtpDatabase  OBJECT IDENTIFIER
+     ::= { vtpMIBObjects 8 }
+ 
+ 
+ vtpDatabaseTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF VtpDatabaseEntry 
++    SYNTAX          SEQUENCE OF VtpDatabaseEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table contains information of the VTP
+         databases. It is not instantiated when
+-        managementDomainVersionInUse is version1(1), 
++        managementDomainVersionInUse is version1(1),
+         version2(3) or none(3)."
+     ::= { vtpDatabase 1 }
+ 
+@@ -2777,7 +2777,7 @@ vtpDatabaseEntry OBJECT-TYPE
+     INDEX           {
+                         managementDomainIndex,
+                         vtpDatabaseIndex
+-                    } 
++                    }
+     ::= { vtpDatabaseTable 1 }
+ 
+ VtpDatabaseEntry ::= SEQUENCE {
+@@ -2797,7 +2797,7 @@ vtpDatabaseIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "A value assigned by the system which uniquely identifies
+-        a VTP database in the local system." 
++        a VTP database in the local system."
+     ::= { vtpDatabaseEntry 1 }
+ 
+ vtpDatabaseName OBJECT-TYPE
+@@ -2805,7 +2805,7 @@ vtpDatabaseName OBJECT-TYPE
+     MAX-ACCESS      read-only
+     STATUS          current
+     DESCRIPTION
+-        "The name of the database." 
++        "The name of the database."
+     ::= { vtpDatabaseEntry 2 }
+ 
+ vtpDatabaseLocalMode OBJECT-TYPE
+@@ -2828,7 +2828,7 @@ vtpDatabaseLocalMode OBJECT-TYPE
+           as a VTP server of the database type.
+ 
+         - 'transparent' indicates that the local system does
+-          not generate or listen to VTP messages of this 
++          not generate or listen to VTP messages of this
+           database type, but forwards
+           messages. This mode can also be set by the device
+           itself when the size of database is too large for it
+@@ -2838,9 +2838,9 @@ vtpDatabaseLocalMode OBJECT-TYPE
+           generate, listen to or forward any VTP messages
+           of this database type.
+ 
+-        The default mode is 'client' for the database type 
++        The default mode is 'client' for the database type
+         known to the local device and 'transparent' for the
+-        unknown database type." 
++        unknown database type."
+     ::= { vtpDatabaseEntry 3 }
+ 
+ vtpDatabaseRevNumber OBJECT-TYPE
+@@ -2850,11 +2850,11 @@ vtpDatabaseRevNumber OBJECT-TYPE
+     DESCRIPTION
+         "The current configuration revision number as known by the
+         local device for this VTP 3 database type in the management
+-        domain.  This value is updated (if necessary) whenever a 
+-        VTP advertisement for the database type is received 
+-        or generated. When the database type is unknown to the 
++        domain.  This value is updated (if necessary) whenever a
++        VTP advertisement for the database type is received
++        or generated. When the database type is unknown to the
+         local device or no VTP advertisement for the database
+-        type is received or generated, its value is 0." 
++        type is received or generated, its value is 0."
+     ::= { vtpDatabaseEntry 4 }
+ 
+ vtpDatabasePrimaryServer OBJECT-TYPE
+@@ -2870,11 +2870,11 @@ vtpDatabasePrimaryServer OBJECT-TYPE
+         server can initiate or change the VTP configuration of the
+         database type.
+ 
+-        A true(1) value indicates that the local device is the 
++        A true(1) value indicates that the local device is the
+         primary server of the database type in the management
+         domain. A false(2) value indicates that the local device
+         is not the primary server, or the database type is unknown
+-        to the local device." 
++        to the local device."
+     ::= { vtpDatabaseEntry 5 }
+ 
+ vtpDatabasePrimaryServerId OBJECT-TYPE
+@@ -2883,10 +2883,10 @@ vtpDatabasePrimaryServerId OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The unique identifier of the primary server in the
+-        management domain for the database type. 
++        management domain for the database type.
+ 
+         If no primary server is discovered for the database
+-        type, the object has a value of zero length string." 
++        type, the object has a value of zero length string."
+     ::= { vtpDatabaseEntry 6 }
+ 
+ vtpDatabaseTakeOverPrimary OBJECT-TYPE
+@@ -2908,11 +2908,11 @@ vtpDatabaseTakeOverPrimary OBJECT-TYPE
+         In order to successfully setting this object to true(1),
+         the value of vtpDatabaseLocalMode must be server(2). Besides
+         that, when the VTP password is hidden from the configuration
+-        file, the password (vtpDatabaseTakeOverPassword) which 
++        file, the password (vtpDatabaseTakeOverPassword) which
+         matches  the secret key (vtpAuthSecretKey) must be provided
+-        in the same data packet. 
++        in the same data packet.
+ 
+-        When read, the object always returns false(2)." 
++        When read, the object always returns false(2)."
+     ::= { vtpDatabaseEntry 7 }
+ 
+ vtpDatabaseTakeOverPassword OBJECT-TYPE
+@@ -2923,23 +2923,23 @@ vtpDatabaseTakeOverPassword OBJECT-TYPE
+         "When read, this object always returns the value of a
+         zero-length octet string.
+ 
+-        In the case that the VTP password is hidden from the 
++        In the case that the VTP password is hidden from the
+         configuration and the local device intends
+-        to take over the whole domain, this object must be 
+-        set to the matching password with the secret key 
+-        (vtpAuthSecretKey) in the same data packet as which 
+-        the vtpDatabaseTakeOverPrimary is in. In all the 
+-        other situations, setting a valid value to this object 
+-        has no impact on the system." 
++        to take over the whole domain, this object must be
++        set to the matching password with the secret key
++        (vtpAuthSecretKey) in the same data packet as which
++        the vtpDatabaseTakeOverPrimary is in. In all the
++        other situations, setting a valid value to this object
++        has no impact on the system."
+     ::= { vtpDatabaseEntry 8 }
+- 
++
+ 
+ vtpAuthentication  OBJECT IDENTIFIER
+     ::= { vtpMIBObjects 9 }
+ 
+ 
+ vtpAuthenticationTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF VtpAuthEntry 
++    SYNTAX          SEQUENCE OF VtpAuthEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -2960,19 +2960,19 @@ vtpAuthenticationTable OBJECT-TYPE
+ 
+         The user has the option to hide the password from the
+         configuration. Once the password is hidden, the secret
+-        key generated from the password is shown in the 
+-        configuration instead, and there is no other way to 
+-        show the password in plain text again but clearing 
+-        it or resetting it. 
++        key generated from the password is shown in the
++        configuration instead, and there is no other way to
++        show the password in plain text again but clearing
++        it or resetting it.
+ 
+-        In an un-trusted area, the password on a device can 
++        In an un-trusted area, the password on a device can
+         be configured without being unveiled. After that,
+-        it has to be provided again by setting the same 
+-        value to vtpDatabaseTakeOverPassword if the user 
++        it has to be provided again by setting the same
++        value to vtpDatabaseTakeOverPassword if the user
+         wants to take over the whole VTP management domain
+         of the database type.
+ 
+-        When managementDomainVersionInUse is version3(4), the 
++        When managementDomainVersionInUse is version3(4), the
+         authentication mechanism is common to all VTP
+         database type."
+     ::= { vtpAuthentication 1 }
+@@ -2984,13 +2984,13 @@ vtpAuthEntry OBJECT-TYPE
+     DESCRIPTION
+         "Information about the status of the VTP
+         authentication information in one domain."
+-    INDEX           { managementDomainIndex } 
++    INDEX           { managementDomainIndex }
+     ::= { vtpAuthenticationTable 1 }
+ 
+ VtpAuthEntry ::= SEQUENCE {
+         vtpAuthPassword     SnmpAdminString,
+         vtpAuthPasswordType INTEGER,
+-        vtpAuthSecretKey    OCTET STRING
++        vtpAuthSecretKey    DisplayString
+ }
+ 
+ vtpAuthPassword OBJECT-TYPE
+@@ -3002,9 +3002,9 @@ vtpAuthPassword OBJECT-TYPE
+         character string and is considered to be not
+         configured.
+ 
+-        The device uses the password to generate the 
+-        secret key. It can be stored in the configuration in 
+-        plain text or hidden from the configuration. If a VTP 
++        The device uses the password to generate the
++        secret key. It can be stored in the configuration in
++        plain text or hidden from the configuration. If a VTP
+         server intends to modify the database's configuration
+         in the domain but the password was hidden from the
+         configuration, the same password
+@@ -3020,8 +3020,8 @@ vtpAuthPassword OBJECT-TYPE
+         This object is not allowed to be set at the same time
+         when  vtpAuthSecretKey is set.
+ 
+-        When the vtpAuthPasswordType is hidden(2), this object 
+-        will return a zero-length character string when read." 
++        When the vtpAuthPasswordType is hidden(2), this object
++        will return a zero-length character string when read."
+     ::= { vtpAuthEntry 1 }
+ 
+ vtpAuthPasswordType OBJECT-TYPE
+@@ -3042,11 +3042,11 @@ vtpAuthPasswordType OBJECT-TYPE
+         Once this object is set to hidden(2), it cannot
+         be set to plaintext(1) alone. However, it may
+         be set to plaintext(1) at the same time the
+-        password is set." 
++        password is set."
+     ::= { vtpAuthEntry 2 }
+ 
+ vtpAuthSecretKey OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0 | 16))
++    SYNTAX          DisplayString (SIZE  (0 | 16))
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+@@ -3054,12 +3054,12 @@ vtpAuthSecretKey OBJECT-TYPE
+         signs it using the MD5 digest generated from the secret
+         key before advertising it. Other devices in the domain
+         receiving this configuration use the same secret key
+-        to accept it if it was correctly signed or drop it 
++        to accept it if it was correctly signed or drop it
+         otherwise.
+ 
+         By default, the object has the value as a zero-length
+-        string and this value is read only. It is set 
+-        to this value automatically when the password 
++        string and this value is read only. It is set
++        to this value automatically when the password
+         (vtpAuthPassword) is set to a zero-length octet string.
+ 
+         The secret key can be either generated using
+@@ -3074,9 +3074,9 @@ vtpAuthSecretKey OBJECT-TYPE
+         time when vtpAuthPassword is set.
+ 
+         The secret key is overwritten by a newly generated
+-        secret key when the password is re-configured." 
++        secret key when the password is re-configured."
+     ::= { vtpAuthEntry 3 }
+- 
++
+ 
+ vlanStatistics  OBJECT IDENTIFIER
+     ::= { vtpMIBObjects 10 }
+@@ -3089,7 +3089,7 @@ vlanStatsVlans OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the number of the existing
+         manageable VLANs with VLAN indices from 1 to
+-        1024 in the system." 
++        1024 in the system."
+     ::= { vlanStatistics 1 }
+ 
+ vlanStatsExtendedVlans OBJECT-TYPE
+@@ -3099,7 +3099,7 @@ vlanStatsExtendedVlans OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the number of the
+         existing manageable VLANs with VLAN indices
+-        greater than 1024 in the system." 
++        greater than 1024 in the system."
+     ::= { vlanStatistics 2 }
+ 
+ vlanStatsInternalVlans OBJECT-TYPE
+@@ -3108,7 +3108,7 @@ vlanStatsInternalVlans OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the number of the
+-        internal VLANs existing in the system." 
++        internal VLANs existing in the system."
+     ::= { vlanStatistics 3 }
+ 
+ vlanStatsFreeVlans OBJECT-TYPE
+@@ -3117,7 +3117,7 @@ vlanStatsFreeVlans OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object indicates the number of the
+-        free or unused VLANs in the system." 
++        free or unused VLANs in the system."
+     ::= { vlanStatistics 4 }
+ -- VTP notifications
+ 
+@@ -3243,7 +3243,7 @@ vtpLocalModeChanged NOTIFICATION-TYPE
+     STATUS          current
+     DESCRIPTION
+         "A vtpLocalModeChanged notification is generated
+-        by a device when the value of the object 
++        by a device when the value of the object
+         managementDomainLocalMode is changed."
+    ::= { vtpNotificationsPrefix 8 }
+ 
+@@ -3252,8 +3252,8 @@ vtpVersionInUseChanged NOTIFICATION-TYPE
+     STATUS          current
+     DESCRIPTION
+         "A vtpVersionInUseChanged notification is
+-        generated by a device when the value of the  
+-        object managementDomainVersionInUse is 
++        generated by a device when the value of the
++        object managementDomainVersionInUse is
+         changed."
+    ::= { vtpNotificationsPrefix 9 }
+ 
+@@ -3324,7 +3324,7 @@ vtpVlanPortLocalSegment OBJECT-TYPE
+         requires knowledge of how the agent supports the multiple
+         'contexts' required to implement RFC 1525 for multiple
+         VLANs; also note that the assignment of ifIndex values may
+-        be different in different 'contexts'." 
++        be different in different 'contexts'."
+     ::= { vtpNotificationsObjects 1 }
+ -- Conformance Information
+ 
+@@ -4909,7 +4909,7 @@ vtpMIBCompliance14 MODULE-COMPLIANCE
+     GROUP           vtpConfigNotificationsGroup8
+     DESCRIPTION
+         "This group is mandatory for devices which
+-        support the notification generation on operational 
++        support the notification generation on operational
+         VTP pruning state change."
+ 
+     OBJECT          vtpNotificationsEnabled
+@@ -5299,7 +5299,7 @@ vtpMIBCompliance15 MODULE-COMPLIANCE
+     GROUP           vtpConfigNotificationsGroup8
+     DESCRIPTION
+         "This group is mandatory for devices which
+-        support the notification generation on operational 
++        support the notification generation on operational
+         VTP pruning state change."
+ 
+     GROUP           vlanTrunkPortActiveVlansGroup
+@@ -5695,7 +5695,7 @@ vtpMIBCompliance16 MODULE-COMPLIANCE
+     GROUP           vtpConfigNotificationsGroup8
+     DESCRIPTION
+         "This group is mandatory for devices which
+-        support the notification generation on operational 
++        support the notification generation on operational
+         VTP pruning state change."
+ 
+     GROUP           vlanTrunkPortActiveVlansGroup

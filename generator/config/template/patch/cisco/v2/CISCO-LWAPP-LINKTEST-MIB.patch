@@ -1,0 +1,719 @@
+diff --git a/mibs/cisco/wlc/v2/CISCO-LWAPP-LINKTEST-MIB.my b/mibs/cisco/wlc/v2/CISCO-LWAPP-LINKTEST-MIB.my
+index aae5200..01cba85 100644
+--- a/mibs/cisco/wlc/v2/CISCO-LWAPP-LINKTEST-MIB.my
++++ b/mibs/cisco/wlc/v2/CISCO-LWAPP-LINKTEST-MIB.my
+@@ -1,5 +1,5 @@
+ -- *******************************************************************
+--- CISCO-LWAPP-LINKTEST-MIB.my 
++-- CISCO-LWAPP-LINKTEST-MIB.my
+ -- December 2005, Devesh Pujari, Prasanna Viswakumar
+ --
+ -- Copyright (c) 2005, 2006  by Cisco Systems, Inc.
+@@ -8,21 +8,22 @@
+ --
+ CISCO-LWAPP-LINKTEST-MIB DEFINITIONS ::= BEGIN
+ 
+-IMPORTS 
+-        MODULE-IDENTITY, 
++IMPORTS
++        MODULE-IDENTITY,
+         OBJECT-TYPE,
+         Unsigned32,
+         Counter32,
+         Integer32
+                 FROM SNMPv2-SMI
+-        MODULE-COMPLIANCE, 
++        MODULE-COMPLIANCE,
+         OBJECT-GROUP
+                 FROM SNMPv2-CONF
+         MacAddress,
+         TruthValue,
+         TimeInterval,
+-        RowStatus
+-                FROM SNMPv2-TC 
++        RowStatus,
++        DisplayString
++                FROM SNMPv2-TC
+         ciscoMgmt
+                 FROM CISCO-SMI;
+ 
+@@ -44,18 +45,18 @@ ciscoLwappLinkTestMIB  MODULE-IDENTITY
+ 
+                  Email: cs-wnbu-snmp@cisco.com"
+ 
+-        DESCRIPTION             
++        DESCRIPTION
+                 "This MIB is intended to be implemented on all those
+                 devices operating as Central controllers, that
+                 terminate the Light Weight Access Point Protocol
+                 tunnel from Cisco Light-weight LWAPP Access Points.
+ 
+-                Link Test is performed to learn the radio link quality 
+-                between AP and Client.  CCX linktest is performed for 
+-                CCX clients.  With CCX linktest radio link can be 
+-                measured in both direction i.e. AP->Client(downLink) 
+-                and Client->AP(uplink).  When client does not support 
+-                CCX or CCX linktest fails,ping is done between AP and 
++                Link Test is performed to learn the radio link quality
++                between AP and Client.  CCX linktest is performed for
++                CCX clients.  With CCX linktest radio link can be
++                measured in both direction i.e. AP->Client(downLink)
++                and Client->AP(uplink).  When client does not support
++                CCX or CCX linktest fails,ping is done between AP and
+                 Client.  In ping test, only uplink (client->AP) quality
+                 can be measured.
+ 
+@@ -91,7 +92,7 @@ ciscoLwappLinkTestMIB  MODULE-IDENTITY
+ 
+                 The LWAPP tunnel exists between the controller and
+                 the APs.  The MNs communicate with the APs through
+-                the protocol defined by the 802.11 standard. 
++                the protocol defined by the 802.11 standard.
+ 
+                 LWAPP APs, upon bootup, discover and join one of the
+                 controllers and forward all the 802.11 frames to them
+@@ -104,7 +105,7 @@ ciscoLwappLinkTestMIB  MODULE-IDENTITY
+                 An entity that contains an 802.11 medium access
+                 control ( MAC ) and physical layer ( PHY ) interface
+                 and provides access to the distribution services via
+-                the wireless medium for associated clients.  
++                the wireless medium for associated clients.
+ 
+                 LWAPP APs encapsulate all the 802.11 frames in
+                 LWAPP frames and sends them to the controller to which
+@@ -117,36 +118,36 @@ ciscoLwappLinkTestMIB  MODULE-IDENTITY
+                 this entity also referred to as 'controller'.
+ 
+                 Cisco Compatible eXtensions (CCX)
+-                
++
+                 Wireless LAN Access Points (APs) manufactured by Cisco
+-                Systems have features and capabilities beyond those in 
+-                related standards (e.g., IEEE 802.11 suite of 
+-                standards, Wi-Fi recommendations by WECA, 802.1X 
+-                security suite, etc). A number of features provide 
++                Systems have features and capabilities beyond those in
++                related standards (e.g., IEEE 802.11 suite of
++                standards, Wi-Fi recommendations by WECA, 802.1X
++                security suite, etc). A number of features provide
+                 higher performance. For example, Cisco AP transmits a
+-                specific Information Element, which the clients adapt 
++                specific Information Element, which the clients adapt
+                 to for enhanced performance. Similarly, a number of
+-                features are implemented by means of proprietary 
+-                Information Elements, which Cisco clients 
+-                use in specific ways to carry out tasks above and 
+-                beyond the standard.Other examples of feature 
++                features are implemented by means of proprietary
++                Information Elements, which Cisco clients
++                use in specific ways to carry out tasks above and
++                beyond the standard.Other examples of feature
+                 categories are roaming and power saving.
+ 
+                 Light Weight Access Point Protocol ( LWAPP )
+ 
+-                This is a generic protocol that defines the 
++                This is a generic protocol that defines the
+                 communication between the Access Points and the
+                 Central controller.
+ 
+                 Mobile Node ( MN )
+ 
+                 A roaming 802.11 wireless device in a wireless
+-                network associated with an access point. Mobile Node 
+-                and client are used interchangeably. 
+-                
++                network associated with an access point. Mobile Node
++                and client are used interchangeably.
++
+                 Received Signal Strength Indicator ( RSSI )
+- 
+-                A measure of the strength of the signal as 
++
++                A measure of the strength of the signal as
+                 observed by the entity that received it,
+                 expressed in 'dbm'.
+ 
+@@ -156,22 +157,22 @@ ciscoLwappLinkTestMIB  MODULE-IDENTITY
+                 to the strength of noise expressed in 'dB'.
+ 
+                 REFERENCE
+- 
++
+                 [1] Wireless LAN Medium Access Control ( MAC ) and
+                 Physical Layer ( PHY ) Specifications.
+-  
+-                [2] Draft-obara-capwap-lwapp-00.txt, IETF Light 
++
++                [2] Draft-obara-capwap-lwapp-00.txt, IETF Light
+                 Weight Access Point Protocol "
+ 
+         REVISION      "200604060000Z"
+         DESCRIPTION
+                 "Initial version of this MIB module. "
+         ::= { ciscoMgmt 516 }
+-        
++
+ ciscoLwappLinkTestMIBNotifs  OBJECT IDENTIFIER
+         ::= { ciscoLwappLinkTestMIB 0 }
+ 
+-ciscoLwappLinkTestMIBObjects OBJECT IDENTIFIER 
++ciscoLwappLinkTestMIBObjects OBJECT IDENTIFIER
+         ::= { ciscoLwappLinkTestMIB 1 }
+ 
+ ciscoLwappLinkTestMIBConform OBJECT IDENTIFIER
+@@ -187,7 +188,7 @@ ciscoLwappLinkTestStatus OBJECT IDENTIFIER
+     ::= { ciscoLwappLinkTestMIBObjects 3}
+ 
+ --********************************************************************
+---*    Link Test global configurations 
++--*    Link Test global configurations
+ --********************************************************************
+ cLLtResponder OBJECT-TYPE
+         SYNTAX     TruthValue
+@@ -198,13 +199,13 @@ cLLtResponder OBJECT-TYPE
+                 to the linktests initiated by the client.
+ 
+                 When set to 'true', the AP is expected to respond
+-                to the linktests performed by the client. 
++                to the linktests performed by the client.
+ 
+                 The AP won't respond to the linktests initiated by
+                 the client, when this object is set to 'false'. "
+         DEFVAL { true }
+         ::= { ciscoLwappLinkTestConfig 1 }
+-         
++
+ cLLtPacketSize OBJECT-TYPE
+         SYNTAX     Unsigned32 (1..1500)
+         MAX-ACCESS read-write
+@@ -215,7 +216,7 @@ cLLtPacketSize OBJECT-TYPE
+                 packet. "
+         DEFVAL { 50 }
+         ::= { ciscoLwappLinkTestConfig 2 }
+-   
++
+ cLLtNumberOfPackets  OBJECT-TYPE
+          SYNTAX     Unsigned32 (1..100)
+          MAX-ACCESS read-write
+@@ -245,33 +246,33 @@ cLLtTestPurgeTime OBJECT-TYPE
+         ::= { ciscoLwappLinkTestConfig 4 }
+ 
+ --********************************************************************
+---*    Link Test request for CCX and non CCX clients. 
++--*    Link Test request for CCX and non CCX clients.
+ --********************************************************************
+-         
++
+ cLLtClientLinkTestTable OBJECT-TYPE
+          SYNTAX     SEQUENCE OF CLLtClientLinkTestEntry
+          MAX-ACCESS not-accessible
+          STATUS     current
+          DESCRIPTION
+                  "This table is used to initiate linktests between
+-                 an AP and one of its associated clients.  CCX 
++                 an AP and one of its associated clients.  CCX
+                  linktests are done on clients that support CCX.  For
+                  all non-CCX clients, ping test is done.  Note that
+                  ping test is also done when the CCX linktests fail.
+-                          
++
+                  With CCX LinkTest support, the controller can test
+                  the link quality in downstream (direction of
+-                 traffic from AP to client) direction by issuing 
+-                 LinkTest requests towards the client and let client 
+-                 record in the response packet the RF parameters 
++                 traffic from AP to client) direction by issuing
++                 LinkTest requests towards the client and let client
++                 record in the response packet the RF parameters
+                  like received signal strength, signal-to-noise
+-                 etc., of the received request packet. 
+-         
++                 etc., of the received request packet.
++
+                  With ping test only those RF parameters that are
+                  seen by the AP are measured.
+ 
+                  User initiates one run of linktest by adding a
+-                 row to this table through explicit management 
++                 row to this table through explicit management
+                  action from the network manager.  A row is created
+                  by specifying cLLtClientLtIndex,
+                  cLLtClientLtMacAddress and setting the RowStatus
+@@ -279,7 +280,7 @@ cLLtClientLinkTestTable OBJECT-TYPE
+                  the request made to start the linktest on the
+                  client identified by cLLtClientLtMacAddress.
+                  cLLtClientLtIndex identifies the particular
+-                 instance of the test.  
++                 instance of the test.
+ 
+                  The added row is deleted by setting the corresponding
+                  instance of the RowStatus object to 'destroy'.  In
+@@ -293,7 +294,7 @@ cLLtClientLinkTestTable OBJECT-TYPE
+                  cLLtClientLtIndex can be obtained from the
+                  queries to cLLtClientLtResultsTable. "
+          ::= { ciscoLwappLinkTestRun 1 }
+-         
++
+ cLLtClientLinkTestEntry OBJECT-TYPE
+         SYNTAX     CLLtClientLinkTestEntry
+         MAX-ACCESS not-accessible
+@@ -304,8 +305,8 @@ cLLtClientLinkTestEntry OBJECT-TYPE
+                 a network manager. "
+         INDEX { cLLtClientLtIndex }
+         ::= { cLLtClientLinkTestTable 1 }
+-      
+-CLLtClientLinkTestEntry ::= 
++
++CLLtClientLinkTestEntry ::=
+         SEQUENCE {
+                 cLLtClientLtIndex                Unsigned32,
+                 cLLtClientLtMacAddress           MacAddress,
+@@ -314,15 +315,15 @@ CLLtClientLinkTestEntry ::=
+ 
+ cLLtClientLtIndex OBJECT-TYPE
+         SYNTAX     Unsigned32 (1..32)
+-        MAX-ACCESS not-accessible 
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-                "This object uniquely identifies one particular  
++                "This object uniquely identifies one particular
+                 run of the linktest initiated between the client
+                 identified by cLLtClientLtMacAddress and the AP it
+                 is currently associated with. "
+         ::= { cLLtClientLinkTestEntry 1 }
+-         
++
+ cLLtClientLtMacAddress OBJECT-TYPE
+         SYNTAX     MacAddress
+         MAX-ACCESS read-create
+@@ -351,12 +352,12 @@ cLLtClientLTResultsTable OBJECT-TYPE
+          STATUS     current
+          DESCRIPTION
+                  "This table populates the results of the linktests
+-                 initiated by the user through the 
+-                 cLLtClientLinkTestTable.  
++                 initiated by the user through the
++                 cLLtClientLinkTestTable.
+ 
+                  This table has a sparse dependent relationship
+                  with cLLtClientLinkTestTable.  There exists a
+-                 row in this table corresponding to the row for 
++                 row in this table corresponding to the row for
+                  each row in cLLtClientLinkTestTable identified
+                  by cLLtClientLtIndex.  A row is added to this
+                  table when user, through the network manager, adds
+@@ -380,11 +381,11 @@ cLLtClientLTResultsEntry OBJECT-TYPE
+         DESCRIPTION
+                 "Each entry in this table represents the results
+                 of the linktest identified by
+-                cLLtClientLtIndex. "                
++                cLLtClientLtIndex. "
+         INDEX { cLLtClientLtIndex }
+         ::= { cLLtClientLTResultsTable 1 }
+ 
+-CLLtClientLTResultsEntry ::= 
++CLLtClientLTResultsEntry ::=
+         SEQUENCE {
+                 cLLtClientLtPacketsSent          Counter32,
+                 cLLtClientLtPacketsRx            Counter32,
+@@ -423,7 +424,7 @@ cLLtClientLtPacketsSent OBJECT-TYPE
+                 specified by cLLtClientLtMacAddress by the AP it is
+                 associated to. "
+         ::= { cLLtClientLTResultsEntry 1 }
+-    
++
+ cLLtClientLtPacketsRx OBJECT-TYPE
+         SYNTAX     Counter32
+         UNITS      "packets"
+@@ -444,7 +445,7 @@ cLLtClientLtTotalPacketsLost OBJECT-TYPE
+                 "The total number of packets lost during the linktest
+                 in both the upstream and downstream directions. "
+         ::= { cLLtClientLTResultsEntry 3 }
+-         
++
+ cLLtClientLtApToClientPktsLost OBJECT-TYPE
+         SYNTAX     Counter32
+         UNITS      "packets"
+@@ -455,7 +456,7 @@ cLLtClientLtApToClientPktsLost OBJECT-TYPE
+                 the downstream (direction of traffic from AP to
+                 client) direction. "
+         ::= { cLLtClientLTResultsEntry 4 }
+-                  
++
+ cLLtClientLtClientToApPktsLost OBJECT-TYPE
+         SYNTAX     Counter32
+         UNITS      "packets"
+@@ -466,24 +467,24 @@ cLLtClientLtClientToApPktsLost OBJECT-TYPE
+                 the upstream (direction of traffic from client to AP)
+                 direction. "
+         ::= { cLLtClientLTResultsEntry 5 }
+-         
++
+ cLLtClientLtMinRoundTripTime OBJECT-TYPE
+         SYNTAX     TimeInterval
+         UNITS      "hundredths-seconds"
+         MAX-ACCESS read-only
+         STATUS     current
+         DESCRIPTION
+-                "The minimum round trip time observed on the 
++                "The minimum round trip time observed on the
+                 linktest packet between the AP and the client. "
+         ::= { cLLtClientLTResultsEntry 6 }
+-    
++
+ cLLtClientLtMaxRoundTripTime OBJECT-TYPE
+         SYNTAX     TimeInterval
+         UNITS      "hundredths-seconds"
+         MAX-ACCESS read-only
+         STATUS     current
+         DESCRIPTION
+-                "The maximum round trip time observed on the 
++                "The maximum round trip time observed on the
+                 linktest packet between the AP and the client. "
+         ::= { cLLtClientLTResultsEntry 7 }
+ 
+@@ -493,7 +494,7 @@ cLLtClientLtAvgRoundTripTime OBJECT-TYPE
+         MAX-ACCESS read-only
+         STATUS     current
+         DESCRIPTION
+-                "The average round trip time observed on the 
++                "The average round trip time observed on the
+                 linktest packet between the AP and the client. "
+         ::= { cLLtClientLTResultsEntry 8 }
+ 
+@@ -504,16 +505,16 @@ cLLtClientLtUplinkMinRSSI OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+                 "The minimum RSSI value as observed at the
+-                AP. " 
++                AP. "
+         ::= { cLLtClientLTResultsEntry 9 }
+-         
++
+ cLLtClientLtUplinkMaxRSSI OBJECT-TYPE
+         SYNTAX     Integer32
+         UNITS      "dBm"
+         MAX-ACCESS read-only
+         STATUS     current
+         DESCRIPTION
+-                "The maximum RSSI value as observed at the 
++                "The maximum RSSI value as observed at the
+                 AP. "
+         ::= { cLLtClientLTResultsEntry 10 }
+ 
+@@ -524,7 +525,7 @@ cLLtClientLtUplinkAvgRSSI OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+                 "The average RSSI value as observed at the
+-                AP. " 
++                AP. "
+         ::= { cLLtClientLTResultsEntry 11}
+ 
+ cLLtClientLtDownlinkMinRSSI OBJECT-TYPE
+@@ -534,7 +535,7 @@ cLLtClientLtDownlinkMinRSSI OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+                 "The minimum RSSI value as observed at the
+-                client. " 
++                client. "
+         ::= { cLLtClientLTResultsEntry 12 }
+ 
+ cLLtClientLtDownlinkMaxRSSI OBJECT-TYPE
+@@ -544,7 +545,7 @@ cLLtClientLtDownlinkMaxRSSI OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+                 "The maximum RSSI value as observed at the
+-                client. " 
++                client. "
+         ::= { cLLtClientLTResultsEntry 13 }
+ 
+ cLLtClientLtDownlinkAvgRSSI OBJECT-TYPE
+@@ -554,7 +555,7 @@ cLLtClientLtDownlinkAvgRSSI OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+                 "The average RSSI value as observed at the
+-                client. " 
++                client. "
+         ::= { cLLtClientLTResultsEntry 14 }
+ 
+ cLLtClientLtUplinkMinSNR OBJECT-TYPE
+@@ -564,9 +565,9 @@ cLLtClientLtUplinkMinSNR OBJECT-TYPE
+          STATUS     current
+          DESCRIPTION
+                  "The minimum SNR value as observed at the
+-                 AP. " 
++                 AP. "
+          ::= { cLLtClientLTResultsEntry 15 }
+-         
++
+ cLLtClientLtUplinkMaxSNR OBJECT-TYPE
+          SYNTAX     Integer32
+          UNITS      "dB"
+@@ -574,7 +575,7 @@ cLLtClientLtUplinkMaxSNR OBJECT-TYPE
+          STATUS     current
+          DESCRIPTION
+                  "The maximum SNR value as observed at the
+-                 AP. " 
++                 AP. "
+          ::= { cLLtClientLTResultsEntry 16 }
+ 
+ cLLtClientLtUplinkAvgSNR OBJECT-TYPE
+@@ -584,7 +585,7 @@ cLLtClientLtUplinkAvgSNR OBJECT-TYPE
+          STATUS     current
+          DESCRIPTION
+                  "The average SNR value as observed at the
+-                 AP. " 
++                 AP. "
+          ::= { cLLtClientLTResultsEntry 17 }
+ 
+ cLLtClientLtDownlinkMinSNR OBJECT-TYPE
+@@ -594,9 +595,9 @@ cLLtClientLtDownlinkMinSNR OBJECT-TYPE
+          STATUS     current
+          DESCRIPTION
+                  "The minimum SNR value as observed at the
+-                 client. " 
++                 client. "
+          ::= { cLLtClientLTResultsEntry 18 }
+-         
++
+ cLLtClientLtDownlinkMaxSNR OBJECT-TYPE
+          SYNTAX     Integer32
+          UNITS      "dB"
+@@ -604,7 +605,7 @@ cLLtClientLtDownlinkMaxSNR OBJECT-TYPE
+          STATUS     current
+          DESCRIPTION
+                  "The maximum SNR value as observed at the
+-                 client. " 
++                 client. "
+          ::= { cLLtClientLTResultsEntry 19 }
+ 
+ cLLtClientLtDownlinkAvgSNR OBJECT-TYPE
+@@ -614,9 +615,9 @@ cLLtClientLtDownlinkAvgSNR OBJECT-TYPE
+          STATUS     current
+          DESCRIPTION
+                  "The average SNR value as observed at the
+-                 client. " 
++                 client. "
+          ::= { cLLtClientLTResultsEntry 20 }
+-     
++
+ cLLtClientLtTotalTxRetriesAP OBJECT-TYPE
+          SYNTAX     Counter32
+          UNITS      "retries"
+@@ -624,7 +625,7 @@ cLLtClientLtTotalTxRetriesAP OBJECT-TYPE
+          STATUS     current
+          DESCRIPTION
+                  "The total number of linktest packet transmission
+-                 retries as observed at the AP. " 
++                 retries as observed at the AP. "
+          ::= { cLLtClientLTResultsEntry 21 }
+ 
+ cLLtClientLtMaxTxRetriesAP OBJECT-TYPE
+@@ -636,7 +637,7 @@ cLLtClientLtMaxTxRetriesAP OBJECT-TYPE
+                  "The maximum number of linktest packet transmission
+                  retries observed at the AP. "
+          ::= { cLLtClientLTResultsEntry 22 }
+-       
++
+ cLLtClientLtTotalTxRetriesClient OBJECT-TYPE
+          SYNTAX     Counter32
+          UNITS      "retries"
+@@ -644,7 +645,7 @@ cLLtClientLtTotalTxRetriesClient OBJECT-TYPE
+          STATUS     current
+          DESCRIPTION
+                  "The total number of linktest packet transmission
+-                 retries at the client. " 
++                 retries at the client. "
+          ::= { cLLtClientLTResultsEntry 23 }
+ 
+ cLLtClientLtMaxTxRetriesClient OBJECT-TYPE
+@@ -656,7 +657,7 @@ cLLtClientLtMaxTxRetriesClient OBJECT-TYPE
+                  "The maximum number of linktest packet transmission
+                  retries observed at the client. "
+          ::= { cLLtClientLTResultsEntry 24 }
+-                  
++
+ cLLtClientLtStatus OBJECT-TYPE
+         SYNTAX     INTEGER {
+                            cLLtClientLtStatusFailed(0),
+@@ -674,7 +675,7 @@ cLLtClientLtStatus OBJECT-TYPE
+                 The semantics as follows.
+ 
+                 'cLLtClientLtStatusFailed' - This value indicates that
+-                this particular linktest has failed. 
++                this particular linktest has failed.
+ 
+                 'cLLtClientLtCcxStatusInProgress' - This value indicates
+                 that the CCX linktest is in progress.
+@@ -688,7 +689,7 @@ cLLtClientLtStatus OBJECT-TYPE
+ 
+                 Only the following columns of this table should be
+                 considered for collecting data from the ping
+-                responses.                                              
++                responses.
+                                cLLtClientLtPacketsSent,
+                                cLLtClientLtPacketsRx,
+                                cLLtClientLtUplinkAvgRSSI,
+@@ -697,10 +698,10 @@ cLLtClientLtStatus OBJECT-TYPE
+                 cLLtClientLtStatusCcxLtSuccess - This value indicates
+                 that CCX linktest done to test the link between the
+                 client and the AP is successful.  All the columns of
+-                this table are applicable and valid for collecting 
++                this table are applicable and valid for collecting
+                 data from the CCX responses. "
+         ::= { cLLtClientLTResultsEntry 25 }
+-         
++
+ --*******************************************************************
+ -- CCX linktest result on different data rates
+ --*******************************************************************
+@@ -711,16 +712,16 @@ cLLtClientLtDataRateTable OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+                 "This table provides the results of CCX Link tests
+-                classified on different data rates between AP and 
++                classified on different data rates between AP and
+                 clients.
+ 
+                 A row is added to this table automatically by the
+                 agent corresponding to one linktest identified
+                 by cLLtClientLtIndex and deleted when the
+                 corresponding row in cLLtClientLinkTestTable is
+-                deleted. "  
++                deleted. "
+         ::= { ciscoLwappLinkTestStatus 1 }
+-    
++
+ cLLtClientLtDataRateEntry OBJECT-TYPE
+         SYNTAX     CLLtClientLtDataRateEntry
+         MAX-ACCESS not-accessible
+@@ -734,27 +735,27 @@ cLLtClientLtDataRateEntry OBJECT-TYPE
+                 by cLLtClientLtDataRate. "
+         INDEX { cLLtClientLtIndex, cLLtClientLtDataRate }
+         ::= { cLLtClientLtDataRateTable 1 }
+-      
+-CLLtClientLtDataRateEntry ::= 
++
++CLLtClientLtDataRateEntry ::=
+         SEQUENCE {
+-                 cLLtClientLtDataRate             OCTET STRING,
++                 cLLtClientLtDataRate             DisplayString,
+                  cLLtClientLtRateDownlinkPktsSent Counter32,
+-                 cLLtClientLtRateUplinkPktsSent   Counter32 
++                 cLLtClientLtRateUplinkPktsSent   Counter32
+         }
+-    
++
+ cLLtClientLtDataRate OBJECT-TYPE
+-        SYNTAX     OCTET STRING(SIZE(1..255))
++        SYNTAX     DisplayString(SIZE(1..255))
+         MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+                 "This object identifies the rate at which packets
+                 are transmitted.  The rates are defined in Mbps
+-                with the following being the possible values. 
++                with the following being the possible values.
+                 Rates - 1,2,5.5,6,9,11,12,18,24,36,48,54,108. "
+         ::= { cLLtClientLtDataRateEntry 1 }
+-           
++
+ cLLtClientLtRateDownlinkPktsSent OBJECT-TYPE
+-       SYNTAX     Counter32 
++       SYNTAX     Counter32
+        UNITS      "packets"
+        MAX-ACCESS read-only
+        STATUS     current
+@@ -762,9 +763,9 @@ cLLtClientLtRateDownlinkPktsSent OBJECT-TYPE
+                "The number of packets sent by the AP at the rate
+                identified by cLLtClientLtDataRate. "
+        ::= { cLLtClientLtDataRateEntry 2}
+-    
++
+ cLLtClientLtRateUplinkPktsSent OBJECT-TYPE
+-       SYNTAX     Counter32 
++       SYNTAX     Counter32
+        UNITS      "packets"
+        MAX-ACCESS read-only
+        STATUS     current
+@@ -774,7 +775,7 @@ cLLtClientLtRateUplinkPktsSent OBJECT-TYPE
+        ::= { cLLtClientLtDataRateEntry 3 }
+ 
+ --********************************************************************
+---*    Compliance statements  
++--*    Compliance statements
+ --********************************************************************
+ ciscoLwappLinkTestMIBCompliances OBJECT IDENTIFIER
+         ::= { ciscoLwappLinkTestMIBConform 1 }
+@@ -783,11 +784,11 @@ ciscoLwappLinkTestMIBGroups OBJECT IDENTIFIER
+         ::= { ciscoLwappLinkTestMIBConform 2 }
+ 
+ ciscoLwappLinkTestMIBCompliance MODULE-COMPLIANCE
+-        STATUS     current 
++        STATUS     current
+         DESCRIPTION
+                 "The compliance statement for the SNMP entities that
+                 implement the ciscoLwappLinkTestMIB module."
+-        MODULE MANDATORY-GROUPS {                
++        MODULE MANDATORY-GROUPS {
+                 cLLinkTestConfigGroup,
+                 cLLinkTestRunsGroup,
+                 cLLinkTestStatusGroup
+@@ -796,23 +797,23 @@ ciscoLwappLinkTestMIBCompliance MODULE-COMPLIANCE
+         ::= { ciscoLwappLinkTestMIBCompliances 1 }
+ 
+ --********************************************************************
+---*    Units of conformance  
++--*    Units of conformance
+ --********************************************************************
+-     
++
+ cLLinkTestConfigGroup OBJECT-GROUP
+         OBJECTS {
+                 cLLtResponder,
+                 cLLtPacketSize,
+                 cLLtNumberOfPackets,
+                 cLLtTestPurgeTime
+-        }                
++        }
+         STATUS     current
+         DESCRIPTION
+                 "This collection of objects represent the linktest
+-                parameters for use during the various of the 
+-                tests. " 
++                parameters for use during the various of the
++                tests. "
+         ::= { ciscoLwappLinkTestMIBGroups 1 }
+-      
++
+ cLLinkTestRunsGroup OBJECT-GROUP
+         OBJECTS {
+                 cLLtClientLtMacAddress,
+@@ -842,14 +843,14 @@ cLLinkTestRunsGroup OBJECT-GROUP
+                 cLLtClientLtMaxTxRetriesClient,
+                 cLLtClientLtStatus,
+                 cLLtClientLtRowStatus
+-        }                
++        }
+         STATUS     current
+         DESCRIPTION
+                 "This collection of objects is used to initiate
+                 linktests and retrieve the results of the respective
+                 runs of the tests. "
+         ::= { ciscoLwappLinkTestMIBGroups 2 }
+-      
++
+ cLLinkTestStatusGroup OBJECT-GROUP
+         OBJECTS {
+                 cLLtClientLtRateDownlinkPktsSent,
+@@ -857,7 +858,7 @@ cLLinkTestStatusGroup OBJECT-GROUP
+         }
+         STATUS current
+         DESCRIPTION
+-                "This collection of objects provide information 
++                "This collection of objects provide information
+                 about the linktest results. "
+         ::= { ciscoLwappLinkTestMIBGroups 3 }
+ 

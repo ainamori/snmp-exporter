@@ -1,0 +1,83 @@
+diff --git a/mibs/cisco/cat3750/v1/TOKEN-RING-RMON-MIB.my b/mibs/cisco/cat3750/v1/TOKEN-RING-RMON-MIB.my
+index 10ea7be..0622ffe 100644
+--- a/mibs/cisco/cat3750/v1/TOKEN-RING-RMON-MIB.my
++++ b/mibs/cisco/cat3750/v1/TOKEN-RING-RMON-MIB.my
+@@ -5,7 +5,8 @@
+               OBJECT-TYPE                 FROM RFC-1212
+               OwnerString, -- EntryStatus Textual Conventions
+               rmon, statistics, history
+-                                          FROM RFC1271-MIB;
++                                          FROM RFC1271-MIB
++              DisplayString               FROM SNMPv2-TC;
+ 
+ -- OwnerString has the same semantics as used in RFC 1271
+ 
+@@ -24,7 +25,7 @@
+                itself will be the owner of an entry.  In these cases,
+                this string shall be set to a string starting with
+                'agent'."
+-       SYNTAX       OCTET STRING (SIZE(0..255))
++       SYNTAX       DisplayString (SIZE(0..255))
+    -- InterfaceIndex contains the semantics of ifIndex and
+    -- should be used for any objects defined on other mib
+    -- modules that need these semantics.
+@@ -36,7 +37,7 @@
+              -- data type:
+ 
+ 
+-             MacAddress ::= OCTET STRING (SIZE (6)) -- a 6 octet
++             MacAddress ::= DisplayString (SIZE (6)) -- a 6 octet
+                                                     -- address in
+                                                     -- the "canonical"
+                                                     -- order
+@@ -2129,10 +2130,10 @@
+               ringStationConfigIfIndex            INTEGER,
+               ringStationConfigMacAddress         MacAddress,
+               ringStationConfigUpdateTime         TimeTicks,
+-              ringStationConfigLocation           OCTET STRING,
+-              ringStationConfigMicrocode          OCTET STRING,
+-              ringStationConfigGroupAddress       OCTET STRING,
+-              ringStationConfigFunctionalAddress  OCTET STRING
++              ringStationConfigLocation           DisplayString,
++              ringStationConfigMicrocode          DisplayString,
++              ringStationConfigGroupAddress       DisplayString,
++              ringStationConfigFunctionalAddress  DisplayString
+           }
+ 
+           ringStationConfigIfIndex OBJECT-TYPE
+@@ -2172,7 +2173,7 @@
+               ::= { ringStationConfigEntry 3 }
+ 
+           ringStationConfigLocation OBJECT-TYPE
+-              SYNTAX OCTET STRING (SIZE(4))
++              SYNTAX DisplayString (SIZE(4))
+               ACCESS read-only
+               STATUS mandatory
+               DESCRIPTION
+@@ -2180,7 +2181,7 @@
+               ::= { ringStationConfigEntry 4 }
+ 
+           ringStationConfigMicrocode OBJECT-TYPE
+-              SYNTAX OCTET STRING (SIZE(10))
++              SYNTAX DisplayString (SIZE(10))
+               ACCESS read-only
+               STATUS mandatory
+               DESCRIPTION
+@@ -2188,7 +2189,7 @@
+               ::= { ringStationConfigEntry 5 }
+ 
+           ringStationConfigGroupAddress OBJECT-TYPE
+-              SYNTAX OCTET STRING (SIZE(4))
++              SYNTAX DisplayString (SIZE(4))
+               ACCESS read-only
+               STATUS mandatory
+               DESCRIPTION
+@@ -2202,7 +2203,7 @@
+               ::= { ringStationConfigEntry 6 }
+ 
+           ringStationConfigFunctionalAddress OBJECT-TYPE
+-              SYNTAX OCTET STRING (SIZE(4))
++              SYNTAX DisplayString (SIZE(4))
+               ACCESS read-only
+               STATUS mandatory
+               DESCRIPTION

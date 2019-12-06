@@ -1,0 +1,2370 @@
+diff --git a/mibs/cisco/wlc/v2/CISCO-LWAPP-REAP-MIB.my b/mibs/cisco/wlc/v2/CISCO-LWAPP-REAP-MIB.my
+index 2711eeb..852bc71 100644
+--- a/mibs/cisco/wlc/v2/CISCO-LWAPP-REAP-MIB.my
++++ b/mibs/cisco/wlc/v2/CISCO-LWAPP-REAP-MIB.my
+@@ -18,7 +18,8 @@ IMPORTS
+         FROM SNMPv2-CONF
+     TruthValue,
+     StorageType,
+-    RowStatus
++    RowStatus,
++    DisplayString
+         FROM SNMPv2-TC
+     SnmpAdminString
+         FROM SNMP-FRAMEWORK-MIB
+@@ -44,7 +45,7 @@ ciscoLwappReapMIB MODULE-IDENTITY
+             "Cisco Systems,
+             Customer Service
+             Postal: 170 West Tasman Drive
+-            San Jose, CA  95134 
++            San Jose, CA  95134
+ 	    USA
+             Tel: +1 800 553-NETS
+ 
+@@ -57,7 +58,7 @@ ciscoLwappReapMIB MODULE-IDENTITY
+ 
+         Information represented by this MIB is passed by the
+         controller to those Cisco LWAPP APs, that can
+-        operate in stand-alone mode.  
++        operate in stand-alone mode.
+ 
+         The relationship between CC and the LWAPP APs
+         can be depicted as follows:
+@@ -108,7 +109,7 @@ ciscoLwappReapMIB MODULE-IDENTITY
+         An entity that contains an 802.11 medium access
+         control ( MAC ) and physical layer ( PHY ) interface
+         and provides access to the distribution services via
+-        the wireless medium for associated clients.  
++        the wireless medium for associated clients.
+ 
+         LWAPP APs encapsulate all the 802.11 frames in
+         LWAPP frames and sends them to the controller to which
+@@ -120,7 +121,7 @@ ciscoLwappReapMIB MODULE-IDENTITY
+         tunnel from the LWAPP APs.  Throughout this MIB,
+         this entity is also referred to as 'controller'.
+ 
+-        Light Weight Access Point Protocol ( LWAPP ) 
++        Light Weight Access Point Protocol ( LWAPP )
+ 
+         This is a generic protocol that defines the
+         communication between the Access Points and the
+@@ -166,10 +167,10 @@ ciscoLwappReapMIB MODULE-IDENTITY
+         VLAN ID
+         Each VLAN is identified by a 12-bit 'VLAN ID'.
+         A VLAN ID of '0' is used to indicate 'no VLAN ID'.
+-        Valid VLAN IDs range from '1' to '4095'. 
++        Valid VLAN IDs range from '1' to '4095'.
+ 
+-        Home AP 
+-        A REAP AP can be installed at end-user home. Home 
++        Home AP
++        A REAP AP can be installed at end-user home. Home
+         AP ethernet port will be connected to DSL or cable
+         modem at home. Home AP will be primed with Controller
+         IP Address so that it will join with controller.
+@@ -177,9 +178,9 @@ ciscoLwappReapMIB MODULE-IDENTITY
+         REFERENCE
+ 
+         [1] Part 11 Wireless LAN Medium Access Control ( MAC )
+-        and Physical Layer ( PHY ) Specifications 
++        and Physical Layer ( PHY ) Specifications
+ 
+-        [2] Draft-obara-capwap-lwapp-00.txt, IETF Light 
++        [2] Draft-obara-capwap-lwapp-00.txt, IETF Light
+         Weight Access Point Protocol"
+     REVISION        "201704200000Z"
+     DESCRIPTION
+@@ -200,14 +201,14 @@ ciscoLwappReapMIB MODULE-IDENTITY
+         and cLReapHomeApLocalSsidReset. Updated the description
+         for cLReapGroupUserConfigTable,cLReapGroupUserName,
+         and cLReapGroupPassword.
+-        In module identity's description removed EAP and added 
++        In module identity's description removed EAP and added
+         Home AP.
+ 
+-        ciscoLwappReapMIBComplianceRev2 is deprecated. Added all 
+-        the groups which are in ciscoLwappReapMIBComplianceRev2 to 
++        ciscoLwappReapMIBComplianceRev2 is deprecated. Added all
++        the groups which are in ciscoLwappReapMIBComplianceRev2 to
+         ciscoLwappReapMIBComplianceRev3. cLReapGroupRadiusPacTimeout
+         is deprecated and created a new OID called
+-        cLReapGroupRadiusPacTimeoutCtrl. Created new group  
++        cLReapGroupRadiusPacTimeoutCtrl. Created new group
+         ciscoLwappReapApConfigGroupHomeAp."
+     REVISION        "200711010000Z"
+     DESCRIPTION
+@@ -249,13 +250,13 @@ ciscoLwappReapMasterApConfig OBJECT IDENTIFIER
+ 
+ ciscoLwappReapGlobalConfig OBJECT IDENTIFIER
+     ::= { ciscoLwappReapMIBObjects 6 }
+-    
++
+ -- ********************************************************************
+ -- WLAN configuration
+ -- ********************************************************************
+ 
+ cLReapWlanConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLReapWlanConfigEntry 
++    SYNTAX          SEQUENCE OF CLReapWlanConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -263,9 +264,9 @@ cLReapWlanConfigTable OBJECT-TYPE
+         the controller to REAPs so that the APs can operate
+         in stand-alone mode.
+ 
+-        LWAPP APs operating in REAP mode locally switch 
+-        the data frames of the associated clients, rather 
+-        than tunneling them through to the LWAPP controller 
++        LWAPP APs operating in REAP mode locally switch
++        the data frames of the associated clients, rather
++        than tunneling them through to the LWAPP controller
+         as LWAPP data packets.  The LWAPP controller
+         passes this configuration set to the LWAPP AP during
+         the AP initialization so that the AP can operate
+@@ -281,9 +282,9 @@ cLReapWlanConfigTable OBJECT-TYPE
+         exist a row in this table corresponding to each
+         row representing a WLAN in cLWlanConfigTable.
+ 
+-        Note that the configuration represented by this 
+-        table is applicable only for REAPs.  The 
+-        controller will send this configuration set only to 
++        Note that the configuration represented by this
++        table is applicable only for REAPs.  The
++        controller will send this configuration set only to
+         the REAP APs for their operation in standalone
+         mode."
+     ::= { ciscoLwappReapWlanConfig 1 }
+@@ -303,15 +304,15 @@ cLReapWlanConfigEntry OBJECT-TYPE
+ --will be shipped to the customers. This version is for
+ --INTERNAL USE ONLY.
+ --    AUGMENTS { cLWlanConfigEntry }
+-    INDEX           { cLWlanIndex } 
++    INDEX           { cLWlanIndex }
+     ::= { cLReapWlanConfigTable 1 }
+ 
+ CLReapWlanConfigEntry ::= SEQUENCE {
+         cLReapWlanEnLocalSwitching    TruthValue,
+         cLReapWlanClientIpLearnEnable TruthValue,
+         cLReapWlanApAuth              TruthValue,
+-        cLReapWlanVlanCentralSwitching   TruthValue, 
+-        cLReapWlanDhcpCentral      TruthValue, 
++        cLReapWlanVlanCentralSwitching   TruthValue,
++        cLReapWlanDhcpCentral      TruthValue,
+         cLReapWlanDhcpOverrideDNS  TruthValue,
+ 	cLReapWlanNatPatEnabled    TruthValue,
+         cLReapWlanAssocCentral     TruthValue
+@@ -327,19 +328,19 @@ cLReapWlanEnLocalSwitching OBJECT-TYPE
+         associated to it through the WLAN identified
+         by cLWlanIndex.
+ 
+-        A value of 'true' indicates that the AP, on which 
+-        this WLAN is configured, may locally switch the 
++        A value of 'true' indicates that the AP, on which
++        this WLAN is configured, may locally switch the
+         data packets of the clients in the WLAN instead
+         of tunneling them to the central controller for
+         switching.
+ 
+-        A value of 'false' indicates that the AP should 
++        A value of 'false' indicates that the AP should
+         tunnel all the data packets of the wireless clients
+         in the WLAN to the central controller for switching.
+ 
+         Note that the value of 'true' will be effective
+         only if the WLAN is configured on a REAP."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLReapWlanConfigEntry 1 }
+ 
+ cLReapWlanClientIpLearnEnable OBJECT-TYPE
+@@ -349,15 +350,15 @@ cLReapWlanClientIpLearnEnable OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies whether Client IP Address
+         learning is enabled on the controller. When layer
+-        two tunneling is employed the IP learning on 
++        two tunneling is employed the IP learning on
+         controller has to be disabled. Otherwise, the controller
+-        is unable to learn the client's IP address and cannot 
+-        move it to the associated state. 
++        is unable to learn the client's IP address and cannot
++        move it to the associated state.
+         A value of 'true' indicates the controller does checks
+         for IP sent by the HREAP AP.
+         A value of 'false' indicates the controller does
+         not check for IP from the locally switch HREAP AP."
+-    DEFVAL          { true } 
++    DEFVAL          { true }
+     ::= { cLReapWlanConfigEntry 2 }
+ 
+ cLReapWlanApAuth OBJECT-TYPE
+@@ -381,7 +382,7 @@ cLReapWlanApAuth OBJECT-TYPE
+         Note that the value of 'true' will be effective
+         only if the WLAN is configured on a REAP AP and
+         WLAN is configured for local switching of the data."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLReapWlanConfigEntry 3 }
+ 
+ cLReapWlanVlanCentralSwitching OBJECT-TYPE
+@@ -389,20 +390,20 @@ cLReapWlanVlanCentralSwitching OBJECT-TYPE
+     MAX-ACCESS read-write
+     STATUS     current
+     DESCRIPTION
+-         "This object specifies whether the AP bridges the traffic 
++         "This object specifies whether the AP bridges the traffic
+          centrally. If the VLAN is not configured on the AP uplink,
+-	 the AP will tunnel the traffic back to the Wireless LAN 
++	 the AP will tunnel the traffic back to the Wireless LAN
+ 	 Controller (WLC) where it is registered. Then the controller
+-	 will bridge the traffic into the corresponding VLAN from 
+-	 where it will be transported towards the next routing 
+-	 instance for further processing. 
+-	 
++	 will bridge the traffic into the corresponding VLAN from
++	 where it will be transported towards the next routing
++	 instance for further processing.
++
+ 	 A value of 'true' indicates that the AP, should tunnel
+ 	 traffic to WLC if VLAN not configured.
+-	 
++
+ 	 A value of 'false' indicates that the AP, should bridge
+ 	 traffic locally always.
+-	 
++
+       	 This feature will be applicable only to locally switched WLANs."
+     DEFVAL  { false }
+ 	::= { cLReapWlanConfigEntry 4 }
+@@ -419,14 +420,14 @@ cLReapWlanDhcpCentral OBJECT-TYPE
+ 
+ 	    A value of 'true' indicates that the AP, should tunnel
+ 	    DHCP traffic to WLC.
+-	 
++
+ 	    A value of 'false' indicates that the AP, should bridge
+ 	    DHCP traffic locally always.
+-	 
++
+             The value of 'true' will be effective
+             only if the WLAN is configured on a REAP.
+-	    
+-	    This feature will be applicable only to locally 
++
++	    This feature will be applicable only to locally
+ 	    switched WLANs."
+     DEFVAL  { false }
+     ::= { cLReapWlanConfigEntry 5 }
+@@ -443,14 +444,14 @@ cLReapWlanDhcpOverrideDNS OBJECT-TYPE
+ 
+ 	    A value of 'true' indicates that the AP, should tunnel
+ 	    DNS traffic to WLC for DNS resolution.
+-	 
++
+ 	    A value of 'false' indicates that the AP, should bridge
+ 	    DNS traffic locally for DNS resolution.
+-	    
++
+             The value of 'true' will be effective
+             only if the WLAN is configured on a REAP.
+-	    
+-	    This feature will be applicable only to locally 
++
++	    This feature will be applicable only to locally
+ 	    switched, central DHCP WLANs."
+     DEFVAL  { false }
+     ::= { cLReapWlanConfigEntry 6 }
+@@ -464,13 +465,13 @@ cLReapWlanNatPatEnabled OBJECT-TYPE
+ 	    Translation (NAT) and Port Address Trnaslation (PAT)
+ 	    are enabled on this WLAN. This can be enabled only
+ 	    when cLReapWlanDhcpCentral is set to 'true'.
+-	    
++
+ 	    A value of 'true' indicates AP should bridge traffic
+ 	    locally only after doing NAT and PAT.
+-	    
++
+ 	    A value of 'false' indicates AP should bridge traffic
+ 	    locally without doing NAT and PAT.
+-	    
++
+             The value of 'true' will be effective
+             only if the WLAN is configured as locally switched. "
+     DEFVAL  { false }
+@@ -486,25 +487,25 @@ cLReapWlanAssocCentral OBJECT-TYPE
+             the clients through the WLAN identified
+             by cLWlanIndex.
+ 
+-	    A value of 'true' indicates AP should tunnel 
++	    A value of 'true' indicates AP should tunnel
+ 	    (re-) association management frames to WLC always.
+-	    
+-	    A value of 'false' indicates AP should process 
+-	    (re-) association management frames first and 
++
++	    A value of 'false' indicates AP should process
++	    (re-) association management frames first and
+ 	    send the frame to WLC after appending association ID (AID)
+ 	    to the frame.
+-	    
++
+             The value of 'true' will be effective
+             only if the WLAN is configured on a REAP. "
+     DEFVAL  { false }
+-    ::= { cLReapWlanConfigEntry 8 } 
++    ::= { cLReapWlanConfigEntry 8 }
+ 
+ -- ********************************************************************
+ -- *    Cisco REAP AP Configuration
+ -- ********************************************************************
+ 
+ cLReapApConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLReapApConfigEntry 
++    SYNTAX          SEQUENCE OF CLReapApConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -526,7 +527,7 @@ cLReapApConfigEntry OBJECT-TYPE
+         "Each entry represents a conceptual row in
+         cLReapApConfigTable and corresponds to the
+         VLAN configuration of a REAP."
+-    INDEX           { cLApSysMacAddress } 
++    INDEX           { cLApSysMacAddress }
+     ::= { cLReapApConfigTable 1 }
+ 
+ CLReapApConfigEntry ::= SEQUENCE {
+@@ -547,14 +548,14 @@ cLReapApNativeVlanId OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the Native VLAN ID for the
+         particular AP identified by cLApSysMacAddress.
+-        This particular object can be modified 
++        This particular object can be modified
+         through a Set request only if the AP is a REAP.
+         The agent is expected to reject the attempt to set
+         this object for APs in other modes.
+-	
++
+ 	This can be set only when cLReapApVlanEnable
+ 	is set to 'true' and AP mode is REAP"
+-    DEFVAL          { 1 } 
++    DEFVAL          { 1 }
+     ::= { cLReapApConfigEntry 1 }
+ 
+ cLReapApVlanEnable OBJECT-TYPE
+@@ -573,9 +574,9 @@ cLReapApVlanEnable OBJECT-TYPE
+ 
+         A value of 'false' indicates that the VLAN configured
+         as native through cLReapApNativeVlanId is disabled
+-        and the REAP can reach the controller through AP 
++        and the REAP can reach the controller through AP
+ 	management VLAN."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLReapApConfigEntry 2 }
+ 
+ cLReapHomeApEnable OBJECT-TYPE
+@@ -584,14 +585,14 @@ cLReapHomeApEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies if this REAP AP is used
+-        as Home AP. 
++        as Home AP.
+ 
+-        A value of 'true' indicates that this REAP AP is 
++        A value of 'true' indicates that this REAP AP is
+         a Home AP.
+ 
+-        A value of 'false' indicates that this REAP AP is 
++        A value of 'false' indicates that this REAP AP is
+         not a Home AP."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLReapApConfigEntry 3 }
+ 
+ cLReapApLeastLatencyJoinEnable OBJECT-TYPE
+@@ -606,9 +607,9 @@ cLReapApLeastLatencyJoinEnable OBJECT-TYPE
+         join controller which has least latency.
+ 
+         A value of 'false' indicates that this REAP AP will
+-        not consider latency in selecting controller to 
++        not consider latency in selecting controller to
+         join."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLReapApConfigEntry 4 }
+ 
+ cLReapHomeApLocalSsidReset OBJECT-TYPE
+@@ -618,14 +619,14 @@ cLReapHomeApLocalSsidReset OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies to reset local SSID on a
+         Home AP.
+-        A value of 'true' indicates that the local SSID 
++        A value of 'true' indicates that the local SSID
+         is to be reset.
+-        A value of 'false' on this during set will return 
++        A value of 'false' on this during set will return
+         error.
+         A value of false will be returned on get."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLReapApConfigEntry 5 }
+- 
++
+ cLReapInstallMappingRadioBackhaul OBJECT-TYPE
+          SYNTAX     TruthValue
+          MAX-ACCESS read-write
+@@ -633,14 +634,14 @@ cLReapInstallMappingRadioBackhaul OBJECT-TYPE
+          DESCRIPTION
+                  "This object specifies whether to enable or disable
+ 		  WLANs on backhaul radio.
+-		  
++
+                   A value of 'true' indicates that wlan mapping would
+                   be enabled on backhaul radio.
+-		  
++
+                   A value of 'false' indicates that wlan mapping would
+                   be disabled on backhaul radio.
+-		  
+-                  This value is applicable only when AP is in 
++
++                  This value is applicable only when AP is in
+                   flex+bridge mode."
+          DEFVAL  { false }
+          ::= { cLReapApConfigEntry 6}
+@@ -650,16 +651,16 @@ cLReapApResilientMode OBJECT-TYPE
+          MAX-ACCESS read-write
+          STATUS     current
+          DESCRIPTION
+-                 "This object specifies whether to enable or disable 
++                 "This object specifies whether to enable or disable
+                   standalone mode support on a REAP AP.
+-                  
++
+ 		  A value of 'true' indicates that standalone mode would
+                   be enabled on backhaul radio.
+-                  
++
+ 		  A value of 'false' indicates that standalone mode  would
+                   be disabled on backhaul radio.
+-                  
+-		  This variable is significant only when AP is in 
++
++		  This variable is significant only when AP is in
+                   flex+bridge mode."
+          DEFVAL  { false }
+          ::= { cLReapApConfigEntry 7}
+@@ -669,14 +670,14 @@ cLReapApNativeVlanLevel OBJECT-TYPE
+          MAX-ACCESS read-write
+          STATUS     current
+          DESCRIPTION
+-                 "This object specifies to make a REAP AP to force 
+-                 inherit the vlan support and native vlan from the 
++                 "This object specifies to make a REAP AP to force
++                 inherit the vlan support and native vlan from the
+                  REAP group.
+-                  
++
+                  A value of 'true' indicates that the AP should inherit
+                  the vlan support and native vlan from the REAP
+                  group to which it is connected.
+-		  
++
+                  A value of 'false' indicates that the native vlan is
+                  not inherited from the REAP group."
+          DEFVAL  { false }
+@@ -687,7 +688,7 @@ cLReapApNativeVlanLevel OBJECT-TYPE
+ -- ********************************************************************
+ 
+ cLReapApVlanIdTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLReapApVlanIdEntry 
++    SYNTAX          SEQUENCE OF CLReapApVlanIdEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -719,19 +720,19 @@ cLReapApVlanIdEntry OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "Each entry represents a conceptual row that
+-        corresponds to one WLAN / VLAN Id mapping to 
++        corresponds to one WLAN / VLAN Id mapping to
+         be applied to the REAP identified by
+         cLApSysMacAddress."
+-    INDEX   { cLApSysMacAddress, cLWlanIndex } 
++    INDEX   { cLApSysMacAddress, cLWlanIndex }
+     ::= { cLReapApVlanIdTable 1 }
+ 
+-CLReapApVlanIdEntry ::= 
++CLReapApVlanIdEntry ::=
+ 	SEQUENCE {
+         cLReapApVlanId Unsigned32,
+         cLReapApVlanInheritance  INTEGER,
+         cLReapApVlanRowStatus RowStatus,
+         cLReapApVlanUsedBySecEthInterface  TruthValue
+-        
++
+ 	}
+ 
+ cLReapApVlanId OBJECT-TYPE
+@@ -741,9 +742,9 @@ cLReapApVlanId OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the VLAN ID to be mapped
+         to the WLAN identified by cLWlanIndex."
+-    DEFVAL          { 1 } 
++    DEFVAL          { 1 }
+     ::= { cLReapApVlanIdEntry 1 }
+- 
++
+ cLReapApVlanInheritance OBJECT-TYPE
+         SYNTAX     INTEGER  {
+                    ap (1),
+@@ -755,21 +756,21 @@ cLReapApVlanInheritance OBJECT-TYPE
+         DESCRIPTION
+                 "This object specifies the inheritance to be mapped
+                 to the WLAN identified by cLWlanIndex.
+-		
+-		A value of 'ap' specifies VLAN for that WLAN is 
++
++		A value of 'ap' specifies VLAN for that WLAN is
+ 		inherited from AP spcific configuration
+-		
+-		A value of 'hreapGroup' specifies VLAN for that WLAN is 
++
++		A value of 'hreapGroup' specifies VLAN for that WLAN is
+ 		inherited from hreap group configuration
+-		 
+-		A value of 'wlan' specifies VLAN for that WLAN is 
++
++		A value of 'wlan' specifies VLAN for that WLAN is
+ 		inherited from WLAN or ap group configuration."
+-		
++
+         DEFVAL  { ap }
+         ::= { cLReapApVlanIdEntry  2 }
+ 
+ cLReapApVlanRowStatus OBJECT-TYPE
+-        SYNTAX     RowStatus 
++        SYNTAX     RowStatus
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+@@ -782,17 +783,17 @@ cLReapApVlanUsedBySecEthInterface OBJECT-TYPE
+         MAX-ACCESS read-only
+         STATUS     current
+         DESCRIPTION
+-                "This object indicates if vlan represented by 
++                "This object indicates if vlan represented by
+                  cLReapApVlanId is used by any of the secondary
+-                 ethernet interface when the REAP AP is in 
++                 ethernet interface when the REAP AP is in
+                  flex+bridge mode.
+-		 
++
+ 		 A value of 'true' indicates cLReapApVlanId is
+-		 used by secondary ethernet interface. 
+-		 
++		 used by secondary ethernet interface.
++
+ 		 A value of 'false' indicates cLReapApVlanId is
+ 		 not used by secondary ethernet interface."
+-		 
++
+         DEFVAL  { false }
+         ::= { cLReapApVlanIdEntry  4 }
+ 
+@@ -800,55 +801,55 @@ cLReapApVlanUsedBySecEthInterface OBJECT-TYPE
+ --  Cisco REAP VLAN Id . ACL  mapping configuration on AP level
+ -- *******************************************************************
+ 
+-cLReapApVlanIdAclTable OBJECT-TYPE 
+-        SYNTAX     SEQUENCE OF CLReapApVlanIdAclEntry 
+-        MAX-ACCESS not-accessible 
+-        STATUS     current 
+-        DESCRIPTION 
+-                "This table represents the VLAN Id- ACL mappings to be 
+-                configured for the REAP identified by 
+-                cLApSysMacAddress." 
++cLReapApVlanIdAclTable OBJECT-TYPE
++        SYNTAX     SEQUENCE OF CLReapApVlanIdAclEntry
++        MAX-ACCESS not-accessible
++        STATUS     current
++        DESCRIPTION
++                "This table represents the VLAN Id- ACL mappings to be
++                configured for the REAP identified by
++                cLApSysMacAddress."
+         ::= { ciscoLwappReapApConfig 3 }
+-	
+-cLReapApVlanIdAclEntry OBJECT-TYPE 
+-        SYNTAX     CLReapApVlanIdAclEntry 
+-        MAX-ACCESS not-accessible 
+-        STATUS     current 
+-        DESCRIPTION
+-                "Each entry represents a conceptual row that 
+-                corresponds to one VLAN Id - ACL mapping to 
+-                be applied to the REAP identified by 
+-                cLApSysMacAddress. " 
+-        INDEX   { cLApSysMacAddress, cLReapVlanId } 
+-        ::= { cLReapApVlanIdAclTable 1 } 
+-	
+-CLReapApVlanIdAclEntry ::= 
+-        SEQUENCE { 
+-                   cLReapVlanId      Unsigned32, 
+-                   cLReapIngressAcl  SnmpAdminString, 
+-                   cLReapEgressAcl   SnmpAdminString, 
+-                   cLReapApVlanIdAclRowStatus RowStatus, 
++
++cLReapApVlanIdAclEntry OBJECT-TYPE
++        SYNTAX     CLReapApVlanIdAclEntry
++        MAX-ACCESS not-accessible
++        STATUS     current
++        DESCRIPTION
++                "Each entry represents a conceptual row that
++                corresponds to one VLAN Id - ACL mapping to
++                be applied to the REAP identified by
++                cLApSysMacAddress. "
++        INDEX   { cLApSysMacAddress, cLReapVlanId }
++        ::= { cLReapApVlanIdAclTable 1 }
++
++CLReapApVlanIdAclEntry ::=
++        SEQUENCE {
++                   cLReapVlanId      Unsigned32,
++                   cLReapIngressAcl  SnmpAdminString,
++                   cLReapEgressAcl   SnmpAdminString,
++                   cLReapApVlanIdAclRowStatus RowStatus,
+                    cLReapVlanIdAclType INTEGER
+         }
+-	        
+-cLReapVlanId OBJECT-TYPE 
+-        SYNTAX     Unsigned32 (1..4095) 
+-        MAX-ACCESS not-accessible 
+-        STATUS     current 
+-        DESCRIPTION 
+-                "This object represents the VLAN ID to be mapped 
+-                to the ACL for the access point identified by 
+-                cLApSysMacAddress.  " 
+-        ::= { cLReapApVlanIdAclEntry  1 } 
+-
+-cLReapIngressAcl OBJECT-TYPE 
+-      SYNTAX     SnmpAdminString (SIZE(0..32)) 
+-      MAX-ACCESS read-create 
+-      STATUS     current 
+-      DESCRIPTION 
++
++cLReapVlanId OBJECT-TYPE
++        SYNTAX     Unsigned32 (1..4095)
++        MAX-ACCESS not-accessible
++        STATUS     current
++        DESCRIPTION
++                "This object represents the VLAN ID to be mapped
++                to the ACL for the access point identified by
++                cLApSysMacAddress.  "
++        ::= { cLReapApVlanIdAclEntry  1 }
++
++cLReapIngressAcl OBJECT-TYPE
++      SYNTAX     SnmpAdminString (SIZE(0..32))
++      MAX-ACCESS read-create
++      STATUS     current
++      DESCRIPTION
+              "This object specifies the name of the ingress Access
+               Control List for the vlan-acl mapping."
+-        ::= { cLReapApVlanIdAclEntry  2 } 
++        ::= { cLReapApVlanIdAclEntry  2 }
+ 
+ cLReapEgressAcl OBJECT-TYPE
+       SYNTAX     SnmpAdminString (SIZE(0..32))
+@@ -857,37 +858,37 @@ cLReapEgressAcl OBJECT-TYPE
+       DESCRIPTION
+              "This object specifies the name of the egress
+               Access Control List for the vlan-acl mapping."
+-        ::= { cLReapApVlanIdAclEntry  3 } 
++        ::= { cLReapApVlanIdAclEntry  3 }
+ 
+-cLReapApVlanIdAclRowStatus OBJECT-TYPE 
+-        SYNTAX     RowStatus 
+-        MAX-ACCESS read-create 
+-        STATUS     current 
+-        DESCRIPTION 
+-                "This object specifies the status column for a 
+-                 conceptual row in this table." 
+-        ::= { cLReapApVlanIdAclEntry 4} 
++cLReapApVlanIdAclRowStatus OBJECT-TYPE
++        SYNTAX     RowStatus
++        MAX-ACCESS read-create
++        STATUS     current
++        DESCRIPTION
++                "This object specifies the status column for a
++                 conceptual row in this table."
++        ::= { cLReapApVlanIdAclEntry 4}
+ 
+ cLReapVlanIdAclType OBJECT-TYPE
+         SYNTAX          INTEGER  {
+                         apSource(1),
+                         groupSource(2)
+                     }
+-        MAX-ACCESS read-only 
++        MAX-ACCESS read-only
+         STATUS     current
+         DESCRIPTION
+-                "This object represents the type of the vlan acl mapping 
+-                 
+-		 A value of 'apSource' indicates that vlan-acl mapping 
++                "This object represents the type of the vlan acl mapping
++
++		 A value of 'apSource' indicates that vlan-acl mapping
+ 		 applied from AP level.
+-                 
++
+ 		 A value of 'groupSource' indicates that vlan-acl mapping
+ 		 applied from hreap group level. "
+         ::= { cLReapApVlanIdAclEntry  5 }
+ 
+ cLReapApWlanAclTable OBJECT-TYPE
+         SYNTAX     SEQUENCE OF CLReapApWlanAclEntry
+-        MAX-ACCESS not-accessible  
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+                 "This table represents the WLAN ACL mappings to be
+@@ -897,19 +898,19 @@ cLReapApWlanAclTable OBJECT-TYPE
+                 are WLANs available on the controller with
+                 local switching enabled and the AP is a REAP. "
+         ::= { ciscoLwappReapApConfig 4 }
+-       
++
+ cLReapApWlanAclEntry OBJECT-TYPE
+         SYNTAX     CLReapApWlanAclEntry
+-        MAX-ACCESS not-accessible  
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+                 "Each entry represents a conceptual row that
+-                corresponds to one WLAN / ACL mapping to 
++                corresponds to one WLAN / ACL mapping to
+                 be applied to the REAP identified by
+                 cLApSysMacAddress. "
+         INDEX   { cLApSysMacAddress, cLWlanIndex }
+         ::= { cLReapApWlanAclTable 1 }
+-        
++
+ CLReapApWlanAclEntry ::=
+         SEQUENCE {
+                 cLReapApWebAuthAcl           SnmpAdminString,
+@@ -921,11 +922,11 @@ cLReapApWebAuthAcl OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-                "This object specifies the webauth ACL name to be 
++                "This object specifies the webauth ACL name to be
+                 mapped to the WLAN identified by cLWlanIndex.
+-		
++
+ 		This will be applied to REAP AP only when
+-		webauth client associates to REAP AP." 
++		webauth client associates to REAP AP."
+         ::= { cLReapApWlanAclEntry  1 }
+ 
+ cLReapApWebAuthAclRowStatus OBJECT-TYPE
+@@ -970,7 +971,7 @@ cLReapWebPolicyAcl OBJECT-TYPE
+       STATUS     current
+       DESCRIPTION
+              "This object represents the name of the web policy
+-              ACL to be mapped to the access point identified 
++              ACL to be mapped to the access point identified
+ 	      by cLApSysMacAddress."
+         ::= { cLReapWebPolicyAclEntry  1 }
+ 
+@@ -988,8 +989,8 @@ cLReapApLocalSplitACLTable OBJECT-TYPE
+         MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-                "This table represents the WLAN - local split ACL 
+-		mappings to be configured for the REAP AP 
++                "This table represents the WLAN - local split ACL
++		mappings to be configured for the REAP AP
+ 		identified by cLApSysMacAddress."
+         ::= { ciscoLwappReapApConfig 6 }
+ 
+@@ -1017,9 +1018,9 @@ cLReapApLocalSplitAcl OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+                 "This object specifies the local split ACL name to be
+-                mapped to the WLAN identified by cLWlanIndex. 
+-		
+-		This is applicable only for central switching WLANs on 
++                mapped to the WLAN identified by cLWlanIndex.
++
++		This is applicable only for central switching WLANs on
+ 		REAP AP"
+         ::= { cLReapApLocalSplitACLEntry  1 }
+ 
+@@ -1077,18 +1078,18 @@ cLReapApDhcpCentral OBJECT-TYPE
+             when switching the DHCP frames of the clients
+             associated to it through the WLAN identified
+             by cLWlanIndex.
+-	    
++
+ 	    A value of 'true' specifies REAP AP will tunnel
+ 	    DHCP packets to WLC.
+-	    
++
+ 	    A value of 'false' specifies REAP AP will bridge
+ 	    DHCP packets locally.
+-	    
++
+ 	    This config is applicable only for locally
+ 	    switched WLANs"
+     DEFVAL  { false }
+     ::= { cLReapApCentralDhcpEntry 1 }
+-    
++
+ cLReapApDhcpOverrideDNS OBJECT-TYPE
+     SYNTAX     TruthValue
+     MAX-ACCESS read-create
+@@ -1098,19 +1099,19 @@ cLReapApDhcpOverrideDNS OBJECT-TYPE
+             when switching the DNS frames of the clients
+             associated to it through the WLAN identified
+             by cLWlanIndex.
+-	    
++
+ 	    A value of 'true' specifies REAP AP will tunnel
+ 	    DNS packets to WLC.
+-	    
++
+ 	    A value of 'false' specifies REAP AP will bridge
+ 	    DNS packets locally.
+-	    
++
+ 	    This config is applicable only for locally
+ 	    switched WLANs and when cLReapApDhcpCentral is set to
+ 	    'true'. "
+     DEFVAL  { false }
+     ::= { cLReapApCentralDhcpEntry 2 }
+-    
++
+ cLReapApNatPatEnabled OBJECT-TYPE
+     SYNTAX     TruthValue
+     MAX-ACCESS read-create
+@@ -1120,13 +1121,13 @@ cLReapApNatPatEnabled OBJECT-TYPE
+             Translation (NAT) and Port Address Trnaslation (PAT)
+             are enabled on this REAP AP for the WLAN identified
+             by cLWlanIndex.
+-	    
++
+ 	    A value of 'true' specifies REAP AP will bridge data
+ 	    packets locally after appliying NAT and PAT.
+-	    
++
+ 	    A value of 'false' specifies REAP AP will bridge data
+ 	    packets locally without appliying NAT and PAT.
+-	    
++
+ 	    This config is applicable only for locally
+ 	    switched WLANs and when cLReapApDhcpCentral is set to
+ 	    'true'. "
+@@ -1145,11 +1146,11 @@ cLReapApDhcpRowStatus OBJECT-TYPE
+ 
+ 
+ cLReapApInheritance OBJECT-TYPE
+-        SYNTAX     SnmpAdminString 
++        SYNTAX     SnmpAdminString
+         MAX-ACCESS read-only
+         STATUS     current
+         DESCRIPTION
+-                "This object represents the inheritance level 
++                "This object represents the inheritance level
+                 of central DHCP configuration. It can be inherted
+ 		from AP or REAP group or WLAN configuration"
+         ::= { cLReapApCentralDhcpEntry 5 }
+@@ -1159,7 +1160,7 @@ cLReapApInheritance OBJECT-TYPE
+ --*********************************************************************
+ cLReapApL2AclTable OBJECT-TYPE
+         SYNTAX     SEQUENCE OF CLReapApL2AclEntry
+-        MAX-ACCESS not-accessible  
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+                 "This table represents the L2 ACL mappings to be
+@@ -1169,14 +1170,14 @@ cLReapApL2AclTable OBJECT-TYPE
+                 are WLANs available on the controller with
+                 local switching enabled and the AP is a REAP. "
+         ::= { ciscoLwappReapApConfig 8 }
+- 
++
+ cLReapApL2AclEntry OBJECT-TYPE
+         SYNTAX     CLReapApL2AclEntry
+-        MAX-ACCESS not-accessible  
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+                 "Each entry represents a conceptual row that
+-                corresponds to one WLAN / L2 ACL mapping to 
++                corresponds to one WLAN / L2 ACL mapping to
+                 be applied to the REAP identified by
+                 cLApSysMacAddress. "
+         INDEX   { cLApSysMacAddress, cLWlanIndex }
+@@ -1193,9 +1194,9 @@ cLReapApL2Acl OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-                "This object specifies the L2ACL name to be 
+-                mapped to the WLAN identified by cLWlanIndex 
+-                for this REAP AP " 
++                "This object specifies the L2ACL name to be
++                mapped to the WLAN identified by cLWlanIndex
++                for this REAP AP "
+         ::= { cLReapApL2AclEntry  1 }
+ 
+ cLReapApL2AclRowStatus OBJECT-TYPE
+@@ -1212,12 +1213,12 @@ cLReapApL2AclRowStatus OBJECT-TYPE
+ -- ********************************************************************
+ 
+ cLReapGroupConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLReapGroupConfigEntry 
++    SYNTAX          SEQUENCE OF CLReapGroupConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table represents the configuration for
+-        REAPs so that the APs can be configured as a 
++        REAPs so that the APs can be configured as a
+         group.
+         Entries are added or deleted by the user through
+         the use of cLReapGroupRowStatus."
+@@ -1230,7 +1231,7 @@ cLReapGroupConfigEntry OBJECT-TYPE
+     DESCRIPTION
+         "Each entry represents a conceptual row in
+         cLReapGroupConfigTable."
+-    INDEX           { cLReapGroupName } 
++    INDEX           { cLReapGroupName }
+     ::= { cLReapGroupConfigTable 1 }
+ 
+ CLReapGroupConfigEntry ::= SEQUENCE {
+@@ -1240,9 +1241,9 @@ CLReapGroupConfigEntry ::= SEQUENCE {
+         cLReapGroupStorageType          StorageType,
+         cLReapGroupRowStatus            RowStatus,
+ 	cLReapGroupRadiusPacTimeout     Unsigned32,
+-        cLReapGroupRadiusAuthorityId    OCTET STRING,
+-        cLReapGroupRadiusAuthorityInfo  OCTET STRING,
+-        cLReapGroupRadiusServerKey      OCTET STRING,
++        cLReapGroupRadiusAuthorityId    DisplayString,
++        cLReapGroupRadiusAuthorityInfo  DisplayString,
++        cLReapGroupRadiusServerKey      DisplayString,
+         cLReapGroupRadiusIgnoreKey      TruthValue,
+         cLReapGroupRadiusEnable         TruthValue,
+         cLReapGroupRadiusLeapEnable     TruthValue,
+@@ -1254,7 +1255,7 @@ CLReapGroupConfigEntry ::= SEQUENCE {
+         cLReapGroupPrimaryRadiusServerType     InetAddressType,
+         cLReapGroupPrimaryRadiusServerAddress  InetAddress,
+         cLReapGroupPrimaryRadiusServerPort     Unsigned32,
+-        cLReapGroupPrimaryServerSecret         SnmpAdminString, 
++        cLReapGroupPrimaryServerSecret         SnmpAdminString,
+         cLReapGroupSecRadiusServerType     InetAddressType,
+         cLReapGroupSecRadiusServerAddress  InetAddress,
+         cLReapGroupSecRadiusServerPort     Unsigned32,
+@@ -1276,8 +1277,8 @@ cLReapGroupName OBJECT-TYPE
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+-        "This object represents REAP group name and 
+-	uniquely identifies an entry in cLReapGroupConfigTable." 
++        "This object represents REAP group name and
++	uniquely identifies an entry in cLReapGroupConfigTable."
+     ::= { cLReapGroupConfigEntry 1 }
+ 
+ cLReapGroupPrimaryRadiusIndex OBJECT-TYPE
+@@ -1286,11 +1287,11 @@ cLReapGroupPrimaryRadiusIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The object specifies the value that maps to the
+-        primary RADIUS server for this group. 
+-	
+-	A value of '0' indicates that the primary RADIUS 
++        primary RADIUS server for this group.
++
++	A value of '0' indicates that the primary RADIUS
+ 	server is not configured for this group."
+-    DEFVAL          { 0 } 
++    DEFVAL          { 0 }
+     ::= { cLReapGroupConfigEntry 2 }
+ 
+ cLReapGroupSecondaryRadiusIndex OBJECT-TYPE
+@@ -1299,11 +1300,11 @@ cLReapGroupSecondaryRadiusIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "The object specifies the value that maps to the
+-        secondary RADIUS server for this group. 
+-	
++        secondary RADIUS server for this group.
++
+ 	A value of '0' indicates that the secondary RADIUS
+ 	server is not configured for this group."
+-    DEFVAL          { 0 } 
++    DEFVAL          { 0 }
+     ::= { cLReapGroupConfigEntry 3 }
+ 
+ cLReapGroupStorageType OBJECT-TYPE
+@@ -1312,7 +1313,7 @@ cLReapGroupStorageType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the storage type for this conceptual
+-        row." 
++        row."
+     ::= { cLReapGroupConfigEntry 4 }
+ 
+ cLReapGroupRowStatus OBJECT-TYPE
+@@ -1321,7 +1322,7 @@ cLReapGroupRowStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the status column for a
+-        conceptual row in this table." 
++        conceptual row in this table."
+     ::= { cLReapGroupConfigEntry 5 }
+ 
+ cLReapGroupRadiusPacTimeout  OBJECT-TYPE
+@@ -1337,35 +1338,35 @@ cLReapGroupRadiusPacTimeout  OBJECT-TYPE
+         ::= { cLReapGroupConfigEntry 6 }
+ 
+ cLReapGroupRadiusAuthorityId  OBJECT-TYPE
+-        SYNTAX OCTET STRING (SIZE(0..32))
++        SYNTAX DisplayString (SIZE(0..32))
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-            "This object specifies the authority ID used 
++            "This object specifies the authority ID used
+ 	    for client association when client uses EAP-FAST
+-	    mechanism." 
++	    mechanism."
+         DEFVAL { "" }
+         ::= { cLReapGroupConfigEntry 7 }
+ 
+ cLReapGroupRadiusAuthorityInfo  OBJECT-TYPE
+-        SYNTAX OCTET STRING (SIZE(0..32))
++        SYNTAX DisplayString (SIZE(0..32))
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-            "This object specifies the authority information 
++            "This object specifies the authority information
+ 	    used for client association when client uses
+ 	    EAP-FAST mechanism."
+         DEFVAL { "" }
+         ::= { cLReapGroupConfigEntry 8 }
+ 
+ cLReapGroupRadiusServerKey OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (1..32))
++    SYNTAX          DisplayString (SIZE  (1..32))
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the RADIUS server key. For security
+         the key always returns '****'."
+-    DEFVAL          { "****" } 
++    DEFVAL          { "****" }
+     ::= { cLReapGroupConfigEntry 9 }
+ 
+ cLReapGroupRadiusIgnoreKey OBJECT-TYPE
+@@ -1374,12 +1375,12 @@ cLReapGroupRadiusIgnoreKey OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies whether anonymous provisioning
+-        is enabled. A value of 'true' indicates the controller 
+-        will ignore the key configured in cLReapGroupRadiusServerKey 
+-        anonymous requests. A value of 'false' 
+-        indicates that the controller will use the key configured 
++        is enabled. A value of 'true' indicates the controller
++        will ignore the key configured in cLReapGroupRadiusServerKey
++        anonymous requests. A value of 'false'
++        indicates that the controller will use the key configured
+         by cLReapGroupRadiusServerKey."
+-    DEFVAL          { true } 
++    DEFVAL          { true }
+     ::= { cLReapGroupConfigEntry 10 }
+ 
+ cLReapGroupRadiusEnable OBJECT-TYPE
+@@ -1388,9 +1389,9 @@ cLReapGroupRadiusEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This parameter specifies whether RADIUS is enabled.
+-        A value of 'true' specifies that RADIUS is enabled. 
++        A value of 'true' specifies that RADIUS is enabled.
+         A value of 'false' specifies that RADIUS is disabled."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLReapGroupConfigEntry 11 }
+ 
+ cLReapGroupRadiusLeapEnable OBJECT-TYPE
+@@ -1399,9 +1400,9 @@ cLReapGroupRadiusLeapEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This parameter specifies whether LEAP is enabled.
+-        A value of 'true' specifies that LEAP is enabled. 
++        A value of 'true' specifies that LEAP is enabled.
+         A value of 'false' specifies that LEAP is disabled."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLReapGroupConfigEntry 12 }
+ 
+ cLReapGroupRadiusEapFastEnable OBJECT-TYPE
+@@ -1410,9 +1411,9 @@ cLReapGroupRadiusEapFastEnable OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This parameter specifies whether EAP-FAST is enabled.
+-        A value of 'true' specifies that EAP-FAST is enabled. 
++        A value of 'true' specifies that EAP-FAST is enabled.
+         A value of 'false' specifies that EAP-FAST is disabled."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cLReapGroupConfigEntry 13 }
+ 
+ cLReapGroupRadiusPacTimeoutCtrl OBJECT-TYPE
+@@ -1422,24 +1423,24 @@ cLReapGroupRadiusPacTimeoutCtrl OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This parameter specifies timeout value for the
+-        PAC (protected access credentials). 
+-        Valid range of timeout is 2 to 4095, 
++        PAC (protected access credentials).
++        Valid range of timeout is 2 to 4095,
+         and value 0 stands for disable."
+-    DEFVAL          { 10 } 
++    DEFVAL          { 10 }
+     ::= { cLReapGroupConfigEntry 14 }
+- 
++
+ cLReapGroupEfficientApUpgradeEnable  OBJECT-TYPE
+         SYNTAX TruthValue
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+             "This parameter specifies whether efficient AP image
+-             upgrade is enabled. A value of 'true' indicates that 
++             upgrade is enabled. A value of 'true' indicates that
+              efficient AP image upgrade is enabled. A value of 'false'
+              indicates that Efficient AP image upgrade is disabled."
+         DEFVAL { false }
+         ::= { cLReapGroupConfigEntry 15 }
+-        
++
+ cLReapGroupApUpgradeStart  OBJECT-TYPE
+      SYNTAX      INTEGER {
+                  initiatePrimary(1),
+@@ -1449,16 +1450,16 @@ cLReapGroupApUpgradeStart  OBJECT-TYPE
+      MAX-ACCESS  read-create
+      STATUS      current
+      DESCRIPTION
+-          "This object specifies which image REAP AP has to download 
++          "This object specifies which image REAP AP has to download
+ 	  from WLC upon upgrade start.
+-	  
++
+ 	  A value of 'initiatePrimary' specifies AP will download
+ 	  primary image from WLC.
+-	  
++
+ 	  A value of 'initiateBackup' specifies AP will download
+ 	  backup image from WLC.
+-	  
+-	  A value of 'abort' specifies AP will stop the download 
++
++	  A value of 'abort' specifies AP will stop the download
+ 	  process."
+      ::= { cLReapGroupConfigEntry 16 }
+ 
+@@ -1471,7 +1472,7 @@ cLReapGroupSlaveMaxRetryCount OBJECT-TYPE
+                   the slave AP has to try to download image
+                   from the master in the hreap group before it
+ 		  stars download from WLC. Range is 1 to 63"
+-		  
++
+         ::= { cLReapGroupConfigEntry 17 }
+ 
+ cLReapGroupPrimaryRadiusServerType OBJECT-TYPE
+@@ -1479,7 +1480,7 @@ cLReapGroupPrimaryRadiusServerType OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies server IP address type of the 
++                "This object specifies server IP address type of the
+ 		primary radius server for the flexconnect group."
+          ::= { cLReapGroupConfigEntry 18 }
+ 
+@@ -1488,7 +1489,7 @@ cLReapGroupPrimaryRadiusServerAddress OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies server IP address  of the 
++                "This object specifies server IP address  of the
+ 		primary radius server for the flexconnect group."
+          ::= { cLReapGroupConfigEntry 19 }
+ 
+@@ -1497,7 +1498,7 @@ cLReapGroupPrimaryRadiusServerPort OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies port number of the primary 
++                "This object specifies port number of the primary
+ 		radius server for the flexconnect group."
+          ::= { cLReapGroupConfigEntry 20 }
+ 
+@@ -1515,7 +1516,7 @@ cLReapGroupSecRadiusServerType OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies server IP address type of the 
++                "This object specifies server IP address type of the
+ 		secondary radius server for the flexconnect group."
+          ::= { cLReapGroupConfigEntry 22 }
+ 
+@@ -1524,7 +1525,7 @@ cLReapGroupSecRadiusServerAddress OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies server IP address  of the 
++                "This object specifies server IP address  of the
+ 		secondary radius server for the flexconnect group."
+          ::= { cLReapGroupConfigEntry 23 }
+ 
+@@ -1533,16 +1534,16 @@ cLReapGroupSecRadiusServerPort OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies port number of the secondary 
++                "This object specifies port number of the secondary
+ 		radius server for the flexconnect group."
+          ::= { cLReapGroupConfigEntry 24 }
+ 
+ cLReapGroupSecServerSecret OBJECT-TYPE
+-         SYNTAX      SnmpAdminString 
++         SYNTAX      SnmpAdminString
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies secret of the secondary 
++                "This object specifies secret of the secondary
+ 		radius server for the flexconnect group."
+          ::= { cLReapGroupConfigEntry 25 }
+ 
+@@ -1590,13 +1591,13 @@ cLReapGroupNativeVlanId OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+                 "This object specifies the Native VLAN ID for the
+-                particular flexconenct group identified by 
++                particular flexconenct group identified by
+ 		cLReapGroupName."
+         DEFVAL { 1 }
+         ::= { cLReapGroupConfigEntry 29 }
+ 
+ cLReapGroupVlanEnable OBJECT-TYPE
+-        SYNTAX     TruthValue     
++        SYNTAX     TruthValue
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+@@ -1611,17 +1612,17 @@ cLReapGroupVlanEnable OBJECT-TYPE
+ 
+                 A value of 'false' indicates that the VLAN configured
+                 as native through cLReapGroupNativeVlanId is disabled
+-                and the REAP can reach the controller using its 
++                and the REAP can reach the controller using its
+ 		management VLAN"
+         DEFVAL  { false }
+         ::= { cLReapGroupConfigEntry 30 }
+ 
+ cLReapGroupOverrideVlanEnable OBJECT-TYPE
+-        SYNTAX     TruthValue     
++        SYNTAX     TruthValue
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-                "This object specifies the overriding of vlans at REAP 
++                "This object specifies the overriding of vlans at REAP
+                 APs by the vlans available from the reap group."
+         DEFVAL  { false }
+         ::= { cLReapGroupConfigEntry 31 }
+@@ -1631,7 +1632,7 @@ cLReapGroupHttpProxyIpType OBJECT-TYPE
+          MAX-ACCESS        read-create
+          STATUS            current
+          DESCRIPTION
+-            "Thsi object specifies Ip Address type of Http proxy in 
++            "Thsi object specifies Ip Address type of Http proxy in
+ 	    flexconnect group."
+          ::= { cLReapGroupConfigEntry 32 }
+ 
+@@ -1640,7 +1641,7 @@ cLReapGroupHttpProxyIp OBJECT-TYPE
+          MAX-ACCESS    read-create
+          STATUS        current
+          DESCRIPTION
+-            "This object specifies HTTP proxy Ip address in 
++            "This object specifies HTTP proxy Ip address in
+ 	    flexconect group. "
+          ::= { cLReapGroupConfigEntry 33 }
+ 
+@@ -1654,26 +1655,26 @@ cLReapGroupHttpProxyPort OBJECT-TYPE
+          ::= { cLReapGroupConfigEntry 34 }
+ 
+ cLReapGroupVlanTemplateName OBJECT-TYPE
+-        SYNTAX     SnmpAdminString     
++        SYNTAX     SnmpAdminString
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-                "This object specifies the vlan template name at REAP 
++                "This object specifies the vlan template name at REAP
+                 APs by the vlans available from the reap group."
+         DEFVAL  { "" }
+         ::= { cLReapGroupConfigEntry 35 }
+-        
++
+ -- ********************************************************************
+ -- Hybrid REAP Group AP configuration
+ -- ********************************************************************
+ 
+ cLReapGroupApConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLReapGroupApConfigEntry 
++    SYNTAX          SEQUENCE OF CLReapGroupApConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table represents the group associated with
+-        an AP. Entries are added or deleted by the user 
++        an AP. Entries are added or deleted by the user
+         through the use of cLReapGroupApRowStatus."
+     ::= { ciscoLwappReapGroupConfig 2 }
+ 
+@@ -1687,7 +1688,7 @@ cLReapGroupApConfigEntry OBJECT-TYPE
+     INDEX           {
+                         cLReapGroupName,
+                         cLApSysMacAddress
+-                    } 
++                    }
+     ::= { cLReapGroupApConfigTable 1 }
+ 
+ CLReapGroupApConfigEntry ::= SEQUENCE {
+@@ -1703,7 +1704,7 @@ cLReapGroupApStorageType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the storage type for this conceptual
+-        row." 
++        row."
+     ::= { cLReapGroupApConfigEntry 1 }
+ 
+ cLReapGroupApRowStatus OBJECT-TYPE
+@@ -1712,14 +1713,14 @@ cLReapGroupApRowStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the status column for a
+-        conceptual row in this table." 
++        conceptual row in this table."
+     ::= { cLReapGroupApConfigEntry 2 }
+- 
++
+ cLReapGroupApEntryType OBJECT-TYPE
+         SYNTAX     INTEGER{
+                        admin(1),
+                        cloud(2)
+-                   } 
++                   }
+         MAX-ACCESS read-only
+         STATUS     current
+         DESCRIPTION
+@@ -1727,7 +1728,7 @@ cLReapGroupApEntryType OBJECT-TYPE
+ 		A value of 'admin' represents the AP added to group
+ 		by manual admin configuration
+ 		A value of 'cloud' represents the AP added to group
+-		because of AP configured from cloud to join this 
++		because of AP configured from cloud to join this
+ 		group."
+         ::= { cLReapGroupApConfigEntry 3 }
+ 
+@@ -1736,22 +1737,22 @@ cLReapGroupApPnPConflict OBJECT-TYPE
+         MAX-ACCESS read-only
+         STATUS     current
+         DESCRIPTION
+-                "This object represents whether there is any conflict 
++                "This object represents whether there is any conflict
+                 with the flexconnect group value from PnP."
+         ::= { cLReapGroupApConfigEntry 4 }
+- 
++
+ -- ********************************************************************
+ -- Hybrid REAP Group User configuration
+ -- ********************************************************************
+ 
+ cLReapGroupUserConfigTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CLReapGroupUserConfigEntry 
++    SYNTAX          SEQUENCE OF CLReapGroupUserConfigEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table represents the group associated with
+-        an User. Entries are added or deleted by the 
+-        application through the use of 
++        an User. Entries are added or deleted by the
++        application through the use of
+         cLReapGroupUserRowStatus."
+     ::= { ciscoLwappReapGroupConfig 3 }
+ 
+@@ -1765,7 +1766,7 @@ cLReapGroupUserConfigEntry OBJECT-TYPE
+     INDEX           {
+                         cLReapGroupName,
+                         cLReapGroupUserName
+-                    } 
++                    }
+     ::= { cLReapGroupUserConfigTable 1 }
+ 
+ CLReapGroupUserConfigEntry ::= SEQUENCE {
+@@ -1782,7 +1783,7 @@ cLReapGroupUserName OBJECT-TYPE
+     DESCRIPTION
+         "This object represents the user name for this
+         group. user name is used for authenticating a
+-              client associated to an AP within the group." 
++              client associated to an AP within the group."
+     ::= { cLReapGroupUserConfigEntry 1 }
+ 
+ cLReapGroupUserPassword OBJECT-TYPE
+@@ -1791,7 +1792,7 @@ cLReapGroupUserPassword OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the password for this
+-        user." 
++        user."
+     ::= { cLReapGroupUserConfigEntry 2 }
+ 
+ cLReapGroupUserStorageType OBJECT-TYPE
+@@ -1800,7 +1801,7 @@ cLReapGroupUserStorageType OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the storage type for this
+-        conceptual row." 
++        conceptual row."
+     ::= { cLReapGroupUserConfigEntry 3 }
+ 
+ cLReapGroupUserRowStatus OBJECT-TYPE
+@@ -1809,9 +1810,9 @@ cLReapGroupUserRowStatus OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies the status column for a
+-        conceptual row in this table." 
++        conceptual row in this table."
+     ::= { cLReapGroupUserConfigEntry 4 }
+- 
++
+ -- ********************************************************************
+ -- Hybrid REAP Group vlan-acl configuration
+ -- ********************************************************************
+@@ -1820,7 +1821,7 @@ cLReapGroupVlanAclTable OBJECT-TYPE
+         MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-                "This table represents the configuration of VLAN-ACL 
++                "This table represents the configuration of VLAN-ACL
+                 mappings for REAP groups."
+         ::= { ciscoLwappReapGroupConfig 4 }
+ 
+@@ -1850,16 +1851,16 @@ cLReapGroupVlanId OBJECT-TYPE
+         STATUS     current
+         DESCRIPTION
+                 "This object represents the VLAN ID to be mapped
+-                to the ACL for the reap group identified by 
++                to the ACL for the reap group identified by
+                 cLReapGroupName "
+      ::= { cLReapGroupVlanAclEntry  1 }
+-        
++
+ cLReapGroupIngressAcl OBJECT-TYPE
+       SYNTAX     SnmpAdminString (SIZE(0..32))
+       MAX-ACCESS read-create
+       STATUS     current
+       DESCRIPTION
+-             "This object specifies the name of the ingress access 
++             "This object specifies the name of the ingress access
+               control list for the vlan-acl mapping for the group
+ 	      identified by cLReapGroupName."
+         ::= { cLReapGroupVlanAclEntry  2 }
+@@ -1869,7 +1870,7 @@ cLReapGroupEgressAcl OBJECT-TYPE
+       MAX-ACCESS read-create
+       STATUS     current
+       DESCRIPTION
+-             "This object specifies the name of the egress access 
++             "This object specifies the name of the egress access
+               control list for the vlan-acl mapping for the group
+ 	      identified by cLReapGroupName."
+ 
+@@ -1890,7 +1891,7 @@ cLReapGroupVlanOrder OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represents the vlan order configuration on the
+-        group level." 
++        group level."
+     ::= { cLReapGroupVlanAclEntry 5 }
+ 
+ -- ********************************************************************
+@@ -1903,7 +1904,7 @@ cLReapGroupAclTable OBJECT-TYPE
+         MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-                "This table represents the configuration of wlan-acl 
++                "This table represents the configuration of wlan-acl
+                 mappings for REAPs."
+         ::= { ciscoLwappReapGroupConfig 5 }
+ 
+@@ -1922,13 +1923,13 @@ CLReapGroupAclEntry ::=
+                    cLReapGroupWebAuthAcl   SnmpAdminString,
+                    cLReapGroupAclRowStatus RowStatus
+         }
+-        
++
+ cLReapGroupWebAuthAcl OBJECT-TYPE
+       SYNTAX     SnmpAdminString (SIZE(0..32))
+       MAX-ACCESS read-create
+       STATUS     current
+       DESCRIPTION
+-             "This object specifies the name of the webauth access 
++             "This object specifies the name of the webauth access
+              control list for the wlan-acl mapping in the flexconnect
+ 	     group."
+         ::= { cLReapGroupAclEntry  1 }
+@@ -1947,7 +1948,7 @@ cLReapGroupWebPolicyAclTable OBJECT-TYPE
+         MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-                "This table represents the configuration of webpolicy 
++                "This table represents the configuration of webpolicy
+                 acl mappings for REAP groups."
+         ::= { ciscoLwappReapGroupConfig 6 }
+ 
+@@ -1972,7 +1973,7 @@ cLReapGroupWebPolicyAcl OBJECT-TYPE
+       MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-             "This object specifies the name of the webpolicy access 
++             "This object specifies the name of the webpolicy access
+              control aist to be mapped to the REAP group."
+         ::= { cLReapGroupWebPolicyAclEntry  1 }
+ 
+@@ -1990,7 +1991,7 @@ cLReapGroupLocalSplitAclTable OBJECT-TYPE
+         MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-                "This table represents the configuration of WLAN-ACL 
++                "This table represents the configuration of WLAN-ACL
+                 mappings for local split tunneling at REAP groups."
+         ::= { ciscoLwappReapGroupConfig 7 }
+ 
+@@ -2015,7 +2016,7 @@ cLReapGroupLocalSplitAcl OBJECT-TYPE
+       MAX-ACCESS read-create
+       STATUS     current
+       DESCRIPTION
+-             "This object specifies the name of the local split 
++             "This object specifies the name of the local split
+ 	     access control list to be mapped to the WLAN inside
+ 	     REAP group"
+         ::= { cLReapGroupLocalSplitAclEntry  1 }
+@@ -2025,7 +2026,7 @@ cLReapGroupLocalSplitAclRowStatus OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-                "This object specifies the status column for a 
++                "This object specifies the status column for a
+ 		conceptual row in this table."
+         ::= { cLReapGroupLocalSplitAclEntry  2}
+ 
+@@ -2038,10 +2039,10 @@ cLReapGroupCentralDhcpTable OBJECT-TYPE
+         MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-                "This table represents the configuration of central 
++                "This table represents the configuration of central
+                 dhcp processing for REAP APs in REAP groups"
+         ::= { ciscoLwappReapGroupConfig 8 }
+-	
++
+ cLReapGroupCentralDhcpEntry OBJECT-TYPE
+         SYNTAX     CLReapGroupCentralDhcpEntry
+         MAX-ACCESS not-accessible
+@@ -2051,7 +2052,7 @@ cLReapGroupCentralDhcpEntry OBJECT-TYPE
+                 cLReapGroupCentralDhcpTable."
+         INDEX   { cLReapGroupName, cLWlanIndex }
+         ::= { cLReapGroupCentralDhcpTable 1 }
+-	
++
+ CLReapGroupCentralDhcpEntry ::=
+         SEQUENCE {
+                 cLReapGroupDhcpCentral      TruthValue,
+@@ -2059,7 +2060,7 @@ CLReapGroupCentralDhcpEntry ::=
+                 cLReapGroupNatPatEnabled    TruthValue,
+                 cLReapGroupDhcpRowStatus RowStatus
+         }
+-	
++
+ cLReapGroupDhcpCentral OBJECT-TYPE
+     SYNTAX     TruthValue
+     MAX-ACCESS read-create
+@@ -2069,35 +2070,35 @@ cLReapGroupDhcpCentral OBJECT-TYPE
+ 	    part of REAP group when switching the DHCP frames of
+ 	    the clients associated to it through the WLAN identified
+             by cLWlanIndex.
+-	    
++
+ 	    A value of 'true' specifies REAP AP will tunnel
+ 	    DHCP packets to WLC.
+-	    
++
+ 	    A value of 'false' specifies REAP AP will bridge
+ 	    DHCP packets locally.
+-	    
++
+ 	    This config is applicable only for locally
+ 	    switched WLANs."
+-	    
++
+     DEFVAL  { false }
+     ::= { cLReapGroupCentralDhcpEntry 1 }
+-    
++
+ cLReapGroupDhcpOverrideDNS OBJECT-TYPE
+     SYNTAX     TruthValue
+     MAX-ACCESS read-create
+     STATUS     current
+     DESCRIPTION
+-            "This object specifies the behavior of the REAP AP 
+-	    part of REAP group when switching the DNS frames 
+-	    of the clients associated to it through the WLAN 
++            "This object specifies the behavior of the REAP AP
++	    part of REAP group when switching the DNS frames
++	    of the clients associated to it through the WLAN
+ 	    identified by cLWlanIndex.
+-	    
++
+ 	    A value of 'true' specifies REAP AP will tunnel
+ 	    DNS packets to WLC.
+-	    
++
+ 	    A value of 'false' specifies REAP AP will bridge
+ 	    DNS packets locally.
+-	    
++
+ 	    This config is applicable only for locally
+ 	    switched WLANs and when cLReapApDhcpCentral is set to
+ 	    'true'. "
+@@ -2110,15 +2111,15 @@ cLReapGroupNatPatEnabled OBJECT-TYPE
+     DESCRIPTION
+             "This object specifies whether Network Address
+             Translation (NAT) and Port Address Trnaslation (PAT)
+-            are enabled on this REAP AP part of REAP group for 
++            are enabled on this REAP AP part of REAP group for
+ 	    the WLAN identified by cLWlanIndex.
+-	    
++
+ 	    A value of 'true' specifies REAP AP will bridge data
+ 	    packets locally after appliying NAT and PAT.
+-	    
++
+ 	    A value of 'false' specifies REAP AP will bridge data
+ 	    packets locally without appliying NAT and PAT.
+-	    
++
+ 	    This config is applicable only for locally
+ 	    switched WLANs and when cLReapApDhcpCentral is set to
+ 	    'true'. "
+@@ -2136,12 +2137,12 @@ cLReapGroupDhcpRowStatus OBJECT-TYPE
+         ::= { cLReapGroupCentralDhcpEntry 4 }
+ 
+ --********************************************************************
+---*    Cisco REAP WLAN / VLAN Id mapping configuration 
++--*    Cisco REAP WLAN / VLAN Id mapping configuration
+ --********************************************************************
+ 
+ cLReapGroupVlanIdTable OBJECT-TYPE
+         SYNTAX     SEQUENCE OF CLReapGroupVlanIdEntry
+-        MAX-ACCESS not-accessible  
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+                 "This table represents the WLAN / VLAN Id mappings
+@@ -2149,17 +2150,17 @@ cLReapGroupVlanIdTable OBJECT-TYPE
+                 REAP group name.
+ 
+                 VLAN Id configured through this table is passed to
+-                the respective REAP group identified by the 
++                the respective REAP group identified by the
+                 REAP group name. "
+         ::= { ciscoLwappReapGroupConfig 9 }
+- 
++
+ cLReapGroupVlanIdEntry OBJECT-TYPE
+         SYNTAX     CLReapGroupVlanIdEntry
+-        MAX-ACCESS not-accessible  
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+                 "Each entry represents a conceptual row that
+-                corresponds to one WLAN / VLAN Id mapping to 
++                corresponds to one WLAN / VLAN Id mapping to
+                 be applied to the REAP identified by
+                 cLReapGroupName. "
+         INDEX   { cLReapGroupName, cLWlanIndex }
+@@ -2176,10 +2177,10 @@ cLReapGroupWlanVlanId OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-                "This object specifies the VLAN ID to be mapped 
++                "This object specifies the VLAN ID to be mapped
+                 to the WLAN identified by cLWlanIndex in the REAP
+-		group. " 
+-        DEFVAL  { 1 } 
++		group. "
++        DEFVAL  { 1 }
+         ::= { cLReapGroupVlanIdEntry  1 }
+ 
+ cLReapGroupVlanRowStatus OBJECT-TYPE
+@@ -2187,37 +2188,37 @@ cLReapGroupVlanRowStatus OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-         "This object specifies the reap group vlan mapping row 
+-         status."        
+-        
++         "This object specifies the reap group vlan mapping row
++         status."
++
+         ::= { cLReapGroupVlanIdEntry  2 }
+ 
+ 
+ --********************************************************************
+---*    Cisco REAP WLAN / AVC parameters mapping configuration 
++--*    Cisco REAP WLAN / AVC parameters mapping configuration
+ --********************************************************************
+ 
+ cLReapGroupAVCFlexTable OBJECT-TYPE
+         SYNTAX     SEQUENCE OF CLReapGroupAVCFlexEntry
+-        MAX-ACCESS not-accessible  
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-                "This table represents the WLAN / AVC parameters 
++                "This table represents the WLAN / AVC parameters
+ 		mappings to be configured for the REAP identified by
+                 REAP group name.
+ 
+-                AVC parameters configured through this table is passed 
+-                to the respective REAP group identified by the 
++                AVC parameters configured through this table is passed
++                to the respective REAP group identified by the
+                 REAP group name. "
+         ::= { ciscoLwappReapGroupConfig 10 }
+- 
++
+ cLReapGroupAVCFlexEntry OBJECT-TYPE
+         SYNTAX     CLReapGroupAVCFlexEntry
+-        MAX-ACCESS not-accessible  
++        MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+                 "Each entry represents a conceptual row that
+-                corresponds to one WLAN / AVC parameters mapping to 
++                corresponds to one WLAN / AVC parameters mapping to
+                 be applied to the REAP identified by
+                 cLReapGroupName. "
+         INDEX   { cLReapGroupName, cLWlanIndex }
+@@ -2225,7 +2226,7 @@ cLReapGroupAVCFlexEntry OBJECT-TYPE
+ 
+ CLReapGroupAVCFlexEntry ::= SEQUENCE {
+             cLReapGroupAVCFlexProfileName            SnmpAdminString,
+-            cLReapGroupNbarStatsVisibilityEnable     INTEGER, 
++            cLReapGroupNbarStatsVisibilityEnable     INTEGER,
+             cLReapGroupAVCFlexRowStatus              RowStatus
+         }
+ 
+@@ -2237,7 +2238,7 @@ cLReapGroupAVCFlexProfileName OBJECT-TYPE
+         "This object specifies the AVC profile name assigned
+          to this WLAN in the REAP idendified by cLReapGroupName.
+          'none' specifies no profile is being associated.
+-         profile name 'none' should be used to de-associate profile 
++         profile name 'none' should be used to de-associate profile
+          from WLAN in the REAP idendified by cLReapGroupName."
+         ::= { cLReapGroupAVCFlexEntry 1 }
+ 
+@@ -2251,13 +2252,13 @@ cLReapGroupNbarStatsVisibilityEnable OBJECT-TYPE
+         MAX-ACCESS      read-create
+         STATUS          current
+         DESCRIPTION
+-        "This object specifies the user to enable or disable 
++        "This object specifies the user to enable or disable
+ 	 NBAR stats visibility.
+          A value of 'disable' indicates NBAR stats visibility
+ 	 is disabled.
+-         A value of 'enable' indicates NBAR stats visibility 
++         A value of 'enable' indicates NBAR stats visibility
+ 	 is enabled.
+-         A value of 'wlan-specific' indicates NBAR stats 
++         A value of 'wlan-specific' indicates NBAR stats
+ 	 visbility is wlan-specific."
+         ::= { cLReapGroupAVCFlexEntry 2 }
+ 
+@@ -2266,7 +2267,7 @@ cLReapGroupAVCFlexRowStatus OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS     current
+         DESCRIPTION
+-                "This object specifies the rowstatus of the reap 
++                "This object specifies the rowstatus of the reap
+ 		group wlan avc parameter mappings table."
+         ::= { cLReapGroupAVCFlexEntry  3 }
+ 
+@@ -2279,7 +2280,7 @@ cLReapMasterApConfigTable OBJECT-TYPE
+         MAX-ACCESS not-accessible
+         STATUS     current
+         DESCRIPTION
+-                "This table represents the master AP admin 
++                "This table represents the master AP admin
+                 configuration of REAPs.
+ 
+                 The agent adds a row to this table corresponding to
+@@ -2304,16 +2305,16 @@ CLReapMasterApConfigEntry ::=
+         SEQUENCE {
+                 cLReapMasterApModel   SnmpAdminString,
+                 cLReapMasterApManual    TruthValue,
+-                cLReapMasterApRowStatus RowStatus 
++                cLReapMasterApRowStatus RowStatus
+         }
+ 
+ 
+ cLReapMasterApModel OBJECT-TYPE
+-    SYNTAX     SnmpAdminString 
++    SYNTAX     SnmpAdminString
+     MAX-ACCESS read-only
+     STATUS current
+     DESCRIPTION
+-        "The object represents the model of the AP in the 
++        "The object represents the model of the AP in the
+ 	hreap group. This AP will be the master in the efficient
+ 	upgrade process. "
+         ::= { cLReapMasterApConfigEntry 1 }
+@@ -2337,7 +2338,7 @@ cLReapMasterApRowStatus OBJECT-TYPE
+       MAX-ACCESS read-create
+       STATUS     current
+       DESCRIPTION
+-             "This object specifies the row Status of the Master 
++             "This object specifies the row Status of the Master
+              table."
+       ::= { cLReapMasterApConfigEntry 3 }
+ 
+@@ -2350,7 +2351,7 @@ cLReapL2AclTable OBJECT-TYPE
+       MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-            "The table listing layer2 ACLs (access control lists) 
++            "The table listing layer2 ACLs (access control lists)
+              on the switch."
+       ::= { ciscoLwappReapAclConfig 3 }
+ 
+@@ -2360,8 +2361,8 @@ cLReapL2AclEntry OBJECT-TYPE
+       MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-            "Each entry represents the attributes for 
+-            cLReapL2AclTable.An entry gets added to the 
++            "Each entry represents the attributes for
++            cLReapL2AclTable.An entry gets added to the
+             table on creating a layer2 ACL."
+       INDEX      { cLReapL2AclName }
+       ::= { cLReapL2AclTable 1 }
+@@ -2389,10 +2390,10 @@ cLReapL2AclApplyMode OBJECT-TYPE
+       MAX-ACCESS read-only
+       STATUS     current
+       DESCRIPTION
+-             "This object represents the apply mode of the L2ACL on 
+-	     the switch. 
+-	     Mode value 'applied' means the L2ACL has been 
+-             applied on the switch. 
++             "This object represents the apply mode of the L2ACL on
++	     the switch.
++	     Mode value 'applied' means the L2ACL has been
++             applied on the switch.
+ 	     Default mode on creation on ACL will be notapplied."
+       ::= { cLReapL2AclEntry 2 }
+ 
+@@ -2413,7 +2414,7 @@ cLReapL2AclRuleTable OBJECT-TYPE
+       MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-            "The table represents L2Acl rules(access control list 
++            "The table represents L2Acl rules(access control list
+ 	    entries) on the L2ACL with name cLReapL2AclName."
+       ::= { ciscoLwappReapAclConfig 4 }
+ 
+@@ -2422,7 +2423,7 @@ cLReapL2AclRuleEntry OBJECT-TYPE
+       MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-            "Each entry represents the attributes for 
++            "Each entry represents the attributes for
+             clReapL2AclRuleTable. An entry gets added to
+              the table on creating a rule on L2ACL."
+     INDEX           {
+@@ -2447,7 +2448,7 @@ cLReapL2AclRuleIndex OBJECT-TYPE
+       STATUS     current
+       DESCRIPTION
+              "This object represents the unique index of the L2ACL rule
+-	      in REAP L2ACL. This can be updated to reset the sequence 
++	      in REAP L2ACL. This can be updated to reset the sequence
+ 	      of the rules of an L2ACL. Valid range for this object is
+ 	      1 to 64"
+       ::= { cLReapL2AclRuleEntry 1 }
+@@ -2475,7 +2476,7 @@ cLReapL2AclRuleEthertype OBJECT-TYPE
+         DESCRIPTION
+                 "This object specifies the etherType of the L2Acl
+ 		 rule. Default is 0x0"
+-                 
++
+         DEFVAL { 0 }
+         ::= { cLReapL2AclRuleEntry 3 }
+ 
+@@ -2484,9 +2485,9 @@ cLReapL2AclRuleEthertypeMask OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS current
+         DESCRIPTION
+-                "This object specifies the etherType Mask of the 
++                "This object specifies the etherType Mask of the
+ 		L2Acl rule. Default is 0x0"
+-                 
++
+         DEFVAL { 0 }
+         ::= { cLReapL2AclRuleEntry 4 }
+ 
+@@ -2499,14 +2500,14 @@ cLReapL2AclRuleDirection OBJECT-TYPE
+       MAX-ACCESS read-create
+       STATUS     current
+       DESCRIPTION
+-             "This object specifies the direction of the packet 
++             "This object specifies the direction of the packet
+               to which the rule may be applied.
+-	      A value of 'inbound' specifies that this rule will be 
++	      A value of 'inbound' specifies that this rule will be
+ 	      applied on traffic coming into switchport.
+-	      A value of 'outbound' specifies that this rule will be 
++	      A value of 'outbound' specifies that this rule will be
+ 	      applied on traffic going out of switchport.
+-	      A value of 'any' specifies that this rule will be 
+-	      applied on both incoming and out going traffic on 
++	      A value of 'any' specifies that this rule will be
++	      applied on both incoming and out going traffic on
+ 	      switchport. "
+       DEFVAL { any }
+       ::= { cLReapL2AclRuleEntry 5 }
+@@ -2516,9 +2517,9 @@ cLReapL2AclNewRuleIndex OBJECT-TYPE
+       MAX-ACCESS read-create
+       STATUS     current
+       DESCRIPTION
+-             "This object specifies the new Index of the L2ACL rule. 
+-              This attribute should be updated if the requirement is 
+-              to reset the sequence of the rules of an ACL. A read 
++             "This object specifies the new Index of the L2ACL rule.
++              This attribute should be updated if the requirement is
++              to reset the sequence of the rules of an ACL. A read
+              on this will yield the same value as cLReapL2AclRuleIndex"
+       ::= { cLReapL2AclRuleEntry 6 }
+ 
+@@ -2540,17 +2541,17 @@ cLReapAclUrlDomainRuleTable OBJECT-TYPE
+       MAX-ACCESS  not-accessible
+       STATUS      current
+       DESCRIPTION
+-            "This table represents url domain acl Rules(url based Access 
++            "This table represents url domain acl Rules(url based Access
+             Control List entries) on the ACL with name cLReapAclName."
+       ::= { ciscoLwappReapAclConfig 5 }
+ 
+ cLReapAclUrlDomainRuleEntry OBJECT-TYPE
+-      SYNTAX      CLReapAclUrlDomainRuleEntry 
++      SYNTAX      CLReapAclUrlDomainRuleEntry
+       MAX-ACCESS  not-accessible
+       STATUS      current
+       DESCRIPTION
+             "Each Entry represents the attributes for cLReapAclUrlDomainRuleTable.
+-             An Url domain rule entry gets added to the table on creating 
++             An Url domain rule entry gets added to the table on creating
+              a rule on flexconnect ACL."
+       INDEX           {
+                         cLReapAclName,
+@@ -2570,7 +2571,7 @@ cLReapAclUrlDomainRuleIndex OBJECT-TYPE
+       MAX-ACCESS read-create
+       STATUS     current
+       DESCRIPTION
+-             "This object specifies the index of the Url domain ACL rule. 
++             "This object specifies the index of the Url domain ACL rule.
+               It can be used to reset the sequence of the Url rules of an ACL."
+       ::= { cLReapAclUrlDomainRuleEntry 1 }
+ 
+@@ -2614,7 +2615,7 @@ cLReapAclTable OBJECT-TYPE
+       MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-            "The table represents REAP ACLs (access control lists) 
++            "The table represents REAP ACLs (access control lists)
+ 	    on the switch."
+       ::= { ciscoLwappReapAclConfig 1 }
+ 
+@@ -2625,7 +2626,7 @@ cLReapAclEntry OBJECT-TYPE
+       STATUS     current
+       DESCRIPTION
+             "Each entry represents the attributes for clReapAclTable.
+-             An entry gets added to the table on creating a 
++             An entry gets added to the table on creating a
+ 	     flexconnect ACL."
+       INDEX      { cLReapAclName }
+       ::= { cLReapAclTable 1 }
+@@ -2642,7 +2643,7 @@ cLReapAclName OBJECT-TYPE
+       MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-             "This object represents name of the REAP 
++             "This object represents name of the REAP
+ 	     access control list."
+       ::= { cLReapAclEntry 1 }
+ 
+@@ -2654,9 +2655,9 @@ cLReapAclApplyMode OBJECT-TYPE
+       MAX-ACCESS read-only
+       STATUS     current
+       DESCRIPTION
+-             "This object specifies the apply mode of the ACL on the 
+-             switch. 
+-	     Mode value 'applied' means the ACL has been 
++             "This object specifies the apply mode of the ACL on the
++             switch.
++	     Mode value 'applied' means the ACL has been
+              applied on the switch.
+ 	     Mode value 'notapplied' means the ACL not applied
+ 	     on the switch."
+@@ -2693,7 +2694,7 @@ cLReapAclRuleTable OBJECT-TYPE
+       MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-            "The table represents ACL Rules(access control list 
++            "The table represents ACL Rules(access control list
+ 	    entries) on the ACL with name cLReapAclName."
+       ::= { ciscoLwappReapAclConfig 2 }
+ 
+@@ -2702,8 +2703,8 @@ cLReapAclRuleEntry OBJECT-TYPE
+       MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-            "Each entry represents the attributes for 
+-            clReapAclRuleTable. An entry gets added to 
++            "Each entry represents the attributes for
++            clReapAclRuleTable. An entry gets added to
+             the table on creating a rule on flexconnect
+             ACL."
+     INDEX           {
+@@ -2738,7 +2739,7 @@ cLReapAclRuleIndex OBJECT-TYPE
+       MAX-ACCESS not-accessible
+       STATUS     current
+       DESCRIPTION
+-             "This object represents index of the ACL rule. This can 
++             "This object represents index of the ACL rule. This can
+ 	      be updated to reset the sequence of the rules of an ACL."
+       ::= { cLReapAclRuleEntry 1 }
+ 
+@@ -2763,7 +2764,7 @@ cLReapAclRuleSourceIpAddressType OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies source IP address type of 
++                "This object specifies source IP address type of
+ 		the ACL rule. The value is limited to ipv4 only."
+          ::= { cLReapAclRuleEntry 3 }
+ 
+@@ -2772,7 +2773,7 @@ cLReapAclRuleSourceIpAddress OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "The object specifies source IP address of the ACL 
++                "The object specifies source IP address of the ACL
+ 		rule. It cab be any ipv4 source address.
+ 		A value 0 implies any sourse address."
+          ::= { cLReapAclRuleEntry 4 }
+@@ -2782,7 +2783,7 @@ cLReapAclRuleSourceIpNetmaskType OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies source IP netmask type of 
++                "This object specifies source IP netmask type of
+ 		the ACL rule. The value is limited to ipv4 only."
+          ::= { cLReapAclRuleEntry 5 }
+ 
+@@ -2791,7 +2792,7 @@ cLReapAclRuleSourceIpNetmask OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies source IP netmask of the 
++                "This object specifies source IP netmask of the
+ 		ACL rule.  A value '0' implies any source mask."
+          ::= { cLReapAclRuleEntry 6 }
+ 
+@@ -2800,7 +2801,7 @@ cLReapAclRuleDestinationIpAddressType OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies destination IP address type of 
++                "This object specifies destination IP address type of
+ 		the ACL rule. The value is limited to ipv4 only."
+ 
+          ::= { cLReapAclRuleEntry 7 }
+@@ -2810,7 +2811,7 @@ cLReapAclRuleDestinationIpAddress OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "The object specifies destination IP address of the ACL 
++                "The object specifies destination IP address of the ACL
+ 		rule. It cab be any ipv4 source address. A value '0'
+                 implies any destination address."
+          ::= { cLReapAclRuleEntry 8 }
+@@ -2821,7 +2822,7 @@ cLReapAclRuleDestinationIpNetmaskType OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies destination IP netmask type of 
++                "This object specifies destination IP netmask type of
+ 		the ACL rule. The value is limited to ipv4 only."
+          ::= { cLReapAclRuleEntry 9 }
+ 
+@@ -2830,7 +2831,7 @@ cLReapAclRuleDestinationIpNetmask OBJECT-TYPE
+          MAX-ACCESS  read-create
+          STATUS      current
+          DESCRIPTION
+-                "This object specifies destination IP netmask of the 
++                "This object specifies destination IP netmask of the
+ 		ACL rule. A value '0' implies any destination mask."
+          ::= { cLReapAclRuleEntry 10 }
+ 
+@@ -2839,10 +2840,10 @@ cLReapAclRuleProtocol OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS current
+         DESCRIPTION
+-                "This object specifies protocol of the packet. 
++                "This object specifies protocol of the packet.
+ 		 It can be either of the pre specified protocols like
+-		 TCP, UDP, ICMP, ESP, AH, GRE, IP, Ethernet Over IP, 
+-		 OSPF or any number between 0 and 255. 
++		 TCP, UDP, ICMP, ESP, AH, GRE, IP, Ethernet Over IP,
++		 OSPF or any number between 0 and 255.
+ 		 A value 256 implies that this rule applies
+                  to 'Any' protocol."
+         DEFVAL { 256 }
+@@ -2853,12 +2854,12 @@ cLReapAclRuleStartSourcePort OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS current
+         DESCRIPTION
+-                "This object specifies source port of the packet. 
++                "This object specifies source port of the packet.
+ 		 It can be either of the pre specified ports like HTTP,
+ 		 HTTPS, Telnet, RADIUS etc or any number between 0 and
+-		 65535. A value 65536 implies that this rule applies 
+-		 to 'Any' source port. This value can be set only if 
+-		 the protocol is set to TCP or UDP.  Otherwise the 
++		 65535. A value 65536 implies that this rule applies
++		 to 'Any' source port. This value can be set only if
++		 the protocol is set to TCP or UDP.  Otherwise the
+ 		 value is set to Any(65536)."
+         DEFVAL { 0 }
+         ::= { cLReapAclRuleEntry 12 }
+@@ -2868,12 +2869,12 @@ cLReapAclRuleEndSourcePort OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS current
+         DESCRIPTION
+-                "This object specifies source port of the packet. 
++                "This object specifies source port of the packet.
+ 		 It can be either of the pre specified ports like HTTP,
+ 		 HTTPS, Telnet, RADIUS etc or any number between 0 and
+-		 65535. A value 65536 implies that this rule applies 
+-		 to 'Any' source port. This value can be set only if 
+-		 the protocol is set to TCP or UDP.  Otherwise the 
++		 65535. A value 65536 implies that this rule applies
++		 to 'Any' source port. This value can be set only if
++		 the protocol is set to TCP or UDP.  Otherwise the
+ 		 value is set to Any(65536)."
+         DEFVAL { 65535 }
+         ::= { cLReapAclRuleEntry 13 }
+@@ -2883,12 +2884,12 @@ cLReapAclRuleStartDestinationPort OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS current
+         DESCRIPTION
+-                "This object specifies destination port of the packet. 
++                "This object specifies destination port of the packet.
+ 		 It can be either of the pre specified ports like HTTP,
+ 		 HTTPS, Telnet, RADIUS etc or any number between 0 and
+-		 65535. A value 65536 implies that this rule applies 
++		 65535. A value 65536 implies that this rule applies
+ 		 to 'Any' destination port. This value can be set only
+-		 if the protocol is set to TCP or UDP.  Otherwise the 
++		 if the protocol is set to TCP or UDP.  Otherwise the
+ 		 value is set to Any(65536)."
+         DEFVAL { 0 }
+         ::= { cLReapAclRuleEntry 14 }
+@@ -2898,12 +2899,12 @@ cLReapAclRuleEndDestinationPort OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS current
+         DESCRIPTION
+-                "This object specifies destination port of the packet. 
++                "This object specifies destination port of the packet.
+ 		 It can be either of the pre specified ports like HTTP,
+ 		 HTTPS, Telnet, RADIUS etc or any number between 0 and
+-		 65535. A value 65536 implies that this rule applies 
++		 65535. A value 65536 implies that this rule applies
+ 		 to 'Any' destination port. This value can be set only
+-		 if the protocol is set to TCP or UDP.  Otherwise the 
++		 if the protocol is set to TCP or UDP.  Otherwise the
+ 		 value is set to Any(65536)."
+         DEFVAL { 65535 }
+         ::= { cLReapAclRuleEntry 15 }
+@@ -2913,7 +2914,7 @@ cLReapAclRuleDscp OBJECT-TYPE
+         MAX-ACCESS read-create
+         STATUS current
+         DESCRIPTION
+-                "This object specifies DSCP value of the rule. 
++                "This object specifies DSCP value of the rule.
+ 		A value 256 implies 'Any'."
+         DEFVAL { 256 }
+         ::= { cLReapAclRuleEntry 16 }
+@@ -2924,8 +2925,8 @@ cLReapAclNewRuleIndex OBJECT-TYPE
+       STATUS     current
+       DESCRIPTION
+              "This object specifies new index of the ACL rule.
+-	      This attribute should be updated if the requirement is 
+-              to reset the sequence of the rules of an ACL. A read 
++	      This attribute should be updated if the requirement is
++              to reset the sequence of the rules of an ACL. A read
+              on this will yield the same value as cLReapAclRuleIndex."
+       ::= { cLReapAclRuleEntry 17 }
+ 
+@@ -2947,7 +2948,7 @@ cLReapArpCaheEnabled OBJECT-TYPE
+       STATUS     current
+       DESCRIPTION
+             "This object specifies whether ARP cache feature is enabled
+-             for the flexconnect Access Points connected to the 
++             for the flexconnect Access Points connected to the
+              Wireless LAN Controller."
+       ::= { ciscoLwappReapGlobalConfig 1 }
+ 
+@@ -2962,11 +2963,11 @@ ciscoLwappReapMIBGroups  OBJECT IDENTIFIER
+     ::= { ciscoLwappReapMIBConform 2 }
+ 
+ ciscoLwappReapMIBCompliance MODULE-COMPLIANCE
+-        STATUS     deprecated 
++        STATUS     deprecated
+         DESCRIPTION
+                 "The compliance statement for the SNMP entities that
+                 implement the ciscoLwappReapMIB module. "
+-        MODULE MANDATORY-GROUPS {                
++        MODULE MANDATORY-GROUPS {
+                 ciscoLwappReapWlanConfigGroup,
+                 ciscoLwappReapApConfigGroup
+              }
+@@ -2974,11 +2975,11 @@ ciscoLwappReapMIBCompliance MODULE-COMPLIANCE
+         ::= { ciscoLwappReapMIBCompliances 1 }
+ 
+ ciscoLwappReapMIBComplianceRev1 MODULE-COMPLIANCE
+-        STATUS     deprecated 
++        STATUS     deprecated
+         DESCRIPTION
+                 "The compliance statement for the SNMP entities that
+                 implement the ciscoLwappReapMIB module. "
+-        MODULE MANDATORY-GROUPS {                
++        MODULE MANDATORY-GROUPS {
+                 ciscoLwappReapWlanConfigGroup,
+                 ciscoLwappReapApConfigGroup,
+                 ciscoLwappReapGroupConfigGroup
+@@ -3047,7 +3048,7 @@ ciscoLwappReapMIBComplianceRev5 MODULE-COMPLIANCE
+                         ciscoLwappReapWlanConfigGroupSup1
+                     }
+     ::= { ciscoLwappReapMIBCompliances 6 }
+-    
++
+ ciscoLwappReapMIBComplianceRev6 MODULE-COMPLIANCE
+     STATUS          current
+     DESCRIPTION
+@@ -3071,13 +3072,13 @@ ciscoLwappReapMIBComplianceRev6 MODULE-COMPLIANCE
+ -- ********************************************************************
+ 
+ ciscoLwappReapWlanConfigGroup OBJECT-GROUP
+-    OBJECTS { 
++    OBJECTS {
+     		cLReapWlanEnLocalSwitching,
+-    		cLReapWlanVlanCentralSwitching, 
+-        	cLReapWlanDhcpCentral, 
++    		cLReapWlanVlanCentralSwitching,
++        	cLReapWlanDhcpCentral,
+         	cLReapWlanDhcpOverrideDNS,
+ 			cLReapWlanNatPatEnabled,
+-       		cLReapWlanAssocCentral  
++       		cLReapWlanAssocCentral
+     	}
+     STATUS          current
+     DESCRIPTION
+@@ -3096,9 +3097,9 @@ ciscoLwappReapApConfigGroup OBJECT-GROUP
+       			cLReapApVlanInheritance,
+         		cLReapApVlanRowStatus,
+         		cLReapApVlanUsedBySecEthInterface,
+-        		cLReapIngressAcl, 
+-                   	cLReapEgressAcl, 
+-                   	cLReapApVlanIdAclRowStatus, 
++        		cLReapIngressAcl,
++                   	cLReapEgressAcl,
++                   	cLReapApVlanIdAclRowStatus,
+                    	cLReapVlanIdAclType,
+                    	cLReapApWebAuthAcl,
+                 	cLReapApWebAuthAclRowStatus,
+@@ -3113,7 +3114,7 @@ ciscoLwappReapApConfigGroup OBJECT-GROUP
+                 	cLReapApL2Acl,
+                 	cLReapApL2AclRowStatus,
+                 	cLReapArpCaheEnabled
+-                        
++
+                     }
+     STATUS          current
+     DESCRIPTION
+@@ -3138,7 +3139,7 @@ ciscoLwappReapGroupConfigGroup OBJECT-GROUP
+     			cLReapGroupPrimaryRadiusServerType,
+         		cLReapGroupPrimaryRadiusServerAddress,
+         		cLReapGroupPrimaryRadiusServerPort,
+-        		cLReapGroupPrimaryServerSecret, 
++        		cLReapGroupPrimaryServerSecret,
+         		cLReapGroupSecRadiusServerType,
+         		cLReapGroupSecRadiusServerAddress,
+         		cLReapGroupSecRadiusServerPort,
+@@ -3170,7 +3171,7 @@ ciscoLwappReapGroupConfigGroup OBJECT-GROUP
+                 	cLReapGroupWlanVlanId,
+                 	cLReapGroupVlanRowStatus,
+                 	cLReapGroupAVCFlexProfileName,
+-            		cLReapGroupNbarStatsVisibilityEnable, 
++            		cLReapGroupNbarStatsVisibilityEnable,
+             		cLReapGroupAVCFlexRowStatus,
+             		cLReapMasterApModel,
+                 	cLReapMasterApManual,
+@@ -3188,7 +3189,7 @@ ciscoLwappReapGroupConfigGroup OBJECT-GROUP
+                     	cLReapGroupStorageType,
+                     	cLReapGroupEfficientApUpgradeEnable,
+                     	cLReapGroupApUpgradeStart
+-                   		  
++
+                     }
+     STATUS          current
+     DESCRIPTION
+@@ -3234,7 +3235,7 @@ ciscoLwappReapApConfigGroupHomeAp OBJECT-GROUP
+     STATUS          current
+     DESCRIPTION
+         "This supplemental collection of objects represents
+-        objects related to Home AP configuration for 
++        objects related to Home AP configuration for
+         REAP AP."
+     ::= { ciscoLwappReapMIBGroups 6 }
+ 
+@@ -3262,7 +3263,7 @@ ciscoLwappReapWlanConfigGroupSup1 OBJECT-GROUP
+         "This collection of objects represent additional WLAN
+         configuration to be passed to the REAP."
+     ::= { ciscoLwappReapMIBGroups 8 }
+-    
++
+ ciscoLwappReapAclConfigGroup OBJECT-GROUP
+     OBJECTS         {
+                         cLReapAclName,

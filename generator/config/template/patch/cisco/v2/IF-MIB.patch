@@ -1,0 +1,22 @@
+diff --git a/mibs/cisco/cat3750/v2/IF-MIB.my b/mibs/cisco/cat3750/v2/IF-MIB.my
+index 4ac89d1..d92c2f5 100644
+--- a/mibs/cisco/cat3750/v2/IF-MIB.my
++++ b/mibs/cisco/cat3750/v2/IF-MIB.my
+@@ -6,7 +6,7 @@ IMPORTS
+     NOTIFICATION-TYPE                        FROM SNMPv2-SMI
+     TEXTUAL-CONVENTION, DisplayString,
+     PhysAddress, TruthValue, RowStatus,
+-    TimeStamp, AutonomousType, TestAndIncr   FROM SNMPv2-TC
++    TimeStamp, AutonomousType, TestAndIncr, DisplayString   FROM SNMPv2-TC
+     MODULE-COMPLIANCE, OBJECT-GROUP,
+     NOTIFICATION-GROUP                       FROM SNMPv2-CONF
+     snmpTraps                                FROM SNMPv2-MIB
+@@ -69,7 +69,7 @@ OwnerString ::= TEXTUAL-CONVENTION
+             the agent itself will be the owner of an entry.  In these
+             cases, this string shall be set to a string starting with
+             'agent'."
+-    SYNTAX       OCTET STRING (SIZE(0..255))
++    SYNTAX       DisplayString (SIZE(0..255))
+ 
+ -- InterfaceIndex contains the semantics of ifIndex and should be used
+ -- for any objects defined in other MIB modules that need these semantics.

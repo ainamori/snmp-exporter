@@ -1,0 +1,24 @@
+diff --git a/mibs/netgate/pfsense/v2/BEGEMOT-HOSTRES-MIB.txt b/mibs/netgate/pfsense/v2/BEGEMOT-HOSTRES-MIB.txt
+index 64eba3b..248acaf 100644
+--- a/mibs/netgate/pfsense/v2/BEGEMOT-HOSTRES-MIB.txt
++++ b/mibs/netgate/pfsense/v2/BEGEMOT-HOSTRES-MIB.txt
+@@ -36,7 +36,9 @@ IMPORTS
+     MODULE-IDENTITY, OBJECT-TYPE, TimeTicks
+ 	FROM SNMPv2-SMI
+     begemot
+-	FROM BEGEMOT-MIB;
++	FROM BEGEMOT-MIB
++    DisplayString
++    FROM SNMPv2-TC;
+ 
+ begemotHostres MODULE-IDENTITY
+     LAST-UPDATED "200601030000Z"
+@@ -114,7 +116,7 @@ begemotHrSWRunUpdate OBJECT-TYPE
+     ::= { begemotHostresObjects 6 }
+ 
+ begemotHrPkgDir OBJECT-TYPE
+-    SYNTAX	OCTET STRING
++    SYNTAX	DisplayString
+     MAX-ACCESS	read-write
+     STATUS	current
+     DESCRIPTION

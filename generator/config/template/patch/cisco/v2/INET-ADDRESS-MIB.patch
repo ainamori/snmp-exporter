@@ -1,0 +1,77 @@
+diff --git a/mibs/cisco/wlc/v2/INET-ADDRESS-MIB.my b/mibs/cisco/wlc/v2/INET-ADDRESS-MIB.my
+index 857e1a9..3bb5682 100644
+--- a/mibs/cisco/wlc/v2/INET-ADDRESS-MIB.my
++++ b/mibs/cisco/wlc/v2/INET-ADDRESS-MIB.my
+@@ -1,7 +1,7 @@
+ -- *****************************************************************
+--- INET-ADDRESS-MIB.my:  Textual Conventions for Internet Network 
++-- INET-ADDRESS-MIB.my:  Textual Conventions for Internet Network
+ --                       Address.
+--- 
++--
+ -- July 2005, Subra Hegde
+ --
+ -- Copyright (c) 2005 by cisco Systems, Inc.
+@@ -15,7 +15,7 @@ INET-ADDRESS-MIB DEFINITIONS ::= BEGIN
+ 
+ IMPORTS
+     MODULE-IDENTITY, mib-2, Unsigned32 FROM SNMPv2-SMI
+-    TEXTUAL-CONVENTION                 FROM SNMPv2-TC;
++    TEXTUAL-CONVENTION, DisplayString  FROM SNMPv2-TC;
+ 
+ inetAddressMIB MODULE-IDENTITY
+     LAST-UPDATED "200502040000Z"
+@@ -149,7 +149,7 @@ InetAddress ::= TEXTUAL-CONVENTION
+          the appropriate conceptual row DESCRIPTION clauses, or
+          in the surrounding documentation if there is no single
+          DESCRIPTION clause that is appropriate."
+-    SYNTAX       OCTET STRING (SIZE (0..255))
++    SYNTAX       DisplayString (SIZE (0..255))
+ 
+ InetAddressIPv4 ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "1d.1d.1d.1d"
+@@ -167,7 +167,7 @@ InetAddressIPv4 ::= TEXTUAL-CONVENTION
+          definitions, as it restricts addresses to a specific format.
+          However, if it is used, it MAY be used either on its own or in
+          conjunction with InetAddressType, as a pair."
+-    SYNTAX       OCTET STRING (SIZE (4))
++    SYNTAX       DisplayString (SIZE (4))
+ 
+ InetAddressIPv6 ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "2x:2x:2x:2x:2x:2x:2x:2x"
+@@ -184,7 +184,7 @@ InetAddressIPv6 ::= TEXTUAL-CONVENTION
+          definitions, as it restricts addresses to a specific format.
+          However, if it is used, it MAY be used either on its own or in
+          conjunction with InetAddressType, as a pair."
+-    SYNTAX       OCTET STRING (SIZE (16))
++    SYNTAX       DisplayString (SIZE (16))
+ 
+ InetAddressIPv4z ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "1d.1d.1d.1d%4d"
+@@ -211,7 +211,7 @@ InetAddressIPv4z ::= TEXTUAL-CONVENTION
+          definitions, as it restricts addresses to a specific format.
+          However, if it is used, it MAY be used either on its own or in
+          conjunction with InetAddressType, as a pair."
+-    SYNTAX       OCTET STRING (SIZE (8))
++    SYNTAX       DisplayString (SIZE (8))
+ 
+ InetAddressIPv6z ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "2x:2x:2x:2x:2x:2x:2x:2x%4d"
+@@ -236,7 +236,7 @@ InetAddressIPv6z ::= TEXTUAL-CONVENTION
+          definitions, as it restricts addresses to a specific format.
+          However, if it is used, it MAY be used either on its own or in
+          conjunction with InetAddressType, as a pair."
+-    SYNTAX       OCTET STRING (SIZE (20))
++    SYNTAX       DisplayString (SIZE (20))
+ 
+ InetAddressDNS ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "255a"
+@@ -262,7 +262,7 @@ InetAddressDNS ::= TEXTUAL-CONVENTION
+          definitions, as it restricts addresses to a specific format.
+          However, if it is used, it MAY be used either on its own or in
+          conjunction with InetAddressType, as a pair."
+-    SYNTAX       OCTET STRING (SIZE (1..255))
++    SYNTAX       DisplayString (SIZE (1..255))
+ 
+ InetAddressPrefixLength ::= TEXTUAL-CONVENTION
+     DISPLAY-HINT "d"

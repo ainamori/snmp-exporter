@@ -1,0 +1,44 @@
+diff --git a/mibs/cisco/cat3750/v2/CISCO-NAC-TC-MIB.my b/mibs/cisco/cat3750/v2/CISCO-NAC-TC-MIB.my
+index 8a2f67f..98a89c9 100644
+--- a/mibs/cisco/cat3750/v2/CISCO-NAC-TC-MIB.my
++++ b/mibs/cisco/cat3750/v2/CISCO-NAC-TC-MIB.my
+@@ -1,10 +1,10 @@
+ -- *********************************************************************
+ -- CISCO-NAC-TC-MIB.my: Cisco NAC system Textual Conventions
+---   
++--
+ -- May 2006, Liwei Lue
+---   
++--
+ -- Copyright (c) 2006-2007 by Cisco Systems, Inc.
+---  
++--
+ -- All rights reserved.
+ -- ********************************************************************
+ 
+@@ -13,7 +13,7 @@ CISCO-NAC-TC-MIB DEFINITIONS ::= BEGIN
+ IMPORTS
+     MODULE-IDENTITY
+         FROM SNMPv2-SMI
+-    TEXTUAL-CONVENTION
++    TEXTUAL-CONVENTION, DisplayString
+         FROM SNMPv2-TC
+     ciscoMgmt
+         FROM CISCO-SMI;
+@@ -49,7 +49,7 @@ ciscoNacTcMIB MODULE-IDENTITY
+         requires integration with third party end point security
+         applications, as well as endpoint security servers.
+ 
+-        Terminology used:                
++        Terminology used:
+ 
+         EOU - Extensible Authentication Protocol over UDP.
+ 
+@@ -308,6 +308,6 @@ CnnEouPostureTokenString ::= TEXTUAL-CONVENTION
+         Valid characters are a-z, A-Z, 0-9, ,'#', '-', '_',
+         and '.'.  Posture token string is case sensitive and
+         permits the value of empty string."
+-    SYNTAX          OCTET STRING (SIZE (0..255))
++    SYNTAX          DisplayString (SIZE (0..255))
+ 
+ END

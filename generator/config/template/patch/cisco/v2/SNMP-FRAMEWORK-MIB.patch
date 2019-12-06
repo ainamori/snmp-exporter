@@ -1,0 +1,31 @@
+diff --git a/mibs/cisco/cat3750/v2/SNMP-FRAMEWORK-MIB.my b/mibs/cisco/cat3750/v2/SNMP-FRAMEWORK-MIB.my
+index f87d8b8..d715a7a 100644
+--- a/mibs/cisco/cat3750/v2/SNMP-FRAMEWORK-MIB.my
++++ b/mibs/cisco/cat3750/v2/SNMP-FRAMEWORK-MIB.my
+@@ -4,7 +4,7 @@ IMPORTS
+     MODULE-IDENTITY, OBJECT-TYPE,
+     OBJECT-IDENTITY,
+     snmpModules                           FROM SNMPv2-SMI
+-    TEXTUAL-CONVENTION                    FROM SNMPv2-TC
++    TEXTUAL-CONVENTION, DisplayString     FROM SNMPv2-TC
+     MODULE-COMPLIANCE, OBJECT-GROUP       FROM SNMPv2-CONF;
+ 
+ snmpFrameworkMIB MODULE-IDENTITY
+@@ -187,7 +187,7 @@ SnmpEngineID ::= TEXTUAL-CONVENTION
+                     128-255 - as defined by the enterprise
+                               Maximum remaining length 27
+                 "
+-    SYNTAX       OCTET STRING (SIZE(5..32))
++    SYNTAX       DisplayString (SIZE(5..32))
+ 
+ 
+ SnmpSecurityModel ::= TEXTUAL-CONVENTION
+@@ -415,7 +415,7 @@ SnmpAdminString ::= TEXTUAL-CONVENTION
+                  Note that the size of an SnmpAdminString object is
+                  measured in octets, not characters.
+                 "
+-    SYNTAX       OCTET STRING (SIZE (0..255))
++    SYNTAX       DisplayString (SIZE (0..255))
+ 
+ -- Administrative assignments ***************************************
+ 

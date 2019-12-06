@@ -1,0 +1,509 @@
+diff --git a/mibs/cisco/wlc/v2/CISCO-LWAPP-LOCAL-AUTH-MIB.my b/mibs/cisco/wlc/v2/CISCO-LWAPP-LOCAL-AUTH-MIB.my
+index ccef80b..b92e57f 100644
+--- a/mibs/cisco/wlc/v2/CISCO-LWAPP-LOCAL-AUTH-MIB.my
++++ b/mibs/cisco/wlc/v2/CISCO-LWAPP-LOCAL-AUTH-MIB.my
+@@ -1,7 +1,7 @@
+ -- *******************************************************************
+ -- CISCO-LWAPP-LOCAL-AUTH-MIB.my
+ -- March 2007, Devesh Pujari, Srinath Candadai
+---   
++--
+ -- Copyright (c) 2007-2010, 2017 by Cisco Systems, Inc.
+ -- All rights reserved.
+ -- *******************************************************************
+@@ -19,7 +19,8 @@ IMPORTS
+         FROM SNMPv2-CONF
+     DisplayString,
+     RowStatus,
+-    TruthValue
++    TruthValue,
++    DisplayString
+         FROM SNMPv2-TC
+     cLWlanIndex
+         FROM CISCO-LWAPP-WLAN-MIB
+@@ -101,7 +102,7 @@ ciscoLwappLocalAuthMIB MODULE-IDENTITY
+         An entity that contains an 802.11 medium access
+         control ( MAC ) and physical layer ( PHY ) interface
+         and provides access to the distribution services via
+-        the wireless medium for associated clients.  
++        the wireless medium for associated clients.
+ 
+         LWAPP APs encapsulate all the 802.11 frames in
+         LWAPP frames and sends them to the controller to which
+@@ -113,27 +114,27 @@ ciscoLwappLocalAuthMIB MODULE-IDENTITY
+         battery power of WLAN-enabled cell phones by providing
+         a high rate packet on the order of tens of milliseconds
+         such that these kind of phones can wake up and wait at
+-        predefined intervals, to reduce battery power.  The 
++        predefined intervals, to reduce battery power.  The
+         GPR packet is transmitted from the AP at a predefined
+         time interval.
+ 
+ 
+         Light Weight Access Point Protocol ( LWAPP )
+ 
+-        This is a generic protocol that defines the 
++        This is a generic protocol that defines the
+         communication between the Access Points and the
+-        Central Controller. 
++        Central Controller.
+ 
+         Mobile Node ( MN )
+ 
+         A roaming 802.11 wireless device in a wireless
+-        network associated with an access point. Mobile Node 
+-        and client are used interchangeably. 
++        network associated with an access point. Mobile Node
++        and client are used interchangeably.
+ 
+         Extensible Authentication Protocol ( EAP )
+ 
+-        EAP is a universal authentication protocol used in 
+-        wireless and PPP networks. It is defined by RFC 3748. 
++        EAP is a universal authentication protocol used in
++        wireless and PPP networks. It is defined by RFC 3748.
+ 
+         EAP-Flexible Authentication ( EAP-FAST )
+ 
+@@ -141,18 +142,18 @@ ciscoLwappLocalAuthMIB MODULE-IDENTITY
+ 
+         Transport Layer Security ( TLS )
+ 
+-        This is a cryptographic protocol which provides secure 
++        This is a cryptographic protocol which provides secure
+         communication over the network.
+ 
+         Protected Extensible Authentication Protocol ( PEAP )
+ 
+-        PEAP is a method to securely transmit authentication 
+-        information, including passwords, over wired or wireless 
++        PEAP is a method to securely transmit authentication
++        information, including passwords, over wired or wireless
+         networks.
+ 
+         Lightweight Directory Access Protocol ( LDAP )
+ 
+-        LDAP is a protocol used for obtaining directory services 
++        LDAP is a protocol used for obtaining directory services
+         and runs over TCP/IP.
+ 
+         REFERENCE
+@@ -160,7 +161,7 @@ ciscoLwappLocalAuthMIB MODULE-IDENTITY
+         [1] Wireless LAN Medium Access Control ( MAC ) and
+         Physical Layer ( PHY ) Specifications
+ 
+-        [2] Draft-obara-capwap-lwapp-00.txt, IETF Light 
++        [2] Draft-obara-capwap-lwapp-00.txt, IETF Light
+         Weight Access Point Protocol"
+     REVISION        "201704270000Z"
+     DESCRIPTION
+@@ -170,16 +171,16 @@ ciscoLwappLocalAuthMIB MODULE-IDENTITY
+     DESCRIPTION
+         "-Added the following objects:
+         *cllaEapMaxLoginIgnIdResp,
+-        *cllaEapKeyTimeout, 
++        *cllaEapKeyTimeout,
+         *cllaEapKeyMaxRetries."
+     REVISION        "200911240000Z"
+     DESCRIPTION
+         "-Added the following objects:
+         *cllaEapIdentityReqTimeout,
+-        *cllaEapIdentityReqMaxRetries, 
++        *cllaEapIdentityReqMaxRetries,
+         *cllaEapDynamicWepKeyIndex,
+-        *cllaEapReqTimeout 
+-        *cllaEapReqMaxRetries. 
++        *cllaEapReqTimeout
++        *cllaEapReqMaxRetries.
+         -Added 'peap' bit for cllaEapProfileMethods object.
+         -Added ciscoLwappLocalAuthMIBConfigGroupSup1 OBJECT-GROUP,
+         -Added ciscoLwappLocalAuthMIBComplianceRev1 MODULE-COMPLIANCE."
+@@ -217,7 +218,7 @@ cllaActiveTimeout OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies timeout period for the Local EAP
+         to remain active."
+-    DEFVAL          { 300 } 
++    DEFVAL          { 300 }
+     ::= { cllaLocalAuth 1 }
+ 
+ cllaEapIdentityReqTimeout OBJECT-TYPE
+@@ -228,7 +229,7 @@ cllaEapIdentityReqTimeout OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies timeout period for the EAP
+         identity request, within which response should be sent."
+-    DEFVAL          { 1 } 
++    DEFVAL          { 1 }
+     ::= { cllaLocalAuth 2 }
+ 
+ cllaEapIdentityReqMaxRetries OBJECT-TYPE
+@@ -238,7 +239,7 @@ cllaEapIdentityReqMaxRetries OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies maximum number of retransmissions
+         for EAP Identity request."
+-    DEFVAL          { 20 } 
++    DEFVAL          { 20 }
+     ::= { cllaLocalAuth 3 }
+ 
+ cllaEapDynamicWepKeyIndex OBJECT-TYPE
+@@ -247,19 +248,19 @@ cllaEapDynamicWepKeyIndex OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies key index for the EAP dynamic
+-        Wired Equivalent Privacy security policy. 
++        Wired Equivalent Privacy security policy.
+ 
+         It applies to Static WEP key index of WLAN which has layer 2
+          security of type Static WEP. According to 802.11 standard 4
+-        keys 
++        keys
+         are supported for informing Mobile Station (clients) which key
+-        it 
++        it
+         should use for Static WEP Authentication
+ 
+         The default value of 0 works for all devices, but for some old
+-        devices/clients which uses the unicast key as 3, the key index 
++        devices/clients which uses the unicast key as 3, the key index
+         has to be configured to 3 to match the client side setting."
+-    DEFVAL          { 0 } 
++    DEFVAL          { 0 }
+     ::= { cllaLocalAuth 4 }
+ 
+ cllaEapReqTimeout OBJECT-TYPE
+@@ -270,7 +271,7 @@ cllaEapReqTimeout OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies timeout period for the EAP request
+         , within which response should be sent."
+-    DEFVAL          { 1 } 
++    DEFVAL          { 1 }
+     ::= { cllaLocalAuth 5 }
+ 
+ cllaEapReqMaxRetries OBJECT-TYPE
+@@ -280,7 +281,7 @@ cllaEapReqMaxRetries OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies maximum number of retransmissions
+         for EAP request."
+-    DEFVAL          { 2 } 
++    DEFVAL          { 2 }
+     ::= { cllaLocalAuth 6 }
+ 
+ cllaEapMaxLoginIgnIdResp OBJECT-TYPE
+@@ -294,7 +295,7 @@ cllaEapMaxLoginIgnIdResp OBJECT-TYPE
+         controller.
+         A value of 'true' indicates it's enabled.
+         A value of 'false' indicates it's disabled."
+-    DEFVAL          { true } 
++    DEFVAL          { true }
+     ::= { cllaLocalAuth 7 }
+ 
+ cllaEapKeyTimeout OBJECT-TYPE
+@@ -306,7 +307,7 @@ cllaEapKeyTimeout OBJECT-TYPE
+         "This object specifies the amount of time in which the
+         controller attempts to send an EAP key over the LAN to wireless clients
+         using local EAP."
+-    DEFVAL          { 1000 } 
++    DEFVAL          { 1000 }
+     ::= { cllaLocalAuth 8 }
+ 
+ cllaEapKeyMaxRetries OBJECT-TYPE
+@@ -316,7 +317,7 @@ cllaEapKeyMaxRetries OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the maximum number of times that the controller
+         attempts to send an EAP key over the LAN to wireless clients using local EAP."
+-    DEFVAL          { 2 } 
++    DEFVAL          { 2 }
+     ::= { cllaLocalAuth 9 }
+ 
+ cllaEapBroadcastKeyInterval OBJECT-TYPE
+@@ -327,14 +328,14 @@ cllaEapBroadcastKeyInterval OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies the amount of time in which the controller
+         attempts to send an EAP key over the LAN to wireless clients using local EAP."
+-    DEFVAL          { 120 } 
++    DEFVAL          { 120 }
+     ::= { cllaLocalAuth 10 }
+ -- ********************************************************************
+ -- EAP Profile
+ -- ********************************************************************
+ 
+ cllaEapProfileTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CllaEapProfileEntry 
++    SYNTAX          SEQUENCE OF CllaEapProfileEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -352,10 +353,10 @@ cllaEapProfileEntry OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "A conceptual row in cllaEapProfileTable. Each
+-        entry in this table represents the local EAP 
+-        authentication information, identified by 
++        entry in this table represents the local EAP
++        authentication information, identified by
+         the cllEapProfileName."
+-    INDEX           { cllaEapProfileName } 
++    INDEX           { cllaEapProfileName }
+     ::= { cllaEapProfileTable 1 }
+ 
+ CllaEapProfileEntry ::= SEQUENCE {
+@@ -376,7 +377,7 @@ cllaEapProfileName OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object represent the profile name used to identify
+-        the Local EAP information." 
++        the Local EAP information."
+     ::= { cllaEapProfileEntry 1 }
+ 
+ cllaEapProfileMethods OBJECT-TYPE
+@@ -396,7 +397,7 @@ cllaEapProfileMethods OBJECT-TYPE
+            leap     - LEAP is used as one of the methods
+            eapFast - EAP-FAST is used as one of the methods
+            tls      - TLS is being used as one of the methods
+-           peap     - PEAP is being used as one of the methods." 
++           peap     - PEAP is being used as one of the methods."
+     ::= { cllaEapProfileEntry 2 }
+ 
+ cllaEapProfileCertIssuer OBJECT-TYPE
+@@ -410,7 +411,7 @@ cllaEapProfileCertIssuer OBJECT-TYPE
+         "This object specifies the name of the certificate issuer
+         cisco  - Cisco is the certificate issuer.
+         vendor - The issuer is an outside vendor."
+-    DEFVAL          { cisco } 
++    DEFVAL          { cisco }
+     ::= { cllaEapProfileEntry 3 }
+ 
+ cllaEapProfileCaCertificationCheck OBJECT-TYPE
+@@ -422,7 +423,7 @@ cllaEapProfileCaCertificationCheck OBJECT-TYPE
+         against installed CA certificates.
+         A value of 'true' indicates it's installed.
+         A value of 'false' indicates it's not installed."
+-    DEFVAL          { true } 
++    DEFVAL          { true }
+     ::= { cllaEapProfileEntry 4 }
+ 
+ cllaEapProfileCnCertificationIdVerify OBJECT-TYPE
+@@ -432,7 +433,7 @@ cllaEapProfileCnCertificationIdVerify OBJECT-TYPE
+     DESCRIPTION
+         "This parameter specifies whether to verify certificate
+         CN against peer identity and user database."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cllaEapProfileEntry 5 }
+ 
+ cllaEapProfileDateValidityEnabled OBJECT-TYPE
+@@ -444,7 +445,7 @@ cllaEapProfileDateValidityEnabled OBJECT-TYPE
+         date is valid and is within validity period.
+         A value of 'true' indicates it's valid.
+         A value of 'false' indicates it's not valid."
+-    DEFVAL          { true } 
++    DEFVAL          { true }
+     ::= { cllaEapProfileEntry 6 }
+ 
+ cllaEapProfileLocalCertificateRequired OBJECT-TYPE
+@@ -453,9 +454,9 @@ cllaEapProfileLocalCertificateRequired OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies cllaEapProfileMethods is
+-        EAP-FAST parameter. This parameter indicates 
++        EAP-FAST parameter. This parameter indicates
+         whether local certificate is required."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cllaEapProfileEntry 7 }
+ 
+ cllaEapProfileClientCertificateRequired OBJECT-TYPE
+@@ -464,9 +465,9 @@ cllaEapProfileClientCertificateRequired OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies cllaEapProfileMethods is
+-        EAP-FAST parameter. This parameter indicates 
++        EAP-FAST parameter. This parameter indicates
+         whether client certificate is required."
+-    DEFVAL          { false } 
++    DEFVAL          { false }
+     ::= { cllaEapProfileEntry 8 }
+ 
+ cllaEapProfileRowStatus OBJECT-TYPE
+@@ -474,22 +475,22 @@ cllaEapProfileRowStatus OBJECT-TYPE
+     MAX-ACCESS      read-create
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies to add or delete an entry in this table." 
++        "This object specifies to add or delete an entry in this table."
+     ::= { cllaEapProfileEntry 9 }
+- 
++
+ 
+ -- ********************************************************************
+ -- WLAN Profile table
+ -- ********************************************************************
+ 
+ cllaWlanProfileTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CllaWlanProfileEntry 
++    SYNTAX          SEQUENCE OF CllaWlanProfileEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+         "This table represents the information about configuring
+-        the EAP profiles for a WLAN. The creation of a new row  
+-        occurs when a WLAN entry is added through an explicit 
++        the EAP profiles for a WLAN. The creation of a new row
++        occurs when a WLAN entry is added through an explicit
+         network management action to the cLWlanConfigTable in
+         CISCO-LWAPP-WLAN-MIB.
+         Similarly, deletion of a row in cLWlanConfigTable
+@@ -504,7 +505,7 @@ cllaWlanProfileEntry OBJECT-TYPE
+     DESCRIPTION
+         "Each entry in this table provides information about
+         the Local EAP profile configured for this WLAN."
+-    INDEX           { cLWlanIndex } 
++    INDEX           { cLWlanIndex }
+     ::= { cllaWlanProfileTable 1 }
+ 
+ CllaWlanProfileEntry ::= SEQUENCE {
+@@ -517,7 +518,7 @@ cllaWlanProfileName OBJECT-TYPE
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+-        "This object specifies the profile name configured for this WLAN." 
++        "This object specifies the profile name configured for this WLAN."
+     ::= { cllaWlanProfileEntry 1 }
+ 
+ cllaWlanProfileState OBJECT-TYPE
+@@ -526,16 +527,16 @@ cllaWlanProfileState OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies whether Local Authentication
+-        is enabled or disabled for this WLAN." 
++        is enabled or disabled for this WLAN."
+     ::= { cllaWlanProfileEntry 2 }
+- 
++
+ 
+ -- ********************************************************************
+ -- User Credential Priority Table
+ -- ********************************************************************
+ 
+ cllaUserPriorityTable OBJECT-TYPE
+-    SYNTAX          SEQUENCE OF CllaUserPriorityEntry 
++    SYNTAX          SEQUENCE OF CllaUserPriorityEntry
+     MAX-ACCESS      not-accessible
+     STATUS          current
+     DESCRIPTION
+@@ -552,10 +553,10 @@ cllaUserPriorityEntry OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "A conceptual row in cllaUserPriorityTable. There is an
+-        entry in this table for each 802.11 user authentication 
+-        available at the agent, as identified by a value of 
++        entry in this table for each 802.11 user authentication
++        available at the agent, as identified by a value of
+         cllaUserCredential."
+-    INDEX           { cllaUserCredential } 
++    INDEX           { cllaUserCredential }
+     ::= { cllaUserPriorityTable 1 }
+ 
+ CllaUserPriorityEntry ::= SEQUENCE {
+@@ -573,9 +574,9 @@ cllaUserCredential OBJECT-TYPE
+     DESCRIPTION
+         "This object represents the user crediantial information.
+         local - indicates that local credential is used
+-                for authentication 
++                for authentication
+         ldap  - indicates that LDAP credential is used
+-                for authentication." 
++                for authentication."
+     ::= { cllaUserPriorityEntry 1 }
+ 
+ cllaUserPriorityNumber OBJECT-TYPE
+@@ -586,15 +587,15 @@ cllaUserPriorityNumber OBJECT-TYPE
+         "This object specifies the order in which the user credentials
+         are validated by the controller.  At start up,
+         the agent assigns the value of this object. Later this can
+-        be changed  by the management station.  
++        be changed  by the management station.
+         This object reflects the priority in which the user credential
+-        information is applied. A lower value indicates an higher 
+-        priority. For example, an entry set to value '1' has a higher 
+-        priority over an entry set to value '2'.  
+-        The zero value indicates that the priority is not set. 
+-        No two instances of this object will have the same priority." 
++        information is applied. A lower value indicates an higher
++        priority. For example, an entry set to value '1' has a higher
++        priority over an entry set to value '2'.
++        The zero value indicates that the priority is not set.
++        No two instances of this object will have the same priority."
+     ::= { cllaUserPriorityEntry 2 }
+- 
++
+ 
+ -- ********************************************************************
+ -- Local-auth  eap-fast method parameters
+@@ -612,7 +613,7 @@ cllaEapMethodPacTtl OBJECT-TYPE
+     DESCRIPTION
+         "This object specifies EAP Fast parameter. This parameter represents
+         time to live for the protected access credentials."
+-    DEFVAL          { 10 } 
++    DEFVAL          { 10 }
+     ::= { cllaEapParams 1 }
+ 
+ cllaEapAnonymousProvEnabled OBJECT-TYPE
+@@ -621,39 +622,39 @@ cllaEapAnonymousProvEnabled OBJECT-TYPE
+     STATUS          current
+     DESCRIPTION
+         "This object specifies EAP Fast parameter. This parameter represents
+-        whether anonymous provisioning is enabled. A value of 
+-        'true' indicates the controller will accept anonymous 
++        whether anonymous provisioning is enabled. A value of
++        'true' indicates the controller will accept anonymous
+         requests. A value of 'false' indicates that the controller
+         will reject anonymous requests."
+-    DEFVAL          { true } 
++    DEFVAL          { true }
+     ::= { cllaEapParams 2 }
+ 
+ cllaEapAuthorityId OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..128))
++    SYNTAX          DisplayString (SIZE  (0..128))
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+         "This object specifies EAP Fast parameter. This parameter configures
+-        the authority ID. The maximum length per platform is 
+-        specified by the cllaEapAuthorityIdLength object." 
++        the authority ID. The maximum length per platform is
++        specified by the cllaEapAuthorityIdLength object."
+     ::= { cllaEapParams 3 }
+ 
+ cllaEapAuthorityInfo OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (0..32))
++    SYNTAX          DisplayString (SIZE  (0..32))
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+         "This object specifies EAP Fast parameter. This parameter configures
+-        the authority information." 
++        the authority information."
+     ::= { cllaEapParams 4 }
+ 
+ cllaEapServerKey OBJECT-TYPE
+-    SYNTAX          OCTET STRING (SIZE  (1..32))
++    SYNTAX          DisplayString (SIZE  (1..32))
+     MAX-ACCESS      read-write
+     STATUS          current
+     DESCRIPTION
+         "This object specifies EAP Fast parameter. This parameter configures
+-        the server key ID." 
++        the server key ID."
+     ::= { cllaEapParams 5 }
+ 
+ cllaEapAuthorityIdLength OBJECT-TYPE
+@@ -663,7 +664,7 @@ cllaEapAuthorityIdLength OBJECT-TYPE
+     DESCRIPTION
+         "This object indicates the length of the cllaEapAuthorityId
+         object, supported by this agent implementation."
+-    DEFVAL          { 32 } 
++    DEFVAL          { 32 }
+     ::= { cllaEapParams 6 }
+ -- ********************************************************************
+ -- *    Units of conformance
