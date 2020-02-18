@@ -21,7 +21,7 @@ make() {
 	
 	echo "Generating snmp.yml from generator.yml"
 	cp -v ${CWD}/../../Dockerfile .
-	docker build -t snmp-generator .
+	docker build -t snmp-generator .  --network=host
 	docker run -ti -v "${CWD}:/opt/" snmp-generator generate
 	rm -fv Dockerfile
 }
